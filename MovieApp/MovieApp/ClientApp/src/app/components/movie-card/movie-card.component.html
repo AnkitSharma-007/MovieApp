@@ -1,1 +1,27 @@
-<p>movie-card works!</p>
+<mat-card
+  class="book-card mat-elevation-z2"
+  [class.on-book-card-hover]="isActive"
+  (mouseover)="isActive = true"
+  (mouseout)="isActive = false"
+>
+  <mat-card-content class="image-card">
+    <a
+      [routerLink]="['/movies/details/', movie.movieId]"
+      matTooltip="{{ movie.title }}"
+      matTooltipClass="example-tooltip"
+      ><img
+        class="preview-image"
+        mat-card-image
+        src="Poster/{{ movie.posterPath }}"
+        alt="Movie cover image"
+    /></a>
+  </mat-card-content>
+  <mat-card-content>
+    <div class="card-title">
+      <a [routerLink]="['/movies/details', movie.movieId]">
+        <strong>{{ movie.title }}</strong>
+      </a>
+    </div>
+    <p>{{ movie.title }}</p>
+  </mat-card-content>
+</mat-card>

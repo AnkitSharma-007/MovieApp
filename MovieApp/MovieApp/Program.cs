@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
          ClockSkew = TimeSpan.Zero // Override the default clock skew of 5 mins
      };
 
- //    builder.Services.AddCors();
+     builder.Services.AddCors();
  });
 
 builder.Services.AddAuthorization(config =>
@@ -59,7 +59,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-var FileProviderPath = app.Environment.WebRootPath + "/Poster";
+var FileProviderPath = app.Environment.ContentRootPath + "/Poster";
 if (!Directory.Exists(FileProviderPath))
 {
     Directory.CreateDirectory(FileProviderPath);
