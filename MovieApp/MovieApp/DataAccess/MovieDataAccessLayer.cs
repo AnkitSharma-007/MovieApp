@@ -110,7 +110,7 @@ namespace MovieApp.DataAccess
             }
         }
 
-        async Task<List<Movie>> GetSimilarMovies(int movieId)
+        public async Task<List<Movie>> GetSimilarMovies(int movieId)
         {
             List<Movie> lstMovie = new();
             Movie? movie = await _dbContext.Movies.FindAsync(movieId);
