@@ -13,4 +13,84 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-kerning: normal;
+  background: #fafafa;
 }
+
+.container {
+  padding-top: 60px;
+}
+
+.docs-example-viewer-title {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 8px 20px;
+  color: #ffffff;
+  background: #ff4081;
+}
+
+.docs-example-viewer-title-spacer {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.docs-example-viewer-body {
+  padding: 15px;
+  align-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.docs-example-viewer-wrapper {
+  border: 0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+  margin: 1em auto;
+  border-radius: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button:focus,
+button:active:focus,
+button.active:focus {
+  outline: none !important;
+  outline-style: none !important;
+}
+
+.docs-navbar-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  > .mat-button {
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+}
+
+app-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5 {
+//   margin-bottom: 0;
+// }

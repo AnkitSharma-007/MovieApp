@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@import "@angular/material/theming";
 $color-hover: #777777;
 
 // .image-card {
@@ -37,4 +37,10 @@ $color-hover: #777777;
 a {
   text-decoration: none;
   background-color: transparent;
+}
+
+.card-rating {
+  position: absolute;
+  right: 7px;
+  top: 7px;
 }

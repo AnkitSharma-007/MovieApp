@@ -9,8 +9,9 @@ const PROXY_CONFIG = [
       "/api/movie",
       "/api/login",
       "/api/user",
-      "/Poster"
-   ],
+      "/Poster",
+      "/swagger"
+    ],
     target: target,
     secure: false,
     headers: {

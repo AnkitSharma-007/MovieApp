@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace MovieApp.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class MovieController : ControllerBase
@@ -34,6 +35,13 @@ namespace MovieApp.Controllers
         public async Task<IEnumerable<Genre>> GenreList()
         {
             return await _movieService.GetGenre();
+        }
+
+        [HttpGet]
+        [Route("GetSimilarMovies/{movieId}")]
+        public async Task<List<Movie>> SimilarMovies(int movieId)
+        {
+            return await _movieService.GetSimilarMovies(movieId);
         }
 
         // POST api/<MovieController>

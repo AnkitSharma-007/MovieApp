@@ -14,6 +14,8 @@ namespace MovieApp.Interfaces
 
         Task<string> DeleteMovie(int movieId);
 
+        Task<List<Movie>> GetSimilarMovies(int movieId);
+
         Task<List<Movie>> GetMoviesAvailableInWatchlist(string watchlistID);
     }
 }

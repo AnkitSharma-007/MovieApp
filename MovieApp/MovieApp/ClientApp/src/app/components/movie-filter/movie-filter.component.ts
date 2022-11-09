@@ -8,7 +8,7 @@ import { MovieService } from 'src/app/services/movie.service';
 })
 export class MovieFilterComponent {
   @Input()
-  genreName = '';
+  selectedGenre = '';
 
   genereList$ = this.movieService.genre$;
 

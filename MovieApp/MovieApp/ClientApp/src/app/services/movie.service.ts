@@ -9,6 +9,7 @@ import { Movie } from '../models/movie';
 })
 export class MovieService {
   baseURL = 'api/movie/';
+
   constructor(private readonly http: HttpClient) {}
 
   genre$ = this.http

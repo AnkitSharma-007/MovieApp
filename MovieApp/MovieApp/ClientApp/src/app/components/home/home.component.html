@@ -1,27 +1,29 @@
-<div class="row no-gutters pt-3">
-  <div class="col-md-3 col-sm-12">
-    <div>
-      <app-movie-filter [genreName]="genreName"></app-movie-filter>
+<ng-container *ngIf="vm$ | async as vm; else loading">
+  <div class="row no-gutters pt-3">
+    <div class="col-md-3 col-sm-12">
+      <div class="filter-container">
+        <app-movie-filter [selectedGenre]="vm.selectedGenre"></app-movie-filter>
+        <app-movie-sort [selectedSort]="vm.selectedSort"></app-movie-sort>
+      </div>
     </div>
-  </div>
-  <div class="col mb-3">
-    <ng-container *ngIf="movieList$ | async as movies; else loading">
+    <div class="col mb-3">
       <div
-        *ngIf="movies.length > 0; else nodata"
+        *ngIf="vm.movieList.length > 0; else nodata"
         class="d-flex justify-content-start flex-wrap mb-4"
       >
-        <div *ngFor="let movie of movies" class="p-1">
+        <div *ngFor="let movie of vm.movieList" class="p-1">
           <app-movie-card [movie]="movie"></app-movie-card>
         </div>
       </div>
-    </ng-container>
-    <ng-template class="spinner-container" #loading>
-      <div class="d-flex justify-content-center mt-4">
-        <mat-spinner></mat-spinner>
-      </div>
-    </ng-template>
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center mt-4">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
 
 <ng-template #nodata>
   <div class="d-flex justify-content-center mt-4">

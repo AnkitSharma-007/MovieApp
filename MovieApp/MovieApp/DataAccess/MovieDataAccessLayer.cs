@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieApp.Interfaces;
 using MovieApp.Models;
+using System.Net;
 
 namespace MovieApp.DataAccess
 {
@@ -107,6 +108,21 @@ namespace MovieApp.DataAccess
             {
                 throw;
             }
+        }
+
+        async Task<List<Movie>> GetSimilarMovies(int movieId)
+        {
+            List<Movie> lstMovie = new();
+            Movie? movie = await _dbContext.Movies.FindAsync(movieId);
+
+            if (movie is not null)
+            {
+                lstMovie = _dbContext.Movies.Where(m => m.Genre == movie.Genre && m.MovieId != movie.MovieId)
+                .OrderBy(u => Guid.NewGuid())
+                .Take(5)
+                .ToList();
+            }
+            return lstMovie;
         }
 
         async Task<Movie?> GetMovieData(int movieId)

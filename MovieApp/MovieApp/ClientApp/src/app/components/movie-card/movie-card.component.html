@@ -17,11 +17,14 @@
     /></a>
   </mat-card-content>
   <mat-card-content>
+    <span class="card-rating">
+      <app-movie-rating [movieRating]="movie.rating"></app-movie-rating>
+    </span>
     <div class="card-title">
       <a [routerLink]="['/movies/details', movie.movieId]">
         <strong>{{ movie.title }}</strong>
       </a>
     </div>
-    <p>{{ movie.title }}</p>
+    <p>{{ movie.language }}</p>
   </mat-card-content>
 </mat-card>

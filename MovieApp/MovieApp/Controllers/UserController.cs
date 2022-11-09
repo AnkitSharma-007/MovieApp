@@ -4,6 +4,7 @@ using MovieApp.Models;
 
 namespace MovieApp.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

@@ -15,6 +15,8 @@ import { LoginComponent } from './components/login/login.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
+import { ConvertMinToHourPipe } from './pipes/convert-min-to-hour.pipe';
+import { MovieSortComponent } from './components/movie-sort/movie-sort.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { MovieDetailsComponent } from './components/movie-details/movie-details.
     UserRegistrationComponent,
     MovieDetailsComponent,
     PageNotFoundComponent,
+    ConvertMinToHourPipe,
+    MovieSortComponent,
   ],
   imports: [
     BrowserModule,
