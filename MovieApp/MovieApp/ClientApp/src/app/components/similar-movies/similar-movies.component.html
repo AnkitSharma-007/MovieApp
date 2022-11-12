@@ -1,0 +1,21 @@
+<div class="docs-example-viewer-wrapper mb-2">
+  <div class="docs-example-viewer-title mat-elevation-z2">
+    <div class="docs-example-viewer-title-spacer">
+      <h2>Similar Movies</h2>
+    </div>
+  </div>
+  <ng-container *ngIf="similarMovies$ | async as movies; else loading">
+    <div class="d-flex justify-content-start p-2">
+      <div class="d-flex w-100">
+        <div *ngFor="let movie of movies" class="p-1">
+          <app-movie-card [movie]="movie"></app-movie-card>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</div>

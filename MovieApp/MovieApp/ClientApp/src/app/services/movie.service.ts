@@ -8,17 +8,21 @@ import { Movie } from '../models/movie';
   providedIn: 'root',
 })
 export class MovieService {
-  baseURL = 'api/movie/';
+  baseURL = 'api/movie';
 
   constructor(private readonly http: HttpClient) {}
 
   genre$ = this.http
-    .get<Genre[]>(this.baseURL + 'GetGenreList')
+    .get<Genre[]>(`${this.baseURL}/GetGenreList`)
     .pipe(shareReplay(1));
 
   movies$ = this.getAllMovies().pipe(shareReplay(1));
 
   private getAllMovies() {
     return this.http.get<Movie[]>(this.baseURL);
+  }
+
+  getsimilarMovies(bookId: number) {
+    return this.http.get<Movie[]>(`${this.baseURL}/GetSimilarMovies/${bookId}`);
   }
 }

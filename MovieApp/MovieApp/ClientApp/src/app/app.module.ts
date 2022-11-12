@@ -17,6 +17,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
 import { ConvertMinToHourPipe } from './pipes/convert-min-to-hour.pipe';
 import { MovieSortComponent } from './components/movie-sort/movie-sort.component';
+import { SimilarMoviesComponent } from './components/similar-movies/similar-movies.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MovieSortComponent } from './components/movie-sort/movie-sort.component
     PageNotFoundComponent,
     ConvertMinToHourPipe,
     MovieSortComponent,
+    SimilarMoviesComponent,
   ],
   imports: [
     BrowserModule,

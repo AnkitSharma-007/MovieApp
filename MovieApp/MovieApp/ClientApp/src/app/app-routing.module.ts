@@ -12,6 +12,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: UserRegistrationComponent },
   { path: 'movies/details/:movieID', component: MovieDetailsComponent },
+  {
+    path: 'admin/movies',
+    loadChildren: () =>
+      import('./admin/admin.module').then((module) => module.AdminModule),
+    // canLoad: [AdminAuthGuard],
+    // canActivate: [AdminAuthGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

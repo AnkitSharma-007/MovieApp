@@ -1,39 +1,45 @@
-<div class="docs-example-viewer-wrapper">
-  <div class="docs-example-viewer-title mat-elevation-z2">
-    <div class="docs-example-viewer-title-spacer">
-      <h2>Movie Details</h2>
+<ng-container *ngIf="movieDetails$ | async as movie">
+  <div class="docs-example-viewer-wrapper">
+    <div class="docs-example-viewer-title mat-elevation-z2">
+      <div class="docs-example-viewer-title-spacer">
+        <h2>Movie Details</h2>
+      </div>
     </div>
-  </div>
-  <div class="row p-3" *ngIf="movieDetails$ | async as movie">
-    <div class="col-md-3 col-sm-12">
-      <mat-card-content class="image-card">
-        <img
-          class="preview-image"
-          mat-card-image
-          src="/Poster/{{ movie.posterPath }}"
-          alt="No image available"
-        />
-      </mat-card-content>
-    </div>
-    <div class="col-md-9 col-sm-12 d-flex flex-column justify-content-between">
-      <div class="">
-        <h1>{{ movie.title }}</h1>
-
+    <div class="row p-3">
+      <div class="col-md-3 col-sm-12">
+        <mat-card-content class="image-card">
+          <img
+            class="preview-image"
+            mat-card-image
+            src="/Poster/{{ movie.posterPath }}"
+            alt="No image available"
+          />
+        </mat-card-content>
+      </div>
+      <div
+        class="col-md-9 col-sm-12 d-flex flex-column justify-content-between"
+      >
+        <div class="d-flex justify-content-between">
+          <h1>{{ movie.title }}</h1>
+          <span>
+            <app-movie-rating [movieRating]="movie.rating"></app-movie-rating>
+          </span>
+        </div>
         <p>{{ movie.overview }}</p>
-      </div>
+        <div>
+          <p>Add to Wathlist</p>
+        </div>
 
-      <div>
-        <p>Add to Wathlist</p>
-      </div>
-
-      <div class="d-flex justify-content-between">
-        <span><strong>Language</strong> : {{ movie.language }}</span>
-        <span><strong>Genre</strong> : {{ movie.genre }}</span>
-        <span
-          ><strong>Duration</strong> :
-          {{ movie.duration | convertMinToHour }}</span
-        >
+        <div class="d-flex justify-content-between">
+          <span><strong>Language</strong> : {{ movie.language }}</span>
+          <span><strong>Genre</strong> : {{ movie.genre }}</span>
+          <span
+            ><strong>Duration</strong> :
+            {{ movie.duration | convertMinToHour }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <app-similar-movies></app-similar-movies>
+</ng-container>

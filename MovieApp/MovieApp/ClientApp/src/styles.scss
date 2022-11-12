@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 html,
@@ -48,10 +47,6 @@ body {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
   margin: 1em auto;
   border-radius: 4px;
-}
-
-.full-width {
-  width: 100%;
 }
 
 button:focus,
