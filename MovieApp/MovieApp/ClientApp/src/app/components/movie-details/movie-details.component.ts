@@ -11,12 +11,12 @@ import { MovieService } from 'src/app/services/movie.service';
 export class MovieDetailsComponent {
   // Added the following two variables for better readability
   private readonly queryParams$ = this.activatedRoute.paramMap;
-  private readonly movie$ = this.movieService.movies$;
+  private readonly movie$ = this.movieService.movies$.asObservable();
 
   movieDetails$ = this.queryParams$.pipe(
     combineLatestWith(this.movie$),
     map(([params, movies]) => {
-      const selectedMovieId = Number(params.get('movieID'));
+      const selectedMovieId = Number(params.get('movieId'));
       return movies.find((movie) => movie.movieId === selectedMovieId);
     })
   );

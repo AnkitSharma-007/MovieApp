@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieApp.Interfaces;
 using MovieApp.Models;
-using System.Net;
 
 namespace MovieApp.DataAccess
 {
@@ -31,7 +30,7 @@ namespace MovieApp.DataAccess
         {
             try
             {
-                Movie? movie = await _dbContext.Movies.FindAsync(movieId);
+                Movie? movie = await GetMovieData(movieId);
 
                 if (movie is not null)
                 {
@@ -89,19 +88,16 @@ namespace MovieApp.DataAccess
         {
             try
             {
-                var result = await _dbContext.Movies.FirstOrDefaultAsync(e => e.MovieId == movie.MovieId);
+                Movie? oldMovieData = await GetMovieData(movie.MovieId);
 
-                if (result is not null)
+                if (oldMovieData?.PosterPath is not null)
                 {
-                    result.Title = movie.Title;
-                    result.Genre = movie.Genre;
-                    result.Duration = movie.Duration;
-                    result.PosterPath = movie.PosterPath;
-                    result.Rating = movie.Rating;
-                    result.Overview = movie.Overview;
-                    result.Language = movie.Language;
+                    if (movie.PosterPath is null)
+                    {
+                        movie.PosterPath = oldMovieData.PosterPath;
+                    }
                 }
-
+                _dbContext.Entry(movie).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
             catch

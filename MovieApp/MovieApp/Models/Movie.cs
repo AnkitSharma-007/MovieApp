@@ -10,6 +10,7 @@ namespace MovieApp.Models
         public string Title { get; set; } = null!;
 
         [Required]
+        [MaxLength(1000, ErrorMessage = "The value can not be more than 1000 characters long.")]
         public string Overview { get; set; } = null!;
 
         [Required]

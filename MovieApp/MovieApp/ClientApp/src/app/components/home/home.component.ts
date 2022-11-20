@@ -12,7 +12,7 @@ import { MovieService } from 'src/app/services/movie.service';
 export class HomeComponent {
   // Added the following two variables for better readability
   private readonly queryParams$ = this.activatedRoute.queryParams;
-  private readonly movie$ = this.movieService.movies$;
+  private readonly movie$ = this.movieService.movies$.asObservable();
 
   vm$ = this.queryParams$.pipe(
     combineLatestWith(this.movie$),

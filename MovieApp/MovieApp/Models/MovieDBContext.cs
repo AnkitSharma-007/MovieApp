@@ -4,8 +4,14 @@ namespace MovieApp.Models
 {
     public partial class MovieDBContext : DbContext
     {
+
+        public MovieDBContext()
+        {
+
+        }
+
         public MovieDBContext(DbContextOptions<MovieDBContext> options)
-            : base(options)
+    : base(options)
         {
         }
 
@@ -15,14 +21,6 @@ namespace MovieApp.Models
         public virtual DbSet<UserType> UserTypes { get; set; } = null!;
         public virtual DbSet<Watchlist> Watchlists { get; set; } = null!;
         public virtual DbSet<WatchlistItem> WatchlistItems { get; set; } = null!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

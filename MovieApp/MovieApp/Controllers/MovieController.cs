@@ -2,6 +2,7 @@
 using MovieApp.Interfaces;
 using MovieApp.Models;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace MovieApp.Controllers
 {
@@ -23,7 +24,6 @@ namespace MovieApp.Controllers
             posterFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "Poster");
         }
 
-        // GET api/<MovieController>/5
         [HttpGet]
         public async Task<List<Movie>> Get()
         {
@@ -44,21 +44,80 @@ namespace MovieApp.Controllers
             return await _movieService.GetSimilarMovies(movieId);
         }
 
-        // POST api/<MovieController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<IActionResult> Post()
         {
-            // Decide if you want to use BookCart technique or the Blazor MovieApp technique
-            //  Movie movie = JsonConvert.DeserializeObject<Movie>(Request.Form["movieFormData"].ToString());
+            Movie? movie = JsonConvert.DeserializeObject<Movie>(Request.Form["movieFormData"].ToString());
+
+            if (movie is not null)
+            {
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    var file = Request.Form.Files[0];
+
+                    if (file.Length > 0)
+                    {
+                        string fileName = $"{Guid.NewGuid()}{ContentDispositionHeaderValue.Parse(file.ContentDisposition)?.FileName?.Trim('"')}";
+                        string fullPath = Path.Combine(posterFolderPath, fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                        movie.PosterPath = fileName;
+                    }
+                }
+                else
+                {
+                    movie.PosterPath = _config["DefaultPoster"];
+
+                }
+
+                await _movieService.AddMovie(movie);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
-        // PUT api/<MovieController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<IActionResult> Put()
         {
+            Movie? movie = JsonConvert.DeserializeObject<Movie>(Request.Form["movieFormData"].ToString());
+
+            if (movie is not null)
+            {
+                if (Request.Form.Files.Count > 0)
+                {
+                    var file = Request.Form.Files[0];
+
+                    if (file.Length > 0)
+                    {
+                        string fileName = $"{Guid.NewGuid()}{ContentDispositionHeaderValue.Parse(file.ContentDisposition)?.FileName?.Trim('"')}";
+                        string fullPath = Path.Combine(posterFolderPath, fileName);
+                        bool isFileExists = Directory.Exists(fullPath);
+
+                        if (!isFileExists)
+                        {
+                            using (var stream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
+                            movie.PosterPath = fileName;
+                        }
+                    }
+                }
+                await _movieService.UpdateMovie(movie);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
-        // DELETE api/<MovieController>/5
         [HttpDelete("{movieId}")]
         public async Task<IActionResult> Delete(int movieId)
         {
@@ -73,12 +132,6 @@ namespace MovieApp.Controllers
                 }
             }
             return Ok();
-        }
-
-        static bool CheckBase64String(string base64)
-        {
-            Span<byte> buffer = new(new byte[base64.Length]);
-            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
         }
     }
 }

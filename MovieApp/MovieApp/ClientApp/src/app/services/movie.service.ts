@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay } from 'rxjs';
+import { BehaviorSubject, map, shareReplay } from 'rxjs';
 import { Genre } from '../models/genre';
 import { Movie } from '../models/movie';
 
@@ -9,6 +9,7 @@ import { Movie } from '../models/movie';
 })
 export class MovieService {
   baseURL = 'api/movie';
+  movies$ = new BehaviorSubject<Movie[]>([]);
 
   constructor(private readonly http: HttpClient) {}
 
@@ -16,13 +17,39 @@ export class MovieService {
     .get<Genre[]>(`${this.baseURL}/GetGenreList`)
     .pipe(shareReplay(1));
 
-  movies$ = this.getAllMovies().pipe(shareReplay(1));
+  fecthMovieData() {
+    return this.getAllMovies().pipe(
+      map((result) => {
+        this.movies$.next(result);
+      })
+    );
+  }
 
   private getAllMovies() {
     return this.http.get<Movie[]>(this.baseURL);
   }
 
-  getsimilarMovies(bookId: number) {
-    return this.http.get<Movie[]>(`${this.baseURL}/GetSimilarMovies/${bookId}`);
+  getsimilarMovies(movieId: number) {
+    return this.http.get<Movie[]>(
+      `${this.baseURL}/GetSimilarMovies/${movieId}`
+    );
+  }
+
+  getMovieById(movieId: number) {
+    return this.movies$.pipe(
+      map((book) => book.find((m) => m.movieId === movieId))
+    );
+  }
+
+  addMovie(movie: FormData) {
+    return this.http.post(this.baseURL, movie);
+  }
+
+  updateMovieDetails(movie: FormData) {
+    return this.http.put(this.baseURL, movie);
+  }
+
+  deleteMovie(movieId: number) {
+    return this.http.delete(`${this.baseURL}/${movieId}`);
   }
 }

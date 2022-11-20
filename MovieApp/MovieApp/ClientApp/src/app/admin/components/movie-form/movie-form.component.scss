@@ -1,0 +1,36 @@
+$color-white: #ffffff;
+$color-upload: #26a69a;
+
+.left-div {
+  float: left;
+  width: 75%;
+  padding: 0 10px 0 0;
+}
+
+.right-div {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+
+.preview-image {
+  max-height: 300px;
+  max-width: 140px;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-upload {
+  color: $color-white;
+  background-color: $color-upload;
+}
+
+.upload-btn-wrapper input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}

@@ -56,7 +56,11 @@
           >
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
-          <button mat-icon-button color="accent">
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="deleteConfirm(row.movieId)"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>

@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'filter', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: UserRegistrationComponent },
-  { path: 'movies/details/:movieID', component: MovieDetailsComponent },
+  { path: 'movies/details/:movieId', component: MovieDetailsComponent },
   {
     path: 'admin/movies',
     loadChildren: () =>

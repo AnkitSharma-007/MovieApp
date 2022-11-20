@@ -14,7 +14,7 @@ export class SimilarMoviesComponent {
 
   similarMovies$ = this.queryParams$.pipe(
     switchMap((params) => {
-      const movieId = Number(params.get('movieID'));
+      const movieId = Number(params.get('movieId'));
       return this.movieService.getsimilarMovies(movieId);
     })
   );

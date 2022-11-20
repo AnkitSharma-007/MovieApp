@@ -1,1 +1,183 @@
-<p>movie-form works!</p>
+<div class="docs-example-viewer-wrapper">
+  <div class="docs-example-viewer-title mat-elevation-z2">
+    <div class="docs-example-viewer-title-spacer">
+      <h2>{{ formTitle }} Book</h2>
+    </div>
+  </div>
+  <div class="docs-example-viewer-body">
+    <div class="left-div">
+      <mat-card class="mat-elevation">
+        <mat-card-content>
+          <form
+            enctype="multipart/form-data"
+            [formGroup]="movieForm"
+            (ngSubmit)="onFormSubmit()"
+          >
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                placeholder="Title"
+                formControlName="title"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  movieFormControl.title.touched &&
+                  movieFormControl.title.invalid
+                "
+                >Title is required.</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <mat-select placeholder="Genre" formControlName="genre" required>
+                <mat-option
+                  *ngFor="let genre of genereList$ | async"
+                  [value]="genre.genreName"
+                >
+                  {{ genre.genreName }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  movieFormControl.genre.touched &&
+                  movieFormControl.genre.invalid
+                "
+                >Genre is required.</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                placeholder="Language"
+                formControlName="language"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  movieFormControl.language.touched &&
+                  movieFormControl.language.invalid
+                "
+                >Language is required.</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                placeholder="Duration"
+                formControlName="duration"
+                type="number"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  movieFormControl.duration.touched &&
+                  movieFormControl.duration.hasError('required')
+                "
+                >Duration is required.</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  movieFormControl.duration.touched &&
+                  movieFormControl.duration.hasError('min')
+                "
+                >Duration cannot be less than 0.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                placeholder="Rating"
+                formControlName="rating"
+                type="number"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  movieFormControl.rating.touched &&
+                  movieFormControl.rating.hasError('required')
+                "
+                >Rating is required.</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  movieFormControl.rating.touched &&
+                  (movieFormControl.rating.hasError('min') ||
+                    movieFormControl.rating.hasError('max'))
+                "
+                >The value should be between 0 & 10.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+              <textarea
+                matInput
+                placeholder="Overview"
+                formControlName="overview"
+                required
+                maxlength="1000"
+              ></textarea>
+              <mat-hint align="end"
+                >{{ movieFormControl.overview.value.length }} / 1000</mat-hint
+              >
+              <mat-error
+                *ngIf="
+                  movieFormControl.overview.touched &&
+                  movieFormControl.overview.hasError('required')
+                "
+                >Overview is required.</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  movieFormControl.overview.touched &&
+                  movieFormControl.overview.hasError('maxlength')
+                "
+                >Overview can not be more than 1000 characters long.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-card-actions align="end">
+              <button type="submit" mat-raised-button color="primary">
+                Save
+              </button>
+              <button
+                type="button"
+                mat-raised-button
+                color="warn"
+                (click)="navigateToAdminPanel()"
+              >
+                Cancel
+              </button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="right-div">
+      <div class="docs-example-viewer-title">
+        <h5>Image Preview</h5>
+      </div>
+      <mat-card class="d-flex flex-column align-items-center mat-elevation-z2">
+        <mat-card-content class="p-2">
+          <img
+            class="preview-image"
+            mat-card-image
+            src="{{ posterImagePath }}"
+            alt="No image available"
+          />
+        </mat-card-content>
+        <mat-card-content>
+          <div class="upload-btn-wrapper mat-elevation-z2">
+            <button class="btn-upload" type="button" mat-raised-button>
+              Upload image
+            </button>
+            <input type="file" (change)="uploadImage($event)" />
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
