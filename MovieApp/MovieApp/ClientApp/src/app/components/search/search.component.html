@@ -1,0 +1,19 @@
+<form>
+  <input
+    (keydown.enter)="searchStore()"
+    class="searchbox"
+    type="search"
+    placeholder="Search movies by name or genre"
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+    (search)="cancelSearch()"
+  />
+  <mat-autocomplete (optionSelected)="searchStore()" #auto="matAutocomplete">
+    <mat-option
+      *ngFor="let movie of filteredMovie$ | async"
+      [value]="movie.title"
+    >
+      {{ movie.title }}
+    </mat-option>
+  </mat-autocomplete>
+</form>
