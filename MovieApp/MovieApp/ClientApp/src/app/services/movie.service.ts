@@ -21,7 +21,8 @@ export class MovieService {
     return this.getAllMovies().pipe(
       map((result) => {
         this.movies$.next(result);
-      })
+      }),
+      shareReplay(1)
     );
   }
 

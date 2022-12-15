@@ -5,11 +5,38 @@
         <mat-icon>movie</mat-icon> Movie App
       </button>
     </div>
-    <span class="spacer"></span>
     <div>
-      <button mat-button [routerLink]="['/admin/movies']">Admin Panel</button>
+      <app-search></app-search>
+    </div>
+    <div>
+      <ng-container *ngIf="userData$ | async as userData">
+        <button
+          mat-button
+          *ngIf="!userData.isLoggedIn"
+          [routerLinkActive]="['link-active']"
+          [routerLink]="['/login']"
+        >
+          Login
+        </button>
+        <button
+          mat-button
+          *ngIf="userData.userTypeName == userType.Admin"
+          [routerLink]="['/admin/movies']"
+        >
+          Admin Panel
+        </button>
+        <ng-container *ngIf="userData.isLoggedIn">
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon> {{ userData.username }}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">Logout</button>
+          </mat-menu>
+        </ng-container>
+      </ng-container>
 
-      <button mat-button>
+      <!-- <button mat-button>
         <a class="github-link" href="/swagger/index.html" target="_blank">
           <span
             ><img
@@ -17,7 +44,7 @@
           /></span>
           Swagger
         </a>
-      </button>
+      </button> -->
       <button mat-button>
         <a
           class="github-link"

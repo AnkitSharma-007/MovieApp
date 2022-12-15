@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MovieForm } from '../../models/movie-form';
 
 @Component({
@@ -26,7 +27,8 @@ export class MovieFormComponent implements OnInit, OnDestroy {
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly movieService: MovieService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly snackBarService: SnackbarService
   ) {
     this.initializeForm();
   }
@@ -41,6 +43,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
         switchMap((params) => {
           this.movieId = Number(params.get('movieId'));
           if (this.movieId > 0) {
+            this.formTitle = 'Edit';
             return this.movieService.getMovieById(this.movieId);
           } else {
             return EMPTY;
@@ -55,6 +58,9 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
+          this.snackBarService.showSnackBar(
+            'Error ocurred while fetching book data'
+          );
           console.log('Error ocurred while fetching book data : ', error);
         },
       });
@@ -119,6 +125,9 @@ export class MovieFormComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.movieForm.reset();
+          this.snackBarService.showSnackBar(
+            'Error ocurred while adding movie data'
+          );
           console.log('Error ocurred while adding movie data : ', error);
         },
       });
@@ -136,6 +145,9 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           this.navigateToAdminPanel();
         },
         error: (error) => {
+          this.snackBarService.showSnackBar(
+            'Error ocurred while updating movie data'
+          );
           console.log('Error ocurred while updating movie data : ', error);
         },
       });

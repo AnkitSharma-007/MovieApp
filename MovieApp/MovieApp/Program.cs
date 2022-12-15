@@ -8,13 +8,15 @@ using MovieApp.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+
+// Add Service injection here
+builder.Services.AddTransient<IMovie, MovieDataAccessLayer>();
+builder.Services.AddTransient<IUser, UserDataAccessLayer>();
+builder.Services.AddTransient<IWatchlist, WatchlistDataAccessLayer>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// Add services to the container.
-
-builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  .AddJwtBearer(options =>
@@ -45,10 +47,7 @@ builder.Services.AddAuthorization(config =>
 builder.Services.AddDbContext<MovieDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add Service injection here
-builder.Services.AddTransient<IMovie, MovieDataAccessLayer>();
-builder.Services.AddTransient<IUser, UserDataAccessLayer>();
-builder.Services.AddTransient<IWatchlist, WatchlistDataAccessLayer>();
+
 
 var app = builder.Build();
 
@@ -63,11 +62,11 @@ if (!app.Environment.IsDevelopment())
 
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.UseSwaggerUI(options =>
-    //{
-    //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieApp API");
-    //    options.RoutePrefix = string.Empty;
-    //});
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieApp API");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 var FileProviderPath = app.Environment.ContentRootPath + "/Poster";

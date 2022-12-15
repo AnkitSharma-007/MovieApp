@@ -145,7 +145,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-card-actions align="end">
+            <mat-card-actions align="end" class="p-0">
               <button type="submit" mat-raised-button color="primary">
                 Save
               </button>
@@ -153,6 +153,7 @@
                 type="button"
                 mat-raised-button
                 color="warn"
+                class="ms-2"
                 (click)="navigateToAdminPanel()"
               >
                 Cancel
@@ -176,7 +177,7 @@
           />
         </mat-card-content>
         <mat-card-content>
-          <div class="upload-btn-wrapper mat-elevation-z2">
+          <div class="upload-btn-wrapper">
             <button class="btn-upload" type="button" mat-raised-button>
               Upload image
             </button>

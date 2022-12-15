@@ -10,6 +10,8 @@ const PROXY_CONFIG = [
       "/api/login",
       "/api/user",
       "/Poster",
+      "/swagger/index.html",
+      "/swagger/v1/swagger.json",
       "/swagger"
     ],
     target: target,

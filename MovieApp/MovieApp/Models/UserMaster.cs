@@ -8,6 +8,11 @@
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Gender { get; set; } = null!;
-        public string UserTypeName { get; set; } = null!;
+        public string UserTypeName { get; set; }
+
+        public UserMaster()
+        {
+            UserTypeName = UserRoles.User;
+        }
     }
 }

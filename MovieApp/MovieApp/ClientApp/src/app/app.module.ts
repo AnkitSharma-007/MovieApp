@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,9 @@ import { MovieDetailsComponent } from './components/movie-details/movie-details.
 import { ConvertMinToHourPipe } from './pipes/convert-min-to-hour.pipe';
 import { MovieSortComponent } from './components/movie-sort/movie-sort.component';
 import { SimilarMoviesComponent } from './components/similar-movies/similar-movies.component';
+import { ApiInterceptor } from './interceptors/api.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,7 @@ import { SimilarMoviesComponent } from './components/similar-movies/similar-movi
     ConvertMinToHourPipe,
     MovieSortComponent,
     SimilarMoviesComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,8 +46,20 @@ import { SimilarMoviesComponent } from './components/similar-movies/similar-movi
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

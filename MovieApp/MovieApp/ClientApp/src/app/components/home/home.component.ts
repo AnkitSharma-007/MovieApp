@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatestWith, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   // Added the following two variables for better readability
@@ -21,12 +23,15 @@ export class HomeComponent {
 
       homeVm.selectedGenre = params['genre'];
       homeVm.selectedSort = params['sortBy'];
+      homeVm.selectedFilter = params['item'];
+
+      this.subscriptionService.searchItemValue$.next(homeVm.selectedFilter);
 
       if (homeVm.selectedGenre) {
-        const filteredMovie = movies.filter(
+        const filteredMovieByGenre = movies.filter(
           (movie) => movie.genre.toLocaleLowerCase() === homeVm.selectedGenre
         );
-        homeVm.movieList = filteredMovie;
+        homeVm.movieList = filteredMovieByGenre;
       } else {
         homeVm.movieList = movies;
       }
@@ -52,13 +57,24 @@ export class HomeComponent {
         homeVm.movieList.sort((a, b) => a.title.localeCompare(b.title));
       }
 
+      if (homeVm.selectedFilter) {
+        const filteredMovie = movies.filter(
+          (movie) =>
+            movie.title.toLowerCase().indexOf(homeVm.selectedFilter) !== -1 ||
+            movie.genre.toLowerCase().indexOf(homeVm.selectedFilter) !== -1
+        );
+        console.log({ filteredMovie });
+        homeVm.movieList = filteredMovie;
+      }
+
       return homeVm;
     })
   );
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly movieService: MovieService
+    private readonly movieService: MovieService,
+    private subscriptionService: SubscriptionService
   ) {}
 }
 
@@ -66,10 +82,12 @@ class Vm {
   movieList: Movie[];
   selectedGenre: string;
   selectedSort: string;
+  selectedFilter: string;
 
   constructor() {
     this.movieList = [];
     this.selectedGenre = '';
     this.selectedSort = '';
+    this.selectedFilter = '';
   }
 }

@@ -50,7 +50,6 @@ namespace MovieApp.DataAccess
             {
                 if (isUserNameAvailable)
                 {
-                    userData.UserTypeName = UserRoles.User;
                     await _dbContext.UserMasters.AddAsync(userData);
                     await _dbContext.SaveChangesAsync();
                     return true;

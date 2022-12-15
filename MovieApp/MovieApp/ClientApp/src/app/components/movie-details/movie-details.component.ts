@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatestWith, map } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
@@ -7,6 +7,7 @@ import { MovieService } from 'src/app/services/movie.service';
   selector: 'app-movie-details',
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailsComponent {
   // Added the following two variables for better readability

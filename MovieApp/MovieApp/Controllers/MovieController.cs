@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieApp.Interfaces;
 using MovieApp.Models;
 using Newtonsoft.Json;
@@ -44,7 +45,12 @@ namespace MovieApp.Controllers
             return await _movieService.GetSimilarMovies(movieId);
         }
 
+        /// <summary>
+        /// Add a new movie record
+        /// </summary>
+        /// <returns></returns>
         [HttpPost, DisableRequestSizeLimit]
+        [Authorize(Policy = UserRoles.Admin)]
         public async Task<IActionResult> Post()
         {
             Movie? movie = JsonConvert.DeserializeObject<Movie>(Request.Form["movieFormData"].ToString());
@@ -83,6 +89,7 @@ namespace MovieApp.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = UserRoles.Admin)]
         public async Task<IActionResult> Put()
         {
             Movie? movie = JsonConvert.DeserializeObject<Movie>(Request.Form["movieFormData"].ToString());
@@ -119,6 +126,7 @@ namespace MovieApp.Controllers
         }
 
         [HttpDelete("{movieId}")]
+        [Authorize(Policy = UserRoles.Admin)]
         public async Task<IActionResult> Delete(int movieId)
         {
             string coverFileName = await _movieService.DeleteMovie(movieId);
