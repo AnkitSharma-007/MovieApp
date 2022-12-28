@@ -21,11 +21,7 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(
     private router: Router,
     private subscriptionService: SubscriptionService
-  ) {
-    // this.subscriptionService.userData$.asObservable().subscribe((data) => {
-    //   this.userData = data;
-    // });
-  }
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

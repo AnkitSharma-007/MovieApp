@@ -47,8 +47,6 @@ builder.Services.AddAuthorization(config =>
 builder.Services.AddDbContext<MovieDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -69,7 +67,7 @@ if (!app.Environment.IsDevelopment())
     });
 }
 
-var FileProviderPath = app.Environment.ContentRootPath + "/Poster";
+var FileProviderPath = app.Environment.WebRootPath + "/Poster";
 if (!Directory.Exists(FileProviderPath))
 {
     Directory.CreateDirectory(FileProviderPath);

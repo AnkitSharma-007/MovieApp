@@ -1,5 +1,5 @@
 $color-white: #ffffff;
-$color-upload: #26a69a;
+$color-upload: #00a7a7;
 
 .left-div {
   float: left;
@@ -18,19 +18,13 @@ $color-upload: #26a69a;
   max-width: 200px;
 }
 
-.upload-btn-wrapper {
-  position: relative;
-  display: inline-block;
+input[type="file"] {
+  display: none;
 }
 
-.btn-upload {
+.custom-file-upload {
+  cursor: pointer;
   color: $color-white;
   background-color: $color-upload;
-}
-
-.upload-btn-wrapper input[type="file"] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
+  border-radius: 4px;
 }

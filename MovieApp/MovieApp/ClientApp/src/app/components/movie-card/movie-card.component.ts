@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Movie } from 'src/app/models/movie';
 
 @Component({
@@ -13,17 +7,9 @@ import { Movie } from 'src/app/models/movie';
   styleUrls: ['./movie-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovieCardComponent implements OnInit {
+export class MovieCardComponent {
   @Input()
   movie!: Movie;
 
   isActive = false;
-
-  constructor(private readonly router: Router) {}
-
-  ngOnInit(): void {}
-
-  goToPage(movieId: number) {
-    this.router.navigate(['/movies/details/', movieId]);
-  }
 }

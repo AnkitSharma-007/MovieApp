@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
@@ -16,7 +11,6 @@ import { MovieForm } from '../../models/movie-form';
   selector: 'app-movie-form',
   templateUrl: './movie-form.component.html',
   styleUrls: ['./movie-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieFormComponent implements OnInit, OnDestroy {
   protected movieForm!: FormGroup<MovieForm>;
@@ -175,13 +169,11 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
   // TODO : Remove any
   uploadImage(event: any) {
-    console.log('uploadImage');
     this.files = event.target.files;
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (myevent: ProgressEvent) => {
       this.posterImagePath = (myevent.target as FileReader).result;
-      console.log('this.posterImagePath', this.posterImagePath);
     };
   }
 

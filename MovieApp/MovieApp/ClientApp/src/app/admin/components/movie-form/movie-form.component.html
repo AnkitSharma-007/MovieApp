@@ -67,10 +67,10 @@
             </mat-form-field>
 
             <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Duration</mat-label>
+              <mat-label>Duration (mins)</mat-label>
               <input
                 matInput
-                placeholder="Duration"
+                placeholder="Duration (mins)"
                 formControlName="duration"
                 type="number"
                 required
@@ -177,12 +177,13 @@
           />
         </mat-card-content>
         <mat-card-content>
-          <div class="upload-btn-wrapper">
-            <button class="btn-upload" type="button" mat-raised-button>
-              Upload image
-            </button>
-            <input type="file" (change)="uploadImage($event)" />
-          </div>
+          <label
+            for="file-upload"
+            class="custom-file-upload mat-elevation-z2 py-2 px-3 d-flex align-items-center"
+          >
+            <mat-icon class="mx-2">cloud_upload</mat-icon> Upload image
+          </label>
+          <input id="file-upload" type="file" (change)="uploadImage($event)" />
         </mat-card-content>
       </mat-card>
     </div>

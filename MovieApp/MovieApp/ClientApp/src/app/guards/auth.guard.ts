@@ -7,7 +7,6 @@ import {
   UrlTree,
 } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { User } from '../models/user';
 import { SubscriptionService } from '../services/subscription.service';
 
 @Injectable({

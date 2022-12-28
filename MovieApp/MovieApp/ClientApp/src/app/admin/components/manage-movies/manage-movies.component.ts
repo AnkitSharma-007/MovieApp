@@ -5,12 +5,11 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { EmailValidator } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EMPTY, ReplaySubject, retry, switchMap, takeUntil } from 'rxjs';
+import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
