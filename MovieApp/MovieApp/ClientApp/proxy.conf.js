@@ -9,6 +9,7 @@ const PROXY_CONFIG = [
       "/api/movie",
       "/api/login",
       "/api/user",
+      "/api/watchlist",
       "/Poster",
       "/swagger/index.html",
       "/swagger/v1/swagger.json",

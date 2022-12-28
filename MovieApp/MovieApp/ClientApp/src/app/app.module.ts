@@ -22,6 +22,8 @@ import { SimilarMoviesComponent } from './components/similar-movies/similar-movi
 import { ApiInterceptor } from './interceptors/api.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { SearchComponent } from './components/search/search.component';
+import { AddToWatchlistComponent } from './components/add-to-watchlist/add-to-watchlist.component';
+import { WatchlistComponent } from './components/watchlist/watchlist.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { SearchComponent } from './components/search/search.component';
     MovieSortComponent,
     SimilarMoviesComponent,
     SearchComponent,
+    AddToWatchlistComponent,
+    WatchlistComponent,
   ],
   imports: [
     BrowserModule,

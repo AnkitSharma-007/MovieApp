@@ -1,0 +1,73 @@
+<div class="docs-example-viewer-wrapper">
+  <ng-container *ngIf="wishlistItems$ | async as wishlistItems">
+    <div class="docs-example-viewer-title mat-elevation-z2">
+      <div class="docs-example-viewer-title-spacer">
+        <h2>My Watchlist</h2>
+        <div *ngIf="wishlistItems.length > 0">
+          <button
+            class="mat-elevation-z4"
+            mat-raised-button
+            (click)="clearWatchlist()"
+          >
+            Clear Wishlist
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #emptyWatchlist>
+      <mat-card>
+        <mat-card-title> Your watchlist is empty </mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button color="primary" [routerLink]="['/']">
+            Back to Home
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+    <mat-card *ngIf="wishlistItems.length > 0; else emptyWatchlist">
+      <mat-card-content>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Genre</th>
+              <th>Language</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+        </table>
+      </mat-card-content>
+
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of wishlistItems">
+            <mat-card>
+              <mat-card-content class="mat-elevation-z2">
+                <td>
+                  <img
+                    matTooltip="{{ item.title }}"
+                    matTooltipPosition="after"
+                    src="/Poster/{{ item.posterPath }}"
+                  />
+                </td>
+                <td>
+                  <a [routerLink]="['/movies/details/', item.movieId]">{{
+                    item.title
+                  }}</a>
+                </td>
+                <td>{{ item.genre }}</td>
+                <td>{{ item.language }}</td>
+                <td>
+                  <app-add-to-watchlist
+                    [movieId]="item.movieId"
+                  ></app-add-to-watchlist>
+                </td>
+              </mat-card-content>
+            </mat-card>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </ng-container>
+</div>

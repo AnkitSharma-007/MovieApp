@@ -36,8 +36,8 @@ body {
 }
 
 .docs-example-viewer-body {
-  padding: 15px;
-  align-content: center;
+  padding: 16px;
+  justify-content: center;
   align-items: center;
   display: flex;
 }
@@ -58,7 +58,6 @@ button.active:focus {
 
 .docs-navbar-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
 
   > .mat-button {
@@ -72,4 +71,8 @@ button.active:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+a {
+  text-decoration: none;
 }

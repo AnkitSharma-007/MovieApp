@@ -59,6 +59,28 @@ namespace MovieApp.DataAccess
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task ClearWatchlist(int userId)
+        {
+            try
+            {
+                string watchlistId = await GetWatchlistId(userId);
+                List<WatchlistItem> watchlistItem = _dbContext.WatchlistItems.Where(x => x.WatchlistId == watchlistId).ToList();
+
+                if (!string.IsNullOrEmpty(watchlistId))
+                {
+                    foreach (WatchlistItem item in watchlistItem)
+                    {
+                        _dbContext.WatchlistItems.Remove(item);
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         async Task<string> CreateWatchlist(int userId)
         {
             try

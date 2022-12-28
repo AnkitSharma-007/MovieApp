@@ -1,0 +1,8 @@
+<button
+  [ngClass]="{ wishlisted: toggle, 'not-wishlisted': !toggle }"
+  mat-raised-button
+  (click)="toggleValue()"
+>
+  <mat-icon fontIcon="{{ fontIcon }}"></mat-icon>
+  {{ buttonText }}
+</button>
