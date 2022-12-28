@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -17,7 +22,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
   styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   searchControl = new FormControl<string>('', { nonNullable: true });
   private destroyed$ = new ReplaySubject<void>(1);
   private readonly movie$ = this.movieService.movies$.asObservable();
@@ -74,5 +79,10 @@ export class SearchComponent implements OnInit {
 
   cancelSearch() {
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

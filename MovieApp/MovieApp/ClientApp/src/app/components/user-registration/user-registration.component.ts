@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -74,7 +74,10 @@ export class UserRegistrationComponent implements OnDestroy {
           },
           error: (error) => {
             this.snackBarService.showSnackBar('Error occurred!! Try again');
-            console.log('Error ocurred while adding book data : ', error);
+            console.error(
+              'error occurred while trying to register a new user : ',
+              error
+            );
           },
         });
     }

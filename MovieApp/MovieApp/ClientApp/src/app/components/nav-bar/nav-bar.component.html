@@ -11,6 +11,20 @@
     <div>
       <ng-container *ngIf="userData$ | async as userData">
         <button
+          mat-icon-button
+          matTooltip="Watchlist"
+          *ngIf="userData.isLoggedIn"
+          [routerLinkActive]="['link-active']"
+          [routerLink]="['/watchlist']"
+        >
+          <mat-icon
+            matBadge="{{ watchlistItemcount$ | async }}"
+            matBadgeColor="warn"
+            >queue</mat-icon
+          >
+        </button>
+
+        <button
           mat-button
           *ngIf="!userData.isLoggedIn"
           [routerLinkActive]="['link-active']"
@@ -27,10 +41,10 @@
         </button>
         <ng-container *ngIf="userData.isLoggedIn">
           <button mat-button [matMenuTriggerFor]="menu">
-            <mat-icon>account_circle</mat-icon> {{ userData.username }}
             <mat-icon>arrow_drop_down</mat-icon>
+            <span> {{ userData.username }}</span>
           </button>
-          <mat-menu #menu="matMenu">
+          <mat-menu #menu="matMenu" xPosition="before">
             <button mat-menu-item (click)="logout()">Logout</button>
           </mat-menu>
         </ng-container>

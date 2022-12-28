@@ -20,7 +20,6 @@ export class AuthenticationService {
       map((response) => {
         if (response?.token) {
           localStorage.setItem('authToken', response.token);
-          localStorage.setItem('userId', response.userDetails.userId);
           this.setUserDetails();
         }
         return response;
@@ -51,7 +50,9 @@ export class AuthenticationService {
     this.resetSubscription();
   }
 
-  resetSubscription() {
+  private resetSubscription() {
     this.subscriptionService.userData$.next(new User());
+    this.subscriptionService.watchlistItem$.next([]);
+    this.subscriptionService.watchlistItemcount$.next(0);
   }
 }

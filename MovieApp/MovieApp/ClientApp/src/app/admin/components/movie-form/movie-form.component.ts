@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
@@ -11,6 +16,7 @@ import { MovieForm } from '../../models/movie-form';
   selector: 'app-movie-form',
   templateUrl: './movie-form.component.html',
   styleUrls: ['./movie-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieFormComponent implements OnInit, OnDestroy {
   protected movieForm!: FormGroup<MovieForm>;
@@ -61,7 +67,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           this.snackBarService.showSnackBar(
             'Error ocurred while fetching book data'
           );
-          console.log('Error ocurred while fetching book data : ', error);
+          console.error('Error ocurred while fetching book data : ', error);
         },
       });
   }
@@ -99,6 +105,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
     if (this.files && this.files.length > 0) {
       for (let j = 0; j < this.files.length; j++) {
+        console.log('inside if');
         this.formData.append('file' + j, this.files[j]);
       }
     }
@@ -116,7 +123,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
     this.movieService
       .addMovie(this.formData)
       .pipe(
-        switchMap(() => this.movieService.fecthMovieData()),
+        switchMap(() => this.movieService.fetchMovieData()),
         takeUntil(this.destroyed$)
       )
       .subscribe({
@@ -128,7 +135,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           this.snackBarService.showSnackBar(
             'Error ocurred while adding movie data'
           );
-          console.log('Error ocurred while adding movie data : ', error);
+          console.error('Error ocurred while adding movie data : ', error);
         },
       });
   }
@@ -137,7 +144,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
     this.movieService
       .updateMovieDetails(this.formData)
       .pipe(
-        switchMap(() => this.movieService.fecthMovieData()),
+        switchMap(() => this.movieService.fetchMovieData()),
         takeUntil(this.destroyed$)
       )
       .subscribe({
@@ -148,7 +155,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           this.snackBarService.showSnackBar(
             'Error ocurred while updating movie data'
           );
-          console.log('Error ocurred while updating movie data : ', error);
+          console.error('Error ocurred while updating movie data : ', error);
         },
       });
   }
@@ -168,11 +175,13 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
   // TODO : Remove any
   uploadImage(event: any) {
+    console.log('uploadImage');
     this.files = event.target.files;
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (myevent: ProgressEvent) => {
       this.posterImagePath = (myevent.target as FileReader).result;
+      console.log('this.posterImagePath', this.posterImagePath);
     };
   }
 

@@ -1,4 +1,4 @@
-<ng-container *ngIf="movieDetails$ | async as movie">
+<ng-container *ngIf="movieDetails$ | async as movie; else noMovieFound">
   <div class="docs-example-viewer-wrapper">
     <div class="docs-example-viewer-title mat-elevation-z2">
       <div class="docs-example-viewer-title-spacer">
@@ -26,8 +26,11 @@
           </span>
         </div>
         <p>{{ movie.overview }}</p>
-        <div>
-          <p>Add to Wathlist</p>
+        <div *ngIf="userData$ | async as user">
+          <app-add-to-watchlist
+            *ngIf="user.isLoggedIn"
+            [movieId]="movie.movieId"
+          ></app-add-to-watchlist>
         </div>
 
         <div class="d-flex justify-content-between">
@@ -43,3 +46,16 @@
   </div>
   <app-similar-movies></app-similar-movies>
 </ng-container>
+
+<ng-template #noMovieFound>
+  <div class="d-flex flex-column align-items-center mt-4">
+    <div>
+      <h1 class="display-4">No movies found.</h1>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" [routerLink]="['/']">
+        Back to Home
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -17,7 +17,7 @@ export class MovieService {
     .get<Genre[]>(`${this.baseURL}/GetGenreList`)
     .pipe(shareReplay(1));
 
-  fecthMovieData() {
+  fetchMovieData() {
     return this.getAllMovies().pipe(
       map((result) => {
         this.movies$.next(result);
@@ -27,7 +27,7 @@ export class MovieService {
   }
 
   private getAllMovies() {
-    return this.http.get<Movie[]>(this.baseURL);
+    return this.http.get<Movie[]>(this.baseURL).pipe(shareReplay(1));
   }
 
   getsimilarMovies(movieId: number) {

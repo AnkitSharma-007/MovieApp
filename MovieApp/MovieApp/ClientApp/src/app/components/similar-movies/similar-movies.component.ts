@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
@@ -7,9 +7,10 @@ import { MovieService } from 'src/app/services/movie.service';
   selector: 'app-similar-movies',
   templateUrl: './similar-movies.component.html',
   styleUrls: ['./similar-movies.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimilarMoviesComponent {
-  // Added the following two variables for better readability
+  // Added the following variable for better readability
   private readonly queryParams$ = this.activatedRoute.paramMap;
 
   similarMovies$ = this.queryParams$.pipe(

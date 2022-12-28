@@ -14,7 +14,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class UserNameValidationService {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     return this.userService.validateUserName(control.value).pipe(

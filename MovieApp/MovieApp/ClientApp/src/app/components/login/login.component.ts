@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject, switchMap, takeUntil } from 'rxjs';
@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnDestroy {
   protected loginForm!: FormGroup<LoginForm>;
@@ -55,10 +56,11 @@ export class LoginComponent implements OnDestroy {
             this.router.navigate([returnUrl]);
           },
           error: (error) => {
+            this.loginForm.reset();
             this.loginForm.setErrors({
               invalidLogin: true,
             });
-            console.log('Error ocurred while updating movie data : ', error);
+            console.error('Error ocurred while login : ', error);
           },
         });
     }

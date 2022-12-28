@@ -63,7 +63,6 @@ export class HomeComponent {
             movie.title.toLowerCase().indexOf(homeVm.selectedFilter) !== -1 ||
             movie.genre.toLowerCase().indexOf(homeVm.selectedFilter) !== -1
         );
-        console.log({ filteredMovie });
         homeVm.movieList = filteredMovie;
       }
 
@@ -74,7 +73,7 @@ export class HomeComponent {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly movieService: MovieService,
-    private subscriptionService: SubscriptionService
+    private readonly subscriptionService: SubscriptionService
   ) {}
 }
 
