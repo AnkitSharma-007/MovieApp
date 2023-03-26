@@ -59,9 +59,9 @@ export class MovieFormComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.snackBarService.showSnackBar(
-            'Error ocurred while fetching book data'
+            'Error ocurred while fetching movie data'
           );
-          console.error('Error ocurred while fetching book data : ', error);
+          console.error('Error ocurred while fetching movie data : ', error);
         },
       });
   }

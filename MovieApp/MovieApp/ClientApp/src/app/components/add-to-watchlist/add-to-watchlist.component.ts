@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -14,9 +9,8 @@ import { WatchlistService } from 'src/app/services/watchlist.service';
   selector: 'app-add-to-watchlist',
   templateUrl: './add-to-watchlist.component.html',
   styleUrls: ['./add-to-watchlist.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddToWatchlistComponent implements OnDestroy {
+export class AddToWatchlistComponent implements OnChanges, OnDestroy {
   @Input()
   movieId = 0;
 
@@ -34,30 +28,10 @@ export class AddToWatchlistComponent implements OnDestroy {
   ngOnChanges() {
     this.subscriptionService.watchlistItem$
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((bookData: Movie[]) => {
-        this.setFavourite(bookData);
+      .subscribe((movieData: Movie[]) => {
+        this.setFavourite(movieData);
         this.setButtonText();
       });
-  }
-
-  setFavourite(bookData: Movie[]) {
-    const favBook = bookData.find((f) => f.movieId === this.movieId);
-
-    if (favBook) {
-      this.toggle = true;
-    } else {
-      this.toggle = false;
-    }
-  }
-
-  setButtonText() {
-    if (this.toggle) {
-      this.buttonText = 'Remove from Wishlist';
-      this.fontIcon = 'remove_circle';
-    } else {
-      this.buttonText = 'Add to Wishlist';
-      this.fontIcon = 'add_circle';
-    }
   }
 
   toggleValue() {
@@ -83,10 +57,10 @@ export class AddToWatchlistComponent implements OnDestroy {
       .subscribe({
         next: () => {
           if (this.toggle) {
-            this.snackBarService.showSnackBar('Item added to your Wishlist');
+            this.snackBarService.showSnackBar('Item added to your Watchlist');
           } else {
             this.snackBarService.showSnackBar(
-              'Item removed from your Wishlist'
+              'Item removed from your Watchlist'
             );
           }
         },
@@ -94,6 +68,26 @@ export class AddToWatchlistComponent implements OnDestroy {
           console.error('Error ocurred while setting the Watchlist : ', error);
         },
       });
+  }
+
+  private setFavourite(movieData: Movie[]) {
+    const favouriteMovie = movieData.find((f) => f.movieId === this.movieId);
+
+    if (favouriteMovie) {
+      this.toggle = true;
+    } else {
+      this.toggle = false;
+    }
+  }
+
+  private setButtonText() {
+    if (this.toggle) {
+      this.buttonText = 'Remove from Watchlist';
+      this.fontIcon = 'remove_circle';
+    } else {
+      this.buttonText = 'Add to Watchlist';
+      this.fontIcon = 'add_circle';
+    }
   }
 
   ngOnDestroy(): void {

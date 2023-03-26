@@ -30,7 +30,7 @@ export class DeleteMovieComponent implements OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         error: (error) =>
-          console.error('Error ocurred while deleting book data : ', error),
+          console.error('Error ocurred while deleting movie data : ', error),
       });
   }
 

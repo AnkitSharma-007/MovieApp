@@ -1,12 +1,12 @@
 <ng-container *ngIf="vm$ | async as vm; else loading">
-  <div class="row no-gutters pt-3">
-    <div class="col-md-3 col-sm-12">
+  <div class="row pt-3">
+    <div class="col-md-3 col-sm-12 d-flex justify-content-center">
       <div class="filter-container">
         <app-movie-filter [selectedGenre]="vm.selectedGenre"></app-movie-filter>
         <app-movie-sort [selectedSort]="vm.selectedSort"></app-movie-sort>
       </div>
     </div>
-    <div class="col mb-3">
+    <div class="col-md-9 mb-3">
       <div
         *ngIf="vm.movieList.length > 0; else nodata"
         class="d-flex justify-content-start flex-wrap mb-4"

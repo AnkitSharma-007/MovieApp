@@ -1,21 +1,7 @@
-$color-white: #ffffff;
-$color-upload: #00a7a7;
-
-.left-div {
-  float: left;
-  width: 70%;
-  padding: 0 10px 0 0;
-}
-
-.right-div {
-  float: left;
-  width: 30%;
-  padding: 10px;
-}
-
 .preview-image {
   max-height: 400px;
   max-width: 200px;
+  border: 2px dashed #ababab;
 }
 
 input[type="file"] {
@@ -24,7 +10,7 @@ input[type="file"] {
 
 .custom-file-upload {
   cursor: pointer;
-  color: $color-white;
-  background-color: $color-upload;
+  color: #ffffff;
+  background-color: #00a7a7;
   border-radius: 4px;
 }
