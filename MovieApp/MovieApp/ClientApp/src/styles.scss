@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 html,
@@ -19,60 +20,11 @@ body {
   padding-top: 60px;
 }
 
-.docs-example-viewer-title {
-  align-content: center;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 8px 20px;
-  color: #ffffff;
-  background: #ff4081;
-}
-
-.docs-example-viewer-title-spacer {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.docs-example-viewer-body {
-  padding: 16px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
-.docs-example-viewer-wrapper {
-  border: 0;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
-  margin: 1em auto;
-  border-radius: 4px;
-}
-
-button:focus,
-button:active:focus,
-button.active:focus {
-  outline: none !important;
-  outline-style: none !important;
-}
-
-.docs-navbar-header {
-  display: flex;
-  align-items: center;
-
-  > .mat-button {
-    &:last-child {
-      margin-left: auto;
-    }
-  }
-}
-
-.spinner-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 a {
   text-decoration: none;
+}
+
+.custom-card-header {
+  background: #ff4081;
+  color: #fff;
 }

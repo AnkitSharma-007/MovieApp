@@ -9,7 +9,7 @@ import { WatchlistComponent } from './components/watchlist/watchlist.component';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 
-const routes: Routes = [
+const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   //TODO: Can we combine these routes to one?
   { path: 'filter', component: HomeComponent },
@@ -33,7 +33,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(appRoutes, {
+      scrollPositionRestoration: 'top',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
