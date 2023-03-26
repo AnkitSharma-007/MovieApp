@@ -1,21 +1,19 @@
-<div class="docs-example-viewer-wrapper mb-2">
-  <div class="docs-example-viewer-title mat-elevation-z2">
-    <div class="docs-example-viewer-title-spacer">
-      <h2>Similar Movies</h2>
-    </div>
-  </div>
-  <ng-container *ngIf="similarMovies$ | async as movies; else loading">
-    <div class="d-flex justify-content-start p-2">
-      <div class="d-flex w-100">
+<mat-card class="my-4">
+  <mat-card-header class="mat-elevation-z2 custom-card-header">
+    <mat-card-title class="mat-h1"> Similar Movies </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="p-3">
+    <ng-container *ngIf="similarMovies$ | async as movies; else loading">
+      <div class="d-flex justify-content-start flex-wrap">
         <div *ngFor="let movie of movies" class="p-1">
           <app-movie-card [movie]="movie"></app-movie-card>
         </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
+  </mat-card-content>
   <ng-template #loading>
-    <div class="spinner-container">
+    <div class="d-flex align-items-center justify-content-center">
       <mat-spinner></mat-spinner>
     </div>
   </ng-template>
-</div>
+</mat-card>

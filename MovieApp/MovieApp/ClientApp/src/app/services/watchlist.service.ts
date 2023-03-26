@@ -26,7 +26,7 @@ export class WatchlistService {
 
   toggleWatchlistItem(userId: number, movieId: number) {
     return this.http
-      .post<Movie[]>(this.baseURL + `ToggleWishlist/${userId}/${movieId}`, {})
+      .post<Movie[]>(this.baseURL + `ToggleWatchlist/${userId}/${movieId}`, {})
       .pipe(
         map((response) => {
           this.setWatchlist(response);

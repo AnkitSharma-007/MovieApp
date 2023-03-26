@@ -12,7 +12,15 @@ import { WatchlistService } from 'src/app/services/watchlist.service';
 })
 export class WatchlistComponent implements OnDestroy {
   private destroyed$ = new ReplaySubject<void>(1);
-  wishlistItems$ = this.subscriptionService.watchlistItem$;
+  watchlistItems$ = this.subscriptionService.watchlistItem$;
+
+  displayedColumns: string[] = [
+    'poster',
+    'title',
+    'genre',
+    'language',
+    'action',
+  ];
 
   constructor(
     private readonly watchlistService: WatchlistService,

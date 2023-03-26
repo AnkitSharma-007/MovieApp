@@ -1,20 +1,20 @@
-<mat-toolbar color="primary" class="docs-navbar-header mat-elevation-z2">
+<mat-toolbar color="primary" class="mat-elevation-z4">
   <mat-toolbar-row>
     <div class="brand-title">
-      <button mat-button [routerLink]="['/']">
-        <mat-icon>movie</mat-icon> Movie App
-      </button>
+      <a mat-flat-button color="primary" [routerLink]="['/']">
+        <mat-icon>movie</mat-icon>
+        <span>Movie App</span>
+      </a>
     </div>
     <div>
       <app-search></app-search>
     </div>
-    <div>
+    <div class="d-flex align-items-center">
       <ng-container *ngIf="userData$ | async as userData">
         <button
           mat-icon-button
           matTooltip="Watchlist"
           *ngIf="userData.isLoggedIn"
-          [routerLinkActive]="['link-active']"
           [routerLink]="['/watchlist']"
         >
           <mat-icon
@@ -24,26 +24,29 @@
           >
         </button>
 
-        <button
-          mat-button
+        <a
+          mat-flat-button
+          color="primary"
           *ngIf="!userData.isLoggedIn"
-          [routerLinkActive]="['link-active']"
           [routerLink]="['/login']"
+          matTooltip="Login button"
         >
           Login
-        </button>
-        <button
-          mat-button
+        </a>
+        <a
+          mat-flat-button
+          color="primary"
           *ngIf="userData.userTypeName == userType.Admin"
           [routerLink]="['/admin/movies']"
+          matTooltip="Admin panel"
         >
           Admin Panel
-        </button>
+        </a>
         <ng-container *ngIf="userData.isLoggedIn">
-          <button mat-button [matMenuTriggerFor]="menu">
+          <a mat-flat-button color="primary" [matMenuTriggerFor]="menu">
             <mat-icon>arrow_drop_down</mat-icon>
             <span> {{ userData.username }}</span>
-          </button>
+          </a>
           <mat-menu #menu="matMenu" xPosition="before">
             <button mat-menu-item (click)="logout()">Logout</button>
           </mat-menu>
@@ -59,14 +62,14 @@
           Swagger
         </a>
       </button> -->
-      <button mat-button>
-        <a
-          class="github-link"
-          href="https://github.com/AnkitSharma-007/MovieApp"
-          target="_blank"
-          ><i class="fa fa-github"></i> GitHub</a
-        >
-      </button>
+      <a
+        mat-flat-button
+        color="primary"
+        href="https://github.com/AnkitSharma-007/MovieApp"
+        target="_blank"
+        matTooltip="GitHub link"
+        ><i class="fa fa-github"></i> GitHub</a
+      >
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

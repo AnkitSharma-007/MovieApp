@@ -1,7 +1,6 @@
 .preview-image {
-  max-height: 250px;
-  max-width: 200px;
-  cursor: pointer;
+  height: 300px;
+  width: 200px;
 }
 
 .card-title {
@@ -11,11 +10,7 @@
   overflow: hidden;
 }
 
-.mat-card-content {
-  margin-bottom: 0px;
-}
-
-.on-book-card-hover {
+.on-movie-card-hover {
   box-shadow: 0 8px 8px 8px rgba(0, 0, 0, 0.2), 0 8px 8px 0 rgba(0, 0, 0, 0.14),
     0 8px 8px 0 rgba(0, 0, 0, 0.12);
   transform: translate3d(0, 0, 0);
@@ -32,4 +27,9 @@ a {
   position: absolute;
   right: 7px;
   top: 7px;
+}
+
+.movie-card {
+  width: 200px;
+  height: 380px;
 }

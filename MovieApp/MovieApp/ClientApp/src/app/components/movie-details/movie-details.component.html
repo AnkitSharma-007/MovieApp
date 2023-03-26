@@ -1,23 +1,25 @@
 <ng-container *ngIf="movieDetails$ | async as movie; else noMovieFound">
-  <div class="docs-example-viewer-wrapper">
-    <div class="docs-example-viewer-title mat-elevation-z2">
-      <div class="docs-example-viewer-title-spacer">
-        <h2>Movie Details</h2>
-      </div>
-    </div>
-    <div class="row p-3">
+  <mat-card class="mt-4">
+    <mat-card-header class="mat-elevation-z2 custom-card-header">
+      <mat-card-title class="mat-h1">Movie Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="row g-0 d-flex p-3">
       <div class="col-md-3 col-sm-12">
-        <mat-card-content class="image-card">
-          <img
-            class="preview-image"
-            mat-card-image
-            src="/Poster/{{ movie.posterPath }}"
-            alt="No image available"
-          />
-        </mat-card-content>
+        <img
+          class="preview-image image-width"
+          mat-card-image
+          src="/Poster/{{ movie.posterPath }}"
+          alt="No image available"
+        />
+        <div *ngIf="userData$ | async as user" class="my-2 image-width">
+          <app-add-to-watchlist
+            *ngIf="user.isLoggedIn"
+            [movieId]="movie.movieId"
+          ></app-add-to-watchlist>
+        </div>
       </div>
       <div
-        class="col-md-9 col-sm-12 d-flex flex-column justify-content-between"
+        class="col-md-9 col-sm-12 d-flex flex-column justify-content-between image-height"
       >
         <div class="d-flex justify-content-between">
           <h1>{{ movie.title }}</h1>
@@ -26,12 +28,6 @@
           </span>
         </div>
         <p>{{ movie.overview }}</p>
-        <div *ngIf="userData$ | async as user">
-          <app-add-to-watchlist
-            *ngIf="user.isLoggedIn"
-            [movieId]="movie.movieId"
-          ></app-add-to-watchlist>
-        </div>
 
         <div class="d-flex justify-content-between">
           <span><strong>Language</strong> : {{ movie.language }}</span>
@@ -42,8 +38,8 @@
           >
         </div>
       </div>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
   <app-similar-movies></app-similar-movies>
 </ng-container>
 

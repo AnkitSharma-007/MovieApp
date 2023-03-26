@@ -38,7 +38,7 @@ export class MovieService {
 
   getMovieById(movieId: number) {
     return this.movies$.pipe(
-      map((book) => book.find((m) => m.movieId === movieId))
+      map((movie) => movie.find((m) => m.movieId === movieId))
     );
   }
 

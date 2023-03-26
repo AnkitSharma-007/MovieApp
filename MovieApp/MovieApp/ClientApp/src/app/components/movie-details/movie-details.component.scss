@@ -1,10 +1,16 @@
 img {
-  max-height: 200px;
-  max-width: 300px;
-  overflow: hidden;
+  height: 400px;
   transition: transform 0.5s;
 }
 
 img:hover {
   transform: scale(1.5);
+}
+
+.image-width {
+  width: 280px;
+}
+
+.image-height {
+  height: 400px;
 }

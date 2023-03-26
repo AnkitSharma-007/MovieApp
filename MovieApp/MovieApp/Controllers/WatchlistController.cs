@@ -31,7 +31,7 @@ namespace MovieApp.Controllers
         }
 
         [HttpPost]
-        [Route("ToggleWishlist/{userId}/{movieId}")]
+        [Route("ToggleWatchlist/{userId}/{movieId}")]
         public async Task<List<Movie>> Get(int userId, int movieId)
         {
             await _watchlistService.ToggleWatchlistItem(userId, movieId);
