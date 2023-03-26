@@ -15,8 +15,12 @@ builder.Services.AddTransient<IMovie, MovieDataAccessLayer>();
 builder.Services.AddTransient<IUser, UserDataAccessLayer>();
 builder.Services.AddTransient<IWatchlist, WatchlistDataAccessLayer>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MovieDBContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  .AddJwtBearer(options =>
@@ -44,28 +48,27 @@ builder.Services.AddAuthorization(config =>
     config.AddPolicy(UserRoles.User, Policies.UserPolicy());
 });
 
-builder.Services.AddDbContext<MovieDBContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieApp API");
-        options.RoutePrefix = string.Empty;
-    });
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
 var FileProviderPath = app.Environment.WebRootPath + "/Poster";
 if (!Directory.Exists(FileProviderPath))
@@ -89,8 +92,6 @@ app.UseFileServer(new FileServerOptions
 //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieApp API");
 //    options.RoutePrefix = string.Empty;
 //});
-
-app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

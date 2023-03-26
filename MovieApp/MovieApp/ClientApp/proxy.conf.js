@@ -11,9 +11,6 @@ const PROXY_CONFIG = [
       "/api/user",
       "/api/watchlist",
       "/Poster",
-      "/swagger/index.html",
-      "/swagger/v1/swagger.json",
-      "/swagger"
     ],
     target: target,
     secure: false,

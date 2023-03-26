@@ -22,7 +22,6 @@ const importedModules = [
   MatBadgeModule,
   MatCardModule,
   MatButtonModule,
-  MatCardModule,
   MatInputModule,
   MatListModule,
   MatMenuModule,
