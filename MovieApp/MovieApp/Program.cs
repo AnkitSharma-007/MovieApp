@@ -17,8 +17,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "MovieApp API",
-        Description = "An ASP.NET Core Web API for managing ToDo items",
-        TermsOfService = new Uri("https://example.com/terms"),
+        Description = "An ASP.NET Core Web API for managing the movie data",
         Contact = new OpenApiContact
         {
             Name = "Ankit Sharma",
@@ -103,11 +102,18 @@ app.UseFileServer(new FileServerOptions
     EnableDirectoryBrowsing = true
 });
 
-if (app.Environment.IsDevelopment())
+// The below code will enable swagger in localhost but NOT in PROD env.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
