@@ -2,25 +2,54 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MovieApp.DataAccess;
 using MovieApp.Interfaces;
 using MovieApp.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "MovieApp API",
+        Description = "An ASP.NET Core Web API for managing ToDo items",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Ankit Sharma",
+            Url = new Uri("https://ankitsharmablogs.com/"),
+        },
+        License = new OpenApiLicense
+        {
+            Name = "MIT Licenese",
+            Url = new Uri("https://github.com/AnkitSharma-007/MovieApp/blob/main/LICENSE"),
+        }
+    });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Standard JWT Authorization header. Example: \"bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 
 // Add Service injection here
 builder.Services.AddTransient<IMovie, MovieDataAccessLayer>();
 builder.Services.AddTransient<IUser, UserDataAccessLayer>();
 builder.Services.AddTransient<IWatchlist, WatchlistDataAccessLayer>();
 
-
 builder.Services.AddDbContext<MovieDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  .AddJwtBearer(options =>
@@ -50,8 +79,6 @@ builder.Services.AddAuthorization(config =>
 
 var app = builder.Build();
 
-
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -62,13 +89,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
-
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
 
 var FileProviderPath = app.Environment.WebRootPath + "/Poster";
 if (!Directory.Exists(FileProviderPath))
@@ -83,15 +103,11 @@ app.UseFileServer(new FileServerOptions
     EnableDirectoryBrowsing = true
 });
 
-// We want to show the Swagger in the prod env also.
-// Hence not including the below code under the `if (!app.Environment.IsDevelopment())` section.
-
-//app.UseSwagger();
-//app.UseSwaggerUI(options =>
-//{
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieApp API");
-//    options.RoutePrefix = string.Empty;
-//});
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
