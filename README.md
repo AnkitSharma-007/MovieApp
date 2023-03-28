@@ -37,6 +37,9 @@ A full-stack web application for managing the movie data, created with ASP.NET C
 3. Put your own connection string in [appsettings.json](https://github.com/AnkitSharma-007/MovieApp/blob/main/MovieApp/MovieApp/appsettings.json) file.
 4. Build and launch the application from Visual Studio.
 
+# Live Demo
+[https://movieapp-angular.azurewebsites.net/](https://movieapp-angular.azurewebsites.net/)
+
 # Licenese
 
 [MIT](https://github.com/AnkitSharma-007/MovieApp/blob/main/LICENSE)
