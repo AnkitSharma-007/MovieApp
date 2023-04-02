@@ -43,3 +43,11 @@ A full-stack web application for managing the movie data, created with ASP.NET C
 # Licenese
 
 [MIT](https://github.com/AnkitSharma-007/MovieApp/blob/main/LICENSE)
+
+# See Also
+
+- https://github.com/AnkitSharma-007/BookCart
+- https://github.com/AnkitSharma-007/blogging-app-with-Angular-CloudFirestore
+- https://github.com/AnkitSharma-007/angular-graphql
+- https://github.com/AnkitSharma-007/angular-forms-validation
+- https://github.com/AnkitSharma-007/Smart-Angular-App-Using-Azure-Cognitive-Services
