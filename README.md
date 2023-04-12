@@ -1,6 +1,6 @@
 # MovieApp
 
-A full-stack web application for managing the movie data, created with ASP.NET Core and Angular, using SQL Server as a database.
+A full-stack web application for managing movie data, created with ASP.NET Core and Angular, using SQL Server as a database.
 
 # Concepts Covered
 
