@@ -1,0 +1,22 @@
+<mat-card class="mt-4">
+  <mat-card-content class="row g-0 d-flex p-3">
+    <div class="col-md-5 col-sm-12">
+      <button
+        color="primary"
+        mat-raised-button
+        (click)="fetchSummaryFromGemini()"
+      >
+        Generate movie plot summary using Google Gemini
+      </button>
+    </div>
+
+    <ng-container *ngIf="showLoader; else showSummary">
+      <div class="d-flex justify-content-center mt-4">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    </ng-container>
+    <ng-template #showSummary>
+      <p class="mt-4" *ngIf="summary.length > 0">{{ summary }}</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

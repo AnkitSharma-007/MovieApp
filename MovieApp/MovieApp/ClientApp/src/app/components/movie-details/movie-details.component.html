@@ -27,8 +27,6 @@
             <app-movie-rating [movieRating]="movie.rating"></app-movie-rating>
           </span>
         </div>
-        <p>{{ movie.overview }}</p>
-
         <div class="d-flex justify-content-between">
           <span><strong>Language</strong> : {{ movie.language }}</span>
           <span><strong>Genre</strong> : {{ movie.genre }}</span>
@@ -40,6 +38,7 @@
       </div>
     </mat-card-content>
   </mat-card>
+  <app-movie-summary [movieTitle]="movie.title"></app-movie-summary>
   <app-similar-movies></app-similar-movies>
 </ng-container>
 

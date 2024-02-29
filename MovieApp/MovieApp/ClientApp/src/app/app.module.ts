@@ -24,6 +24,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { SearchComponent } from './components/search/search.component';
 import { AddToWatchlistComponent } from './components/add-to-watchlist/add-to-watchlist.component';
 import { WatchlistComponent } from './components/watchlist/watchlist.component';
+import { MovieSummaryComponent } from './components/movie-summary/movie-summary.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { WatchlistComponent } from './components/watchlist/watchlist.component';
     SearchComponent,
     AddToWatchlistComponent,
     WatchlistComponent,
+    MovieSummaryComponent,
   ],
   imports: [
     BrowserModule,
