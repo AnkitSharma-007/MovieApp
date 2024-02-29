@@ -2,6 +2,10 @@
 
 A full-stack web application for managing movie data, created with ASP.NET Core and Angular, using SQL Server as a database.
 
+# Google Gemini integration
+
+https://github.com/AnkitSharma-007/MovieApp/assets/33789321/4e315707-3544-4d6a-9d7b-d6ffd6559490
+
 # Concepts Covered
 
 ### ASP .NET Core
