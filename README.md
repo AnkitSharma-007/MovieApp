@@ -1,6 +1,6 @@
 # MovieApp
 
-A full-stack web application for managing the movie data, created with ASP.NET Core and Angular, using SQL Server as a database.
+A full-stack web application for managing movie data, created with ASP.NET Core and Angular, using SQL Server as a database.
 
 # Concepts Covered
 
@@ -37,6 +37,17 @@ A full-stack web application for managing the movie data, created with ASP.NET C
 3. Put your own connection string in [appsettings.json](https://github.com/AnkitSharma-007/MovieApp/blob/main/MovieApp/MovieApp/appsettings.json) file.
 4. Build and launch the application from Visual Studio.
 
+# Live Demo
+[https://movieapp-angular.azurewebsites.net/](https://movieapp-angular.azurewebsites.net/)
+
 # Licenese
 
 [MIT](https://github.com/AnkitSharma-007/MovieApp/blob/main/LICENSE)
+
+# See Also
+
+- https://github.com/AnkitSharma-007/BookCart
+- https://github.com/AnkitSharma-007/blogging-app-with-Angular-CloudFirestore
+- https://github.com/AnkitSharma-007/angular-graphql
+- https://github.com/AnkitSharma-007/angular-forms-validation
+- https://github.com/AnkitSharma-007/Smart-Angular-App-Using-Azure-Cognitive-Services
