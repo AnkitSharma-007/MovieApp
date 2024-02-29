@@ -27,7 +27,7 @@ export class MovieSummaryComponent {
   showLoader = false;
 
   MODEL_NAME = 'gemini-1.0-pro';
-  API_KEY = 'AIzaSyB88VzQVRWpEl5UKPUvzVZ8dIlYR-FV8gg';
+  API_KEY = 'YOUR_API_KEY_HERE';
   generationConfig = {
     temperature: 0.9,
     topK: 1,
