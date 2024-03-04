@@ -17,12 +17,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieSummaryComponent {
-  input = '';
-  summary = '';
+  geminiInput = '';
+  movieSummary = '';
 
   @Input() set movieTitle(title: string) {
-    this.input = `Give me a summary of the movie \"${title}\" in 300 words`;
-    this.summary = '';
+    this.geminiInput = `Give me a summary of the movie "${title}" in 300 words`;
+    this.movieSummary = '';
   }
   showLoader = false;
 
@@ -65,7 +65,7 @@ export class MovieSummaryComponent {
 
     try {
       this.showLoader = true;
-      const parts = [{ text: this.input }];
+      const parts = [{ text: this.geminiInput }];
 
       const result = await model.generateContent({
         contents: [{ role: 'user', parts }],
@@ -73,8 +73,8 @@ export class MovieSummaryComponent {
         safetySettings: this.safetySettings,
       });
 
-      this.summary = result.response.text();
-      console.log(this.summary);
+      this.movieSummary = result.response.text();
+      console.log(this.movieSummary);
       this.showLoader = false;
       this.cdr.detectChanges();
     } catch (e) {

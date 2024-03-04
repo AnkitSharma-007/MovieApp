@@ -2,10 +2,16 @@
   <mat-card-content class="row g-0 d-flex p-3">
     <div class="col-md-5 col-sm-12">
       <button
+        class="btn-gemini"
         color="primary"
         mat-raised-button
         (click)="fetchSummaryFromGemini()"
       >
+        <span
+          ><img
+            class="gemini-icon"
+            src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"
+        /></span>
         Generate movie plot summary using Google Gemini
       </button>
     </div>
@@ -16,7 +22,7 @@
       </div>
     </ng-container>
     <ng-template #showSummary>
-      <p class="mt-4" *ngIf="summary.length > 0">{{ summary }}</p>
+      <p class="mt-4" *ngIf="movieSummary.length > 0">{{ movieSummary }}</p>
     </ng-template>
   </mat-card-content>
 </mat-card>
