@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,46 +26,40 @@ import { AddToWatchlistComponent } from './components/add-to-watchlist/add-to-wa
 import { WatchlistComponent } from './components/watchlist/watchlist.component';
 import { MovieSummaryComponent } from './components/movie-summary/movie-summary.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavBarComponent,
-    MovieCardComponent,
-    MovieFilterComponent,
-    MovieRatingComponent,
-    HomeComponent,
-    LoginComponent,
-    UserRegistrationComponent,
-    MovieDetailsComponent,
-    PageNotFoundComponent,
-    ConvertMinToHourPipe,
-    MovieSortComponent,
-    SimilarMoviesComponent,
-    SearchComponent,
-    AddToWatchlistComponent,
-    WatchlistComponent,
-    MovieSummaryComponent,
-  ],
-  imports: [
-    BrowserModule,
-    NgMaterialModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ApiInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavBarComponent,
+        MovieCardComponent,
+        MovieFilterComponent,
+        MovieRatingComponent,
+        HomeComponent,
+        LoginComponent,
+        UserRegistrationComponent,
+        MovieDetailsComponent,
+        PageNotFoundComponent,
+        ConvertMinToHourPipe,
+        MovieSortComponent,
+        SimilarMoviesComponent,
+        SearchComponent,
+        AddToWatchlistComponent,
+        WatchlistComponent,
+        MovieSummaryComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        NgMaterialModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
