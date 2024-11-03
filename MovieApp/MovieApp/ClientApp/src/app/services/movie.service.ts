@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, shareReplay } from 'rxjs';
 import { Genre } from '../models/genre';
 import { Movie } from '../models/movie';
@@ -8,10 +8,9 @@ import { Movie } from '../models/movie';
   providedIn: 'root',
 })
 export class MovieService {
+  private readonly http = inject(HttpClient);
   baseURL = 'api/movie';
   movies$ = new BehaviorSubject<Movie[]>([]);
-
-  constructor(private readonly http: HttpClient) {}
 
   genre$ = this.http
     .get<Genre[]>(`${this.baseURL}/GetGenreList`)
@@ -21,8 +20,7 @@ export class MovieService {
     return this.getAllMovies().pipe(
       map((result) => {
         this.movies$.next(result);
-      }),
-      shareReplay(1)
+      })
     );
   }
 

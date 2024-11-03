@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Movie } from '../models/movie';
 import { SubscriptionService } from './subscription.service';
@@ -8,12 +8,9 @@ import { SubscriptionService } from './subscription.service';
   providedIn: 'root',
 })
 export class WatchlistService {
+  private readonly http = inject(HttpClient);
+  private readonly subscriptionService = inject(SubscriptionService);
   baseURL = '/api/watchlist/';
-
-  constructor(
-    private readonly http: HttpClient,
-    private readonly subscriptionService: SubscriptionService
-  ) {}
 
   getWatchlistItems(userId: number) {
     return this.http.get<Movie[]>(this.baseURL + userId).pipe(

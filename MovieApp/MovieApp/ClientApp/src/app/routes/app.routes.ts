@@ -1,10 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from '../components/home/home.component';
-import { LoginComponent } from '../components/login/login.component';
-import { MovieDetailsComponent } from '../components/movie-details/movie-details.component';
 import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
-import { UserRegistrationComponent } from '../components/user-registration/user-registration.component';
-import { WatchlistComponent } from '../components/watchlist/watchlist.component';
 import { AdminAuthGuard } from '../guards/admin-auth.guard';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -13,12 +9,33 @@ export const APP_ROUTES: Routes = [
   //TODO: Can we combine these routes to one?
   { path: 'filter', component: HomeComponent },
   { path: 'search', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: UserRegistrationComponent },
-  { path: 'movies/details/:movieId', component: MovieDetailsComponent },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('../components/login/login.component').then(
+        (c) => c.LoginComponent
+      ),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import(
+        '../components/user-registration/user-registration.component'
+      ).then((c) => c.UserRegistrationComponent),
+  },
+  {
+    path: 'movies/details/:movieId',
+    loadComponent: () =>
+      import('../components/movie-details/movie-details.component').then(
+        (c) => c.MovieDetailsComponent
+      ),
+  },
   {
     path: 'watchlist',
-    component: WatchlistComponent,
+    loadComponent: () =>
+      import('../components/watchlist/watchlist.component').then(
+        (c) => c.WatchlistComponent
+      ),
     canActivate: [AuthGuard],
   },
   {

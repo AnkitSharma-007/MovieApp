@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, shareReplay } from 'rxjs/operators';
 import { User } from '../models/user';
 import { UserLogin } from '../models/userLogin';
@@ -9,10 +9,8 @@ import { SubscriptionService } from './subscription.service';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly subscriptionService: SubscriptionService
-  ) {}
+  private readonly http = inject(HttpClient);
+  private readonly subscriptionService = inject(SubscriptionService);
 
   login(user: UserLogin) {
     return this.http.post<any>('/api/login', user).pipe(

@@ -1,5 +1,27 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardTitle,
+} from '@angular/material/card';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { Router, RouterLink } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { UserRegistration } from 'src/app/models/userRegistration';
@@ -8,20 +30,13 @@ import { CustomFormValidatorService } from 'src/app/services/custom-form-validat
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { UserNameValidationService } from 'src/app/services/user-name-validation.service';
 import { UserService } from 'src/app/services/user.service';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
-import { MatIcon } from '@angular/material/icon';
-
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
-import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 
 @Component({
-    selector: 'app-user-registration',
-    templateUrl: './user-registration.component.html',
-    styleUrls: ['./user-registration.component.scss'],
-    standalone: true,
-    imports: [
+  selector: 'app-user-registration',
+  templateUrl: './user-registration.component.html',
+  styleUrls: ['./user-registration.component.scss'],
+  standalone: true,
+  imports: [
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -37,8 +52,8 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } 
     MatSuffix,
     MatRadioGroup,
     MatRadioButton,
-    MatCardActions
-],
+    MatCardActions,
+  ],
 })
 export class UserRegistrationComponent implements OnDestroy {
   protected userRegistrationForm!: FormGroup<UserRegistrationForm>;

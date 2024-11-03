@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {
   catchError,
@@ -14,7 +14,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class UserNameValidationService {
-  constructor(private readonly userService: UserService) {}
+  private readonly userService = inject(UserService);
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     return this.userService.validateUserName(control.value).pipe(
