@@ -1,20 +1,22 @@
 <mat-card class="my-4">
-  <ng-container *ngIf="watchlistItems$ | async as watchlistItems">
+  @if (watchlistItems$ | async; as watchlistItems) {
     <mat-card-header
       class="mat-elevation-z2 custom-card-header justify-content-between"
-    >
+      >
       <mat-card-title class="mat-h1">My Watchlist</mat-card-title>
-      <div *ngIf="watchlistItems.length > 0">
-        <button
-          class="mat-elevation-z4"
-          mat-raised-button
-          (click)="clearWatchlist()"
-        >
-          Clear Watchlist
-        </button>
-      </div>
+      @if (watchlistItems.length > 0) {
+        <div>
+          <button
+            class="mat-elevation-z4"
+            mat-raised-button
+            (click)="clearWatchlist()"
+            >
+            Clear Watchlist
+          </button>
+        </div>
+      }
     </mat-card-header>
-    <ng-container *ngIf="watchlistItems.length > 0; else emptyWatchlist">
+    @if (watchlistItems.length > 0) {
       <mat-card-content class="my-3">
         <table mat-table [dataSource]="watchlistItems" class="mat-elevation-z2">
           <ng-container matColumnDef="poster">
@@ -25,7 +27,7 @@
                 matTooltip="{{ item.title }}"
                 matTooltipPosition="after"
                 src="/Poster/{{ item.posterPath }}"
-              />
+                />
             </td>
           </ng-container>
           <ng-container matColumnDef="title">
@@ -56,9 +58,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </mat-card-content>
-    </ng-container>
-
-    <ng-template #emptyWatchlist>
+    } @else {
       <mat-card-header>
         <mat-card-title class="mat-h1">Your watchlist is empty</mat-card-title>
       </mat-card-header>
@@ -67,6 +67,6 @@
           Back to Home
         </button>
       </mat-card-content>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </mat-card>

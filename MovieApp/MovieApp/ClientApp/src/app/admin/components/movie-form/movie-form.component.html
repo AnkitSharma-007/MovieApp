@@ -10,7 +10,7 @@
             enctype="multipart/form-data"
             [formGroup]="movieForm"
             (ngSubmit)="onFormSubmit()"
-          >
+            >
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Title</mat-label>
               <input
@@ -18,175 +18,185 @@
                 placeholder="Title"
                 formControlName="title"
                 required
-              />
-              <mat-error
-                *ngIf="
-                  movieFormControl.title.touched &&
-                  movieFormControl.title.invalid
-                "
-                >Title is required.</mat-error
-              >
-            </mat-form-field>
+                />
+              @if (
+                movieFormControl.title.touched &&
+                movieFormControl.title.invalid
+                ) {
+                <mat-error
+                  >Title is required.</mat-error
+                  >
+                }
+              </mat-form-field>
 
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Genre</mat-label>
-              <mat-select placeholder="Genre" formControlName="genre" required>
-                <mat-option
-                  *ngFor="let genre of genereList$ | async"
-                  [value]="genre.genreName"
-                >
-                  {{ genre.genreName }}
-                </mat-option>
-              </mat-select>
-              <mat-error
-                *ngIf="
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Genre</mat-label>
+                <mat-select placeholder="Genre" formControlName="genre" required>
+                  @for (genre of genereList$ | async; track genre) {
+                    <mat-option
+                      [value]="genre.genreName"
+                      >
+                      {{ genre.genreName }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (
                   movieFormControl.genre.touched &&
                   movieFormControl.genre.invalid
-                "
-                >Genre is required.</mat-error
-              >
-            </mat-form-field>
+                  ) {
+                  <mat-error
+                    >Genre is required.</mat-error
+                    >
+                  }
+                </mat-form-field>
 
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Language</mat-label>
-              <input
-                matInput
-                placeholder="Language"
-                formControlName="language"
-                required
-              />
-              <mat-error
-                *ngIf="
-                  movieFormControl.language.touched &&
-                  movieFormControl.language.invalid
-                "
-                >Language is required.</mat-error
-              >
-            </mat-form-field>
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Language</mat-label>
+                  <input
+                    matInput
+                    placeholder="Language"
+                    formControlName="language"
+                    required
+                    />
+                  @if (
+                    movieFormControl.language.touched &&
+                    movieFormControl.language.invalid
+                    ) {
+                    <mat-error
+                      >Language is required.</mat-error
+                      >
+                    }
+                  </mat-form-field>
 
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Duration (mins)</mat-label>
-              <input
-                matInput
-                placeholder="Duration (mins)"
-                formControlName="duration"
-                type="number"
-                required
-              />
-              <mat-error
-                *ngIf="
-                  movieFormControl.duration.touched &&
-                  movieFormControl.duration.hasError('required')
-                "
-                >Duration is required.</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  movieFormControl.duration.touched &&
-                  movieFormControl.duration.hasError('min')
-                "
-                >Duration cannot be less than 1.
-              </mat-error>
-            </mat-form-field>
+                  <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Duration (mins)</mat-label>
+                    <input
+                      matInput
+                      placeholder="Duration (mins)"
+                      formControlName="duration"
+                      type="number"
+                      required
+                      />
+                    @if (
+                      movieFormControl.duration.touched &&
+                      movieFormControl.duration.hasError('required')
+                      ) {
+                      <mat-error
+                        >Duration is required.</mat-error
+                        >
+                      }
+                      @if (
+                        movieFormControl.duration.touched &&
+                        movieFormControl.duration.hasError('min')
+                        ) {
+                        <mat-error
+                          >Duration cannot be less than 1.
+                        </mat-error>
+                      }
+                    </mat-form-field>
 
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Rating</mat-label>
-              <input
-                matInput
-                placeholder="Rating"
-                formControlName="rating"
-                type="number"
-                required
-              />
-              <mat-error
-                *ngIf="
-                  movieFormControl.rating.touched &&
-                  movieFormControl.rating.hasError('required')
-                "
-                >Rating is required.</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  movieFormControl.rating.touched &&
-                  (movieFormControl.rating.hasError('min') ||
-                    movieFormControl.rating.hasError('max'))
-                "
-                >The value should be between 0 & 10.
-              </mat-error>
-            </mat-form-field>
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>Rating</mat-label>
+                      <input
+                        matInput
+                        placeholder="Rating"
+                        formControlName="rating"
+                        type="number"
+                        required
+                        />
+                      @if (
+                        movieFormControl.rating.touched &&
+                        movieFormControl.rating.hasError('required')
+                        ) {
+                        <mat-error
+                          >Rating is required.</mat-error
+                          >
+                        }
+                        @if (
+                          movieFormControl.rating.touched &&
+                          (movieFormControl.rating.hasError('min') ||
+                          movieFormControl.rating.hasError('max'))
+                          ) {
+                          <mat-error
+                            >The value should be between 0 & 10.
+                          </mat-error>
+                        }
+                      </mat-form-field>
 
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Overview</mat-label>
-              <textarea
-                matInput
-                placeholder="Overview"
-                formControlName="overview"
-                required
-                maxlength="1000"
-              ></textarea>
-              <mat-hint align="end"
-                >{{ movieFormControl.overview.value.length }} / 1000</mat-hint
-              >
-              <mat-error
-                *ngIf="
-                  movieFormControl.overview.touched &&
-                  movieFormControl.overview.hasError('required')
-                "
-                >Overview is required.</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  movieFormControl.overview.touched &&
-                  movieFormControl.overview.hasError('maxlength')
-                "
-                >Overview can not be more than 1000 characters long.
-              </mat-error>
-            </mat-form-field>
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Overview</mat-label>
+                        <textarea
+                          matInput
+                          placeholder="Overview"
+                          formControlName="overview"
+                          required
+                          maxlength="1000"
+                        ></textarea>
+                        <mat-hint align="end"
+                          >{{ movieFormControl.overview.value.length }} / 1000</mat-hint
+                          >
+                          @if (
+                            movieFormControl.overview.touched &&
+                            movieFormControl.overview.hasError('required')
+                            ) {
+                            <mat-error
+                              >Overview is required.</mat-error
+                              >
+                            }
+                            @if (
+                              movieFormControl.overview.touched &&
+                              movieFormControl.overview.hasError('maxlength')
+                              ) {
+                              <mat-error
+                                >Overview can not be more than 1000 characters long.
+                              </mat-error>
+                            }
+                          </mat-form-field>
 
-            <mat-card-actions align="end" class="p-0">
-              <button type="submit" mat-raised-button color="primary">
-                Save
-              </button>
-              <button
-                type="button"
-                mat-raised-button
-                color="warn"
-                class="ms-2"
-                (click)="navigateToAdminPanel()"
-              >
-                Cancel
-              </button>
-            </mat-card-actions>
-          </form>
-        </mat-card-content>
-      </div>
+                          <mat-card-actions align="end" class="p-0">
+                            <button type="submit" mat-raised-button color="primary">
+                              Save
+                            </button>
+                            <button
+                              type="button"
+                              mat-raised-button
+                              color="warn"
+                              class="ms-2"
+                              (click)="navigateToAdminPanel()"
+                              >
+                              Cancel
+                            </button>
+                          </mat-card-actions>
+                        </form>
+                      </mat-card-content>
+                    </div>
 
-      <div class="col-md-4 d-flex flex-column align-items-center">
-        <mat-card-header>
-          <mat-card-title class="mat-h2"> Poster preview </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="d-flex flex-column">
-          <img
-            class="preview-image p-2"
-            mat-card-image
-            src="{{ posterImagePath }}"
-            alt="Upload an image"
-          />
-          <div class="my-2">
-            <label
-              for="file-upload"
-              class="custom-file-upload mat-elevation-z4 py-2 px-3 d-flex align-items-center"
-            >
-              <mat-icon class="mx-2">cloud_upload</mat-icon> Upload poster
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              (change)="uploadImage($event)"
-            />
-          </div>
-        </mat-card-content>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+                    <div class="col-md-4 d-flex flex-column align-items-center">
+                      <mat-card-header>
+                        <mat-card-title class="mat-h2"> Poster preview </mat-card-title>
+                      </mat-card-header>
+                      <mat-card-content class="d-flex flex-column">
+                        <img
+                          class="preview-image p-2"
+                          mat-card-image
+                          src="{{ posterImagePath }}"
+                          alt="Upload an image"
+                          />
+                        <div class="my-2">
+                          <label
+                            for="file-upload"
+                            class="custom-file-upload mat-elevation-z4 py-2 px-3 d-flex align-items-center"
+                            >
+                            <mat-icon class="mx-2">cloud_upload</mat-icon> Upload poster
+                          </label>
+                          <input
+                            id="file-upload"
+                            type="file"
+                            (change)="uploadImage($event)"
+                            />
+                        </div>
+                      </mat-card-content>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>

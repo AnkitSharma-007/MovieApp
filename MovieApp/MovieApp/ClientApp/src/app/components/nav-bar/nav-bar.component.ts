@@ -10,7 +10,7 @@ import { WatchlistService } from 'src/app/services/watchlist.service';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatBadge } from '@angular/material/badge';
 import { MatTooltip } from '@angular/material/tooltip';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatAnchor, MatIconButton } from '@angular/material/button';
@@ -22,21 +22,20 @@ import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
     styleUrls: ['./nav-bar.component.scss'],
     standalone: true,
     imports: [
-        MatToolbar,
-        MatToolbarRow,
-        MatAnchor,
-        RouterLink,
-        MatIcon,
-        SearchComponent,
-        NgIf,
-        MatIconButton,
-        MatTooltip,
-        MatBadge,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem,
-        AsyncPipe,
-    ],
+    MatToolbar,
+    MatToolbarRow,
+    MatAnchor,
+    RouterLink,
+    MatIcon,
+    SearchComponent,
+    MatIconButton,
+    MatTooltip,
+    MatBadge,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    AsyncPipe
+],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
   readonly userType = UserType;

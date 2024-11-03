@@ -2,13 +2,14 @@
   <mat-list-item [class.active-category]="!selectedGenre" routerLink="/">
     <a>All Categories</a>
   </mat-list-item>
-  <mat-list-item
-    *ngFor="let genre of genereList$ | async"
-    [class.active-category]="selectedGenre === (genre.genreName | lowercase)"
-    routerLink="/filter"
-    [queryParams]="{ genre: genre.genreName | lowercase }"
-    queryParamsHandling="merge"
-  >
-    <a>{{ genre.genreName }}</a>
-  </mat-list-item>
+  @for (genre of genereList$ | async; track genre) {
+    <mat-list-item
+      [class.active-category]="selectedGenre === (genre.genreName | lowercase)"
+      routerLink="/filter"
+      [queryParams]="{ genre: genre.genreName | lowercase }"
+      queryParamsHandling="merge"
+      >
+      <a>{{ genre.genreName }}</a>
+    </mat-list-item>
+  }
 </mat-nav-list>

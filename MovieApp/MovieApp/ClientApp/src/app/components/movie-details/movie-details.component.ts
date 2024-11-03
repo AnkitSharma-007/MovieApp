@@ -10,7 +10,7 @@ import { MovieSummaryComponent } from '../movie-summary/movie-summary.component'
 import { MovieRatingComponent } from '../movie-rating/movie-rating.component';
 import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardImage } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-movie-details',
@@ -19,21 +19,20 @@ import { NgIf, AsyncPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        NgIf,
-        MatCard,
-        MatCardHeader,
-        MatCardTitle,
-        MatCardContent,
-        MatCardImage,
-        AddToWatchlistComponent,
-        MovieRatingComponent,
-        MovieSummaryComponent,
-        SimilarMoviesComponent,
-        MatButton,
-        RouterLink,
-        AsyncPipe,
-        ConvertMinToHourPipe,
-    ],
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatCardImage,
+    AddToWatchlistComponent,
+    MovieRatingComponent,
+    MovieSummaryComponent,
+    SimilarMoviesComponent,
+    MatButton,
+    RouterLink,
+    AsyncPipe,
+    ConvertMinToHourPipe
+],
 })
 export class MovieDetailsComponent {
   userData$ = this.subscriptionService.userData$.asObservable();

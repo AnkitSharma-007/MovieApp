@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 @Component({
@@ -14,16 +14,14 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/m
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatCard,
-        MatCardHeader,
-        MatCardTitle,
-        MatCardContent,
-        NgIf,
-        NgFor,
-        MovieCardComponent,
-        MatProgressSpinner,
-        AsyncPipe,
-    ],
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MovieCardComponent,
+    MatProgressSpinner,
+    AsyncPipe
+],
 })
 export class SimilarMoviesComponent {
   // Added the following variable for better readability

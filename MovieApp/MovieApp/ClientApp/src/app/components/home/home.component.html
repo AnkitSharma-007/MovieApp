@@ -1,4 +1,4 @@
-<ng-container *ngIf="vm$ | async as vm; else loading">
+@if (vm$ | async; as vm) {
   <div class="row pt-3">
     <div class="col-md-3 col-sm-12 d-flex justify-content-center">
       <div class="filter-container">
@@ -7,26 +7,27 @@
       </div>
     </div>
     <div class="col-md-9 mb-3">
-      <div
-        *ngIf="vm.movieList.length > 0; else nodata"
-        class="d-flex justify-content-start flex-wrap mb-4"
-      >
-        <div *ngFor="let movie of vm.movieList" class="p-1">
-          <app-movie-card [movie]="movie"></app-movie-card>
+      @if (vm.movieList.length > 0) {
+        <div
+          class="d-flex justify-content-start flex-wrap mb-4"
+          >
+          @for (movie of vm.movieList; track movie) {
+            <div class="p-1">
+              <app-movie-card [movie]="movie"></app-movie-card>
+            </div>
+          }
         </div>
-      </div>
+      } @else {
+        <div class="d-flex justify-content-center mt-4">
+          <h1 class="display-4">No movies found.</h1>
+        </div>
+      }
     </div>
   </div>
-</ng-container>
-
-<ng-template #loading>
+} @else {
   <div class="d-flex justify-content-center mt-4">
     <mat-spinner></mat-spinner>
   </div>
-</ng-template>
+}
 
-<ng-template #nodata>
-  <div class="d-flex justify-content-center mt-4">
-    <h1 class="display-4">No movies found.</h1>
-  </div>
-</ng-template>
+

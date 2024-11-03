@@ -16,7 +16,7 @@ import {
 import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { MatOption } from '@angular/material/core';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 
 @Component({
@@ -26,13 +26,12 @@ import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autoc
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        ReactiveFormsModule,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
-        NgFor,
-        MatOption,
-        AsyncPipe,
-    ],
+    ReactiveFormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    MatOption,
+    AsyncPipe
+],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   searchControl = new FormControl<string>('', { nonNullable: true });

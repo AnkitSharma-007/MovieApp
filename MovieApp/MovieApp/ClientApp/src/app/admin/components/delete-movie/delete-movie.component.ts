@@ -9,7 +9,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
 import { MatButton } from '@angular/material/button';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-delete-movie',
@@ -18,15 +18,14 @@ import { NgIf, AsyncPipe } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        NgIf,
-        MatDialogTitle,
-        CdkScrollable,
-        MatDialogContent,
-        MatDialogActions,
-        MatButton,
-        MatDialogClose,
-        AsyncPipe,
-    ],
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    AsyncPipe
+],
 })
 export class DeleteMovieComponent implements OnDestroy {
   movieData$ = this.movieService.getMovieById(this.movieid);

@@ -7,13 +7,14 @@
     [formControl]="searchControl"
     [matAutocomplete]="auto"
     (search)="cancelSearch()"
-  />
+    />
   <mat-autocomplete (optionSelected)="searchStore()" #auto="matAutocomplete">
-    <mat-option
-      *ngFor="let movie of filteredMovie$ | async"
-      [value]="movie.title"
-    >
-      {{ movie.title }}
-    </mat-option>
+    @for (movie of filteredMovie$ | async; track movie) {
+      <mat-option
+        [value]="movie.title"
+        >
+        {{ movie.title }}
+      </mat-option>
+    }
   </mat-autocomplete>
 </form>
