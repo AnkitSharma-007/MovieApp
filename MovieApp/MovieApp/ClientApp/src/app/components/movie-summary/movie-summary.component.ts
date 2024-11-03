@@ -9,12 +9,18 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from '@google/generative-ai';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgIf } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-movie-summary',
   templateUrl: './movie-summary.component.html',
   styleUrls: ['./movie-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatCard, MatCardContent, MatButton, NgIf, MatProgressSpinner],
 })
 export class MovieSummaryComponent {
   geminiInput = '';
@@ -74,7 +80,6 @@ export class MovieSummaryComponent {
       });
 
       this.movieSummary = result.response.text();
-      console.log(this.movieSummary);
       this.showLoader = false;
       this.cdr.detectChanges();
     } catch (e) {

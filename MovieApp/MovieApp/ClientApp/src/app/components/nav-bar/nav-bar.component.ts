@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { UserType } from 'src/app/models/userType';
@@ -7,11 +7,36 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { WatchlistService } from 'src/app/services/watchlist.service';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatBadge } from '@angular/material/badge';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SearchComponent } from '../search/search.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatAnchor, MatIconButton } from '@angular/material/button';
+import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss'],
+    standalone: true,
+    imports: [
+        MatToolbar,
+        MatToolbarRow,
+        MatAnchor,
+        RouterLink,
+        MatIcon,
+        SearchComponent,
+        NgIf,
+        MatIconButton,
+        MatTooltip,
+        MatBadge,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        AsyncPipe,
+    ],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
   readonly userType = UserType;

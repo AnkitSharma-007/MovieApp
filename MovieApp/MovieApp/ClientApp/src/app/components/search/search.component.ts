@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   combineLatestWith,
@@ -15,12 +15,24 @@ import {
 } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { MatOption } from '@angular/material/core';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        NgFor,
+        MatOption,
+        AsyncPipe,
+    ],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   searchControl = new FormControl<string>('', { nonNullable: true });

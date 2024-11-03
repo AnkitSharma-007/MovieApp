@@ -8,8 +8,8 @@ describe('SimilarMoviesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SimilarMoviesComponent ]
-    })
+    imports: [SimilarMoviesComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SimilarMoviesComponent);

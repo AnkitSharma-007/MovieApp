@@ -10,7 +10,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   registerUser(userdetails: UserRegistration) {
-    console.log({ userdetails });
     return this.http.post(this.baseURL, userdetails);
   }
 

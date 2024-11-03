@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { UserRegistration } from 'src/app/models/userRegistration';
 import { UserRegistrationForm } from 'src/app/models/userRegistrationForm';
@@ -8,11 +8,38 @@ import { CustomFormValidatorService } from 'src/app/services/custom-form-validat
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { UserNameValidationService } from 'src/app/services/user-name-validation.service';
 import { UserService } from 'src/app/services/user.service';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 
 @Component({
-  selector: 'app-user-registration',
-  templateUrl: './user-registration.component.html',
-  styleUrls: ['./user-registration.component.scss'],
+    selector: 'app-user-registration',
+    templateUrl: './user-registration.component.html',
+    styleUrls: ['./user-registration.component.scss'],
+    standalone: true,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatButton,
+        RouterLink,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatIcon,
+        MatSuffix,
+        MatRadioGroup,
+        MatRadioButton,
+        MatCardActions,
+    ],
 })
 export class UserRegistrationComponent implements OnDestroy {
   protected userRegistrationForm!: FormGroup<UserRegistrationForm>;

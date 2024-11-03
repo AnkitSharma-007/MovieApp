@@ -1,16 +1,41 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { LoginForm } from 'src/app/models/loginForm';
 import { UserLogin } from 'src/app/models/userLogin';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatButton,
+        RouterLink,
+        NgIf,
+        MatCardSubtitle,
+        MatError,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIcon,
+        MatSuffix,
+        MatCardActions,
+    ],
 })
 export class LoginComponent implements OnDestroy {
   protected loginForm!: FormGroup<LoginForm>;

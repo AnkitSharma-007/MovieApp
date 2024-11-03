@@ -1,16 +1,46 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MovieForm } from '../../models/movie-form';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError, MatHint } from '@angular/material/form-field';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions, MatCardImage } from '@angular/material/card';
 
 @Component({
-  selector: 'app-movie-form',
-  templateUrl: './movie-form.component.html',
-  styleUrls: ['./movie-form.component.scss'],
+    selector: 'app-movie-form',
+    templateUrl: './movie-form.component.html',
+    styleUrls: ['./movie-form.component.scss'],
+    standalone: true,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatSelect,
+        NgFor,
+        MatOption,
+        MatHint,
+        MatCardActions,
+        MatButton,
+        MatCardImage,
+        MatIcon,
+        AsyncPipe,
+    ],
 })
 export class MovieFormComponent implements OnInit, OnDestroy {
   protected movieForm!: FormGroup<MovieForm>;
@@ -99,7 +129,6 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
     if (this.files && this.files.length > 0) {
       for (let j = 0; j < this.files.length; j++) {
-        console.log('inside if');
         this.formData.append('file' + j, this.files[j]);
       }
     }

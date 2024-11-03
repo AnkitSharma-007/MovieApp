@@ -3,12 +3,42 @@ import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { WatchlistService } from 'src/app/services/watchlist.service';
+import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
+import { RouterLink } from '@angular/router';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatButton } from '@angular/material/button';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 @Component({
-  selector: 'app-watchlist',
-  templateUrl: './watchlist.component.html',
-  styleUrls: ['./watchlist.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-watchlist',
+    templateUrl: './watchlist.component.html',
+    styleUrls: ['./watchlist.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatCard,
+        NgIf,
+        MatCardHeader,
+        MatCardTitle,
+        MatButton,
+        MatCardContent,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatTooltip,
+        RouterLink,
+        AddToWatchlistComponent,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+        AsyncPipe,
+    ],
 })
 export class WatchlistComponent implements OnDestroy {
   private destroyed$ = new ReplaySubject<void>(1);

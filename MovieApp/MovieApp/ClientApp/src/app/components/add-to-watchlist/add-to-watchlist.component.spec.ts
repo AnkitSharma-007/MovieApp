@@ -8,8 +8,8 @@ describe('AddToWatchlistComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddToWatchlistComponent ]
-    })
+    imports: [AddToWatchlistComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(AddToWatchlistComponent);

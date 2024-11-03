@@ -1,33 +1,32 @@
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-import { AuthenticationService } from '../services/authentication.service';
+import {
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
+import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { AuthenticationService } from '../services/authentication.service';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
-  ) {}
+export const ErrorInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<unknown>,
+  next: HttpHandlerFn
+) => {
+  const authenticationService = inject(AuthenticationService);
+  const router = inject(Router);
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      catchError((error) => {
-        if (error.status == 401) {
-          this.authenticationService.logout();
-          if (!request.url.includes('login')) {
-            location.reload();
-          }
-        } else if (error.status === 404) {
-          this.router.navigate(['not-found']);
+  return next(request).pipe(
+    catchError((error) => {
+      if (error.status == 401) {
+        authenticationService.logout();
+        if (!request.url.includes('login')) {
+          location.reload();
         }
-        const errorMessage = error.error?.message || error.statusText;
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-  }
-}
+      } else if (error.status === 404) {
+        router.navigate(['not-found']);
+      }
+      const errorMessage = error.error?.message || error.statusText;
+      return throwError(() => new Error(errorMessage));
+    })
+  );
+};

@@ -25,6 +25,7 @@ obj/
 Obj/
 ClientApp/.angular
 ClientApp/.vscode
+.config/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -231,3 +232,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# wwwroot
+wwwroot/

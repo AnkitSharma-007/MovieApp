@@ -4,12 +4,27 @@ import { combineLatestWith, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { MovieSortComponent } from '../movie-sort/movie-sort.component';
+import { MovieFilterComponent } from '../movie-filter/movie-filter.component';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        MovieFilterComponent,
+        MovieSortComponent,
+        NgFor,
+        MovieCardComponent,
+        MatProgressSpinner,
+        AsyncPipe,
+    ],
 })
 export class HomeComponent {
   // Added the following two variables for better readability

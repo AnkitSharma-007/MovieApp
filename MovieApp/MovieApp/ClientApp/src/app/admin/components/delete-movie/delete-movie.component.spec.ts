@@ -8,8 +8,8 @@ describe('DeleteMovieComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteMovieComponent ]
-    })
+    imports: [DeleteMovieComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(DeleteMovieComponent);

@@ -4,11 +4,20 @@ import { Movie } from 'src/app/models/movie';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { WatchlistService } from 'src/app/services/watchlist.service';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass } from '@angular/common';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-add-to-watchlist',
-  templateUrl: './add-to-watchlist.component.html',
-  styleUrls: ['./add-to-watchlist.component.scss'],
+    selector: 'app-add-to-watchlist',
+    templateUrl: './add-to-watchlist.component.html',
+    styleUrls: ['./add-to-watchlist.component.scss'],
+    standalone: true,
+    imports: [
+        MatButton,
+        NgClass,
+        MatIcon,
+    ],
 })
 export class AddToWatchlistComponent implements OnChanges, OnDestroy {
   @Input()

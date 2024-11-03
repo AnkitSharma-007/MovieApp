@@ -8,8 +8,8 @@ describe('MovieFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MovieFormComponent ]
-    })
+    imports: [MovieFormComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MovieFormComponent);
