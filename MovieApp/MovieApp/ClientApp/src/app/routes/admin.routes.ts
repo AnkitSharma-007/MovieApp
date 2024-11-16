@@ -1,14 +1,30 @@
 import { Routes } from '@angular/router';
-import { ManageMoviesComponent } from '../admin/components/manage-movies/manage-movies.component';
-import { MovieFormComponent } from '../admin/components/movie-form/movie-form.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
     children: [
-      { path: 'new', component: MovieFormComponent },
-      { path: ':movieId', component: MovieFormComponent },
-      { path: '', component: ManageMoviesComponent },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('../admin/components/movie-form/movie-form.component').then(
+            (c) => c.MovieFormComponent
+          ),
+      },
+      {
+        path: 'edit/:movieId',
+        loadComponent: () =>
+          import('../admin/components/movie-form/movie-form.component').then(
+            (c) => c.MovieFormComponent
+          ),
+      },
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            '../admin/components/manage-movies/manage-movies.component'
+          ).then((c) => c.ManageMoviesComponent),
+      },
     ],
   },
 ];

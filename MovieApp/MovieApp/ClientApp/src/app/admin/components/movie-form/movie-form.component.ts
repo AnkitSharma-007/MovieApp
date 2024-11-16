@@ -1,26 +1,46 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardImage,
+  MatCardTitle,
+} from '@angular/material/card';
+import { MatOption } from '@angular/material/core';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { selectGenres } from 'src/app/state/selectors/genre.selectors';
 import { MovieForm } from '../../models/movie-form';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
-import { MatOption } from '@angular/material/core';
-import { MatSelect } from '@angular/material/select';
-import { AsyncPipe } from '@angular/common';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatError, MatHint } from '@angular/material/form-field';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions, MatCardImage } from '@angular/material/card';
+import { getGenres } from 'src/app/state/actions/movie.actions';
 
 @Component({
-    selector: 'app-movie-form',
-    templateUrl: './movie-form.component.html',
-    styleUrls: ['./movie-form.component.scss'],
-    standalone: true,
-    imports: [
+  selector: 'app-movie-form',
+  templateUrl: './movie-form.component.html',
+  styleUrls: ['./movie-form.component.scss'],
+  standalone: true,
+  imports: [
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -37,12 +57,37 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions, M
     MatButton,
     MatCardImage,
     MatIcon,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
 export class MovieFormComponent implements OnInit, OnDestroy {
-  protected movieForm!: FormGroup<MovieForm>;
-  protected genereList$ = this.movieService.genre$;
+  private readonly store = inject(Store);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly movieService = inject(MovieService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly snackBarService = inject(SnackbarService);
+
+  protected movieForm: FormGroup<MovieForm> = this.formBuilder.group({
+    movieId: 0,
+    title: this.formBuilder.control('', Validators.required),
+    genre: this.formBuilder.control('', Validators.required),
+    language: this.formBuilder.control('', Validators.required),
+    overview: this.formBuilder.control('', [
+      Validators.required,
+      Validators.maxLength(1000),
+    ]),
+    duration: this.formBuilder.control(0, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    rating: this.formBuilder.control(0, [
+      Validators.required,
+      Validators.min(0.0),
+      Validators.max(10.0),
+    ]),
+  });
+  protected genereList$ = this.store.select(selectGenres);
   protected formTitle = 'Add';
   private destroyed$ = new ReplaySubject<void>(1);
 
@@ -51,14 +96,8 @@ export class MovieFormComponent implements OnInit, OnDestroy {
   movieId!: number;
   files = '';
 
-  constructor(
-    private readonly formBuilder: NonNullableFormBuilder,
-    private readonly movieService: MovieService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly snackBarService: SnackbarService
-  ) {
-    this.initializeForm();
+  constructor() {
+    this.store.dispatch(getGenres());
   }
 
   ngOnInit(): void {
@@ -92,28 +131,6 @@ export class MovieFormComponent implements OnInit, OnDestroy {
           console.error('Error ocurred while fetching movie data : ', error);
         },
       });
-  }
-
-  private initializeForm(): void {
-    this.movieForm = this.formBuilder.group({
-      movieId: 0,
-      title: this.formBuilder.control('', Validators.required),
-      genre: this.formBuilder.control('', Validators.required),
-      language: this.formBuilder.control('', Validators.required),
-      overview: this.formBuilder.control('', [
-        Validators.required,
-        Validators.maxLength(1000),
-      ]),
-      duration: this.formBuilder.control(0, [
-        Validators.required,
-        Validators.min(1),
-      ]),
-      rating: this.formBuilder.control(0, [
-        Validators.required,
-        Validators.min(0.0),
-        Validators.max(10.0),
-      ]),
-    });
   }
 
   protected get movieFormControl() {

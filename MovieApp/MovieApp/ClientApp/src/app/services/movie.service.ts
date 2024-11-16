@@ -9,12 +9,8 @@ import { Movie } from '../models/movie';
 })
 export class MovieService {
   private readonly http = inject(HttpClient);
-  baseURL = 'api/movie';
+  private readonly baseURL = 'api/movie';
   movies$ = new BehaviorSubject<Movie[]>([]);
-
-  genre$ = this.http
-    .get<Genre[]>(`${this.baseURL}/GetGenreList`)
-    .pipe(shareReplay(1));
 
   fetchMovieData() {
     return this.getAllMovies().pipe(
@@ -50,5 +46,9 @@ export class MovieService {
 
   deleteMovie(movieId: number) {
     return this.http.delete(`${this.baseURL}/${movieId}`);
+  }
+
+  getGenres() {
+    return this.http.get<Genre[]>(`${this.baseURL}/GetGenreList`);
   }
 }
