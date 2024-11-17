@@ -11,13 +11,13 @@ import {
 @Injectable()
 export class GenreEffects {
   private readonly actions$ = inject(Actions);
-  private readonly moviesService = inject(MovieService);
+  private readonly movieService = inject(MovieService);
 
   fetchGenres$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getGenres),
       exhaustMap(() =>
-        this.moviesService.getGenres().pipe(
+        this.movieService.getGenres().pipe(
           map((genres) => getGenreSuccess({ genres })),
           catchError((error) => of(getGenreFailure({ errorMessage: error })))
         )

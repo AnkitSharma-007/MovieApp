@@ -1,11 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import {
   combineLatestWith,
   map,
@@ -13,30 +21,31 @@ import {
   startWith,
   takeUntil,
 } from 'rxjs';
-import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { MatOption } from '@angular/material/core';
-import { AsyncPipe } from '@angular/common';
-import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import { selectMovies } from 'src/app/state/selectors/movie.selectors';
 
 @Component({
-    selector: 'app-search',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
     ReactiveFormsModule,
     MatAutocompleteTrigger,
     MatAutocomplete,
     MatOption,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  private readonly store = inject(Store);
+  private readonly router = inject(Router);
+  private readonly subscriptionService = inject(SubscriptionService);
+
   searchControl = new FormControl<string>('', { nonNullable: true });
   private destroyed$ = new ReplaySubject<void>(1);
-  private readonly movie$ = this.movieService.movies$.asObservable();
+  private readonly movie$ = this.store.select(selectMovies);
 
   filteredMovie$ = this.searchControl.valueChanges.pipe(
     startWith(''),
@@ -54,12 +63,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     })
   );
-
-  constructor(
-    private readonly router: Router,
-    private readonly subscriptionService: SubscriptionService,
-    private readonly movieService: MovieService
-  ) {}
 
   ngOnInit(): void {
     this.setSearchControlValue();

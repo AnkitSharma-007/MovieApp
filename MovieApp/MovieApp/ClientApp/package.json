@@ -26,6 +26,7 @@
     "@google/generative-ai": "^0.2.1",
     "@ngrx/effects": "^18.1.1",
     "@ngrx/entity": "^18.1.1",
+    "@ngrx/router-store": "^18.1.1",
     "@ngrx/store": "^18.1.1",
     "bootstrap": "^5.2.3",
     "run-script-os": "^1.1.6",

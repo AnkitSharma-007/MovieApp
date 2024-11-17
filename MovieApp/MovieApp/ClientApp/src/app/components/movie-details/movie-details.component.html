@@ -1,59 +1,62 @@
-@if (movieDetails$ | async; as movie) {
-  <mat-card class="mt-4">
-    <mat-card-header class="mat-elevation-z2 custom-card-header">
-      <mat-card-title class="mat-h1">Movie Details</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="row g-0 d-flex p-3">
-      <div class="col-md-3 col-sm-12">
-        <img
-          class="preview-image image-width"
-          mat-card-image
-          src="/Poster/{{ movie.posterPath }}"
-          alt="No image available"
-          />
-          @if (userData$ | async; as user) {
-            <div class="my-2 image-width">
-              @if (user.isLoggedIn) {
-                <app-add-to-watchlist
-                  [movieId]="movie.movieId"
-                ></app-add-to-watchlist>
-              }
-            </div>
-          }
-        </div>
-        <div
-          class="col-md-9 col-sm-12 d-flex flex-column justify-content-between image-height"
-          >
-          <div class="d-flex justify-content-between">
-            <h1>{{ movie.title }}</h1>
-            <span>
-              <app-movie-rating [movieRating]="movie.rating"></app-movie-rating>
-            </span>
-          </div>
-          <p class="my-4">{{ movie.overview }}</p>
-          <div class="d-flex justify-content-between">
-            <span><strong>Language</strong> : {{ movie.language }}</span>
-            <span><strong>Genre</strong> : {{ movie.genre }}</span>
-            <span
-              ><strong>Duration</strong> :
-              {{ movie.duration | convertMinToHour }}</span
-              >
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <app-movie-summary [movieTitle]="movie.title"></app-movie-summary>
-      <app-similar-movies></app-similar-movies>
-    } @else {
-      <div class="d-flex flex-column align-items-center mt-4">
-        <div>
-          <h1 class="display-4">No movies found.</h1>
-        </div>
-        <div>
-          <button mat-raised-button color="primary" [routerLink]="['/']">
-            Back to Home
-          </button>
-        </div>
+@if (movieDetails$ | async; as movieDetails) {
+<mat-card class="mt-4">
+  <mat-card-header class="mat-elevation-z2 custom-card-header">
+    <mat-card-title class="mat-h1">Movie Details</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="row g-0 d-flex p-3">
+    <div class="col-md-3 col-sm-12">
+      <img
+        class="preview-image image-width"
+        mat-card-image
+        src="/Poster/{{ movieDetails.movie.posterPath }}"
+        alt="No image available"
+      />
+      @if (movieDetails.userData) {
+      <div class="my-2 image-width">
+        @if (movieDetails.userData.isLoggedIn) {
+        <app-add-to-watchlist
+          [movieId]="movieDetails.movie.movieId"
+        ></app-add-to-watchlist>
+        }
       </div>
-    }
-
+      }
+    </div>
+    <div
+      class="col-md-9 col-sm-12 d-flex flex-column justify-content-between image-height"
+    >
+      <div class="d-flex justify-content-between">
+        <h1>{{ movieDetails.movie.title }}</h1>
+        <span>
+          <app-movie-rating
+            [movieRating]="movieDetails.movie.rating"
+          ></app-movie-rating>
+        </span>
+      </div>
+      <p class="my-4">{{ movieDetails.movie.overview }}</p>
+      <div class="d-flex justify-content-between">
+        <span
+          ><strong>Language</strong> : {{ movieDetails.movie.language }}</span
+        >
+        <span><strong>Genre</strong> : {{ movieDetails.movie.genre }}</span>
+        <span
+          ><strong>Duration</strong> :
+          {{ movieDetails.movie.duration | convertMinToHour }}</span
+        >
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<app-movie-summary [movieTitle]="movieDetails.movie.title"></app-movie-summary>
+<app-similar-movies></app-similar-movies>
+} @else {
+<div class="d-flex flex-column align-items-center mt-4">
+  <div>
+    <h1 class="display-4">No movies found.</h1>
+  </div>
+  <div>
+    <button mat-raised-button color="primary" [routerLink]="['/']">
+      Back to Home
+    </button>
+  </div>
+</div>
+}

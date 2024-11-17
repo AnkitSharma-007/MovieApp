@@ -6,8 +6,8 @@ import { UserRegistration } from '../models/userRegistration';
   providedIn: 'root',
 })
 export class UserService {
-  private http = inject(HttpClient);
-  baseURL = '/api/user/';
+  private readonly http = inject(HttpClient);
+  private readonly baseURL = '/api/user/';
 
   registerUser(userdetails: UserRegistration) {
     return this.http.post(this.baseURL, userdetails);

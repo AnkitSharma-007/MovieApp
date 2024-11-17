@@ -10,7 +10,7 @@ import { SubscriptionService } from './subscription.service';
 export class WatchlistService {
   private readonly http = inject(HttpClient);
   private readonly subscriptionService = inject(SubscriptionService);
-  baseURL = '/api/watchlist/';
+  private readonly baseURL = '/api/watchlist/';
 
   getWatchlistItems(userId: number) {
     return this.http.get<Movie[]>(this.baseURL + userId).pipe(

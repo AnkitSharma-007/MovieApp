@@ -31,9 +31,13 @@ import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import {
+  addMovie,
+  getGenres,
+  updateMovie,
+} from 'src/app/state/actions/movie.actions';
 import { selectGenres } from 'src/app/state/selectors/genre.selectors';
 import { MovieForm } from '../../models/movie-form';
-import { getGenres } from 'src/app/state/actions/movie.actions';
 
 @Component({
   selector: 'app-movie-form',
@@ -143,59 +147,16 @@ export class MovieFormComponent implements OnInit, OnDestroy {
     }
 
     if (this.files && this.files.length > 0) {
-      for (let j = 0; j < this.files.length; j++) {
-        this.formData.append('file' + j, this.files[j]);
-      }
+      this.formData.append('file', this.files[0]);
     }
 
     this.formData.append('movieFormData', JSON.stringify(this.movieForm.value));
 
     if (this.movieId) {
-      this.editMovieDetails();
+      this.store.dispatch(updateMovie({ movie: this.formData }));
     } else {
-      this.addMovie();
+      this.store.dispatch(addMovie({ movie: this.formData }));
     }
-  }
-
-  private addMovie() {
-    this.movieService
-      .addMovie(this.formData)
-      .pipe(
-        switchMap(() => this.movieService.fetchMovieData()),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe({
-        next: () => {
-          this.navigateToAdminPanel();
-        },
-        error: (error) => {
-          this.movieForm.reset();
-          this.snackBarService.showSnackBar(
-            'Error ocurred while adding movie data'
-          );
-          console.error('Error ocurred while adding movie data : ', error);
-        },
-      });
-  }
-
-  private editMovieDetails() {
-    this.movieService
-      .updateMovieDetails(this.formData)
-      .pipe(
-        switchMap(() => this.movieService.fetchMovieData()),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe({
-        next: () => {
-          this.navigateToAdminPanel();
-        },
-        error: (error) => {
-          this.snackBarService.showSnackBar(
-            'Error ocurred while updating movie data'
-          );
-          console.error('Error ocurred while updating movie data : ', error);
-        },
-      });
   }
 
   private setMovieFormData(movieFormData: Movie) {

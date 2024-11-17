@@ -3,6 +3,13 @@ import { HomeComponent } from '../components/home/home.component';
 import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
 import { AdminAuthGuard } from '../guards/admin-auth.guard';
 import { AuthGuard } from '../guards/auth.guard';
+import { provideEffects } from '@ngrx/effects';
+import { MovieUpdateEffects } from '../state/effects/movie-update.effects';
+import { provideState } from '@ngrx/store';
+import {
+  MOVIE_UPDATE_FEATURE_KEY,
+  movieUpdateReducer,
+} from '../state/reducers/movie-update.reducer';
 
 export const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -40,6 +47,10 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'admin/movies',
+    providers: [
+      provideEffects([MovieUpdateEffects]),
+      provideState(MOVIE_UPDATE_FEATURE_KEY, movieUpdateReducer),
+    ],
     loadChildren: () => import('./admin.routes').then((m) => m.ADMIN_ROUTES),
     canLoad: [AdminAuthGuard],
     canActivate: [AdminAuthGuard],

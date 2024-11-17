@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, shareReplay } from 'rxjs';
+import { map } from 'rxjs';
 import { Genre } from '../models/genre';
 import { Movie } from '../models/movie';
 
@@ -10,18 +10,9 @@ import { Movie } from '../models/movie';
 export class MovieService {
   private readonly http = inject(HttpClient);
   private readonly baseURL = 'api/movie';
-  movies$ = new BehaviorSubject<Movie[]>([]);
 
-  fetchMovieData() {
-    return this.getAllMovies().pipe(
-      map((result) => {
-        this.movies$.next(result);
-      })
-    );
-  }
-
-  private getAllMovies() {
-    return this.http.get<Movie[]>(this.baseURL).pipe(shareReplay(1));
+  getAllMovies() {
+    return this.http.get<Movie[]>(this.baseURL);
   }
 
   getsimilarMovies(movieId: number) {
@@ -31,8 +22,8 @@ export class MovieService {
   }
 
   getMovieById(movieId: number) {
-    return this.movies$.pipe(
-      map((movie) => movie.find((m) => m.movieId === movieId))
+    return this.getAllMovies().pipe(
+      map((movies) => movies.find((movie) => movie.movieId === movieId))
     );
   }
 

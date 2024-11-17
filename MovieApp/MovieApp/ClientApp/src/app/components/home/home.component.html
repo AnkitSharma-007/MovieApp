@@ -1,33 +1,29 @@
 @if (vm$ | async; as vm) {
-  <div class="row pt-3">
-    <div class="col-md-3 col-sm-12 d-flex justify-content-center">
-      <div class="filter-container">
-        <app-movie-filter [selectedGenre]="vm.selectedGenre"></app-movie-filter>
-        <app-movie-sort [selectedSort]="vm.selectedSort"></app-movie-sort>
-      </div>
+<div class="row pt-3">
+  <div class="col-md-3 col-sm-12 d-flex justify-content-center">
+    <div class="filter-container">
+      <app-movie-filter [selectedGenre]="vm.selectedGenre"></app-movie-filter>
+      <app-movie-sort [selectedSort]="vm.selectedSort"></app-movie-sort>
     </div>
-    <div class="col-md-9 mb-3">
-      @if (vm.movieList.length > 0) {
-        <div
-          class="d-flex justify-content-start flex-wrap mb-4"
-          >
-          @for (movie of vm.movieList; track movie) {
-            <div class="p-1">
-              <app-movie-card [movie]="movie"></app-movie-card>
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="d-flex justify-content-center mt-4">
-          <h1 class="display-4">No movies found.</h1>
-        </div>
+  </div>
+  <div class="col-md-9 mb-3">
+    @if (vm.movieList.length > 0) {
+    <div class="d-flex justify-content-start flex-wrap mb-4">
+      @for (movie of vm.movieList; track movie) {
+      <div class="p-1">
+        <app-movie-card [movie]="movie"></app-movie-card>
+      </div>
       }
     </div>
+    } @else {
+    <div class="d-flex justify-content-center mt-4">
+      <h1 class="display-4">No movies found.</h1>
+    </div>
+    }
   </div>
+</div>
 } @else {
-  <div class="d-flex justify-content-center mt-4">
-    <mat-spinner></mat-spinner>
-  </div>
+<div class="d-flex justify-content-center mt-4">
+  <mat-spinner></mat-spinner>
+</div>
 }
-
-

@@ -15,6 +15,13 @@ import {
   genreReducer,
 } from './app/state/reducers/genre.reducer';
 import { environment } from './environments/environment';
+import { MovieEffects } from './app/state/effects/movie.effects';
+import {
+  MOVIE_FEATURE_KEY,
+  movieReducer,
+} from './app/state/reducers/movie.reducer';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { ROUTER_FEATURE_KEY } from './app/state/selectors/router.selectors';
 
 if (environment.production) {
   enableProdMode();
@@ -32,7 +39,10 @@ bootstrapApplication(AppComponent, {
       })
     ),
     provideStore(),
-    provideEffects(GenreEffects),
+    provideEffects(GenreEffects, MovieEffects),
     provideState({ name: GENRE_FEATURE_KEY, reducer: genreReducer }),
+    provideState({ name: MOVIE_FEATURE_KEY, reducer: movieReducer }),
+    provideRouterStore(),
+    provideStore({ [ROUTER_FEATURE_KEY]: routerReducer }),
   ],
 }).catch((err) => console.error(err));

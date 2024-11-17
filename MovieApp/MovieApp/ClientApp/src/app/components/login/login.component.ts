@@ -1,24 +1,41 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { LoginForm } from 'src/app/models/loginForm';
 import { UserLogin } from 'src/app/models/userLogin';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
-import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -33,8 +50,8 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
     MatInput,
     MatIcon,
     MatSuffix,
-    MatCardActions
-],
+    MatCardActions,
+  ],
 })
 export class LoginComponent implements OnDestroy {
   protected loginForm!: FormGroup<LoginForm>;

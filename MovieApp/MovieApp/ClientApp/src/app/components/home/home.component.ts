@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { combineLatestWith, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
-import { MovieService } from 'src/app/services/movie.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { getMovies } from 'src/app/state/actions/movie.actions';
+import { selectMovies } from 'src/app/state/selectors/movie.selectors';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { MovieSortComponent } from '../movie-sort/movie-sort.component';
 import { MovieFilterComponent } from '../movie-filter/movie-filter.component';
-import { AsyncPipe } from '@angular/common';
+import { MovieSortComponent } from '../movie-sort/movie-sort.component';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +27,13 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class HomeComponent {
+  private readonly store = inject(Store);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly subscriptionService = inject(SubscriptionService);
+
   // Added the following two variables for better readability
   private readonly queryParams$ = this.activatedRoute.queryParams;
-  private readonly movie$ = this.movieService.movies$.asObservable();
+  private readonly movie$ = this.store.select(selectMovies);
 
   vm$ = this.queryParams$.pipe(
     combineLatestWith(this.movie$),
@@ -46,7 +52,7 @@ export class HomeComponent {
         );
         homeVm.movieList = filteredMovieByGenre;
       } else {
-        homeVm.movieList = movies;
+        homeVm.movieList = movies.slice();
       }
 
       if (homeVm.selectedSort) {
@@ -83,11 +89,9 @@ export class HomeComponent {
     })
   );
 
-  constructor(
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly movieService: MovieService,
-    private readonly subscriptionService: SubscriptionService
-  ) {}
+  constructor() {
+    this.store.dispatch(getMovies());
+  }
 }
 
 class Vm {

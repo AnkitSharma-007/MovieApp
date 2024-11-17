@@ -1,54 +1,48 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  OnDestroy,
-} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { MovieService } from 'src/app/services/movie.service';
-import { MatButton } from '@angular/material/button';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { MovieService } from 'src/app/services/movie.service';
+import { deleteMovie } from 'src/app/state/actions/movie.actions';
 
 @Component({
-    selector: 'app-delete-movie',
-    templateUrl: './delete-movie.component.html',
-    styleUrls: ['./delete-movie.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
+  selector: 'app-delete-movie',
+  templateUrl: './delete-movie.component.html',
+  styleUrls: ['./delete-movie.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
     MatDialogTitle,
     CdkScrollable,
     MatDialogContent,
     MatDialogActions,
     MatButton,
     MatDialogClose,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
-export class DeleteMovieComponent implements OnDestroy {
+export class DeleteMovieComponent {
+  private readonly movieService = inject(MovieService);
+  private readonly dialogRef = inject(MatDialogRef<DeleteMovieComponent>);
+  private readonly movieid = inject<number>(MAT_DIALOG_DATA);
+  private readonly store = inject(Store);
+
   movieData$ = this.movieService.getMovieById(this.movieid);
 
-  private destroyed$ = new ReplaySubject<void>(1);
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private readonly movieid: number,
-    private readonly movieService: MovieService
-  ) {}
-
-  confirmDelete(): void {
-    this.movieService
-      .deleteMovie(this.movieid)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe({
-        error: (error) =>
-          console.error('Error ocurred while deleting movie data : ', error),
-      });
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+  confirmDelete(): void {
+    this.store.dispatch(deleteMovie({ movieId: this.movieid }));
   }
 }
