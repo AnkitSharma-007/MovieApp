@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatBadge } from '@angular/material/badge';
 import { MatAnchor, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -8,23 +8,13 @@ import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  combineLatest,
-  EMPTY,
-  map,
-  ReplaySubject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
-import { User } from 'src/app/models/user';
-import { UserType } from 'src/app/models/userType';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { WatchlistService } from 'src/app/services/watchlist.service';
+import { combineLatest, map } from 'rxjs';
 import { logout } from 'src/app/state/actions/auth.actions';
 import {
   selectAuthenticatedUser,
   selectIsAuthenticated,
 } from 'src/app/state/selectors/auth.selectors';
+import { selectWatchlistItemsCount } from 'src/app/state/selectors/watchlist.selectors';
 import { SearchComponent } from '../search/search.component';
 
 @Component({
@@ -48,52 +38,24 @@ import { SearchComponent } from '../search/search.component';
     AsyncPipe,
   ],
 })
-export class NavBarComponent implements OnInit, OnDestroy {
-  private readonly subscriptionService = inject(SubscriptionService);
-  private readonly watchlistService = inject(WatchlistService);
+export class NavBarComponent {
   private readonly store = inject(Store);
-  readonly userType = UserType;
-  private destroyed$ = new ReplaySubject<void>(1);
 
   userState$ = combineLatest([
     this.store.select(selectIsAuthenticated),
     this.store.select(selectAuthenticatedUser),
+    this.store.select(selectWatchlistItemsCount),
   ]).pipe(
-    map(([isAuthenticated, user]) => {
+    map(([isAuthenticated, user, watchlistItemsCount]) => {
       return {
         isAuthenticated,
         user,
+        watchlistItemsCount,
       };
     })
   );
 
-  readonly watchlistItemcount$ = this.subscriptionService.watchlistItemcount$;
-
-  ngOnInit(): void {
-    this.store
-      .select(selectAuthenticatedUser)
-      .pipe(
-        takeUntil(this.destroyed$),
-        switchMap((user) => {
-          if (user) {
-            return this.watchlistService.getWatchlistItems(user.userId);
-          }
-          return EMPTY;
-        })
-      )
-      .subscribe({
-        error: (error) => {
-          console.error('Error ocurred while setting the Watchlist : ', error);
-        },
-      });
-  }
-
   logout() {
     this.store.dispatch(logout());
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

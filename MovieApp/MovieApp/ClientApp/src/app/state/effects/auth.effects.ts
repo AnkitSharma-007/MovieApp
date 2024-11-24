@@ -43,7 +43,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(logout),
         tap(() => {
-          this.authenticationService.logout();
           localStorage.clear();
           this.router.navigate(['/login']);
         })

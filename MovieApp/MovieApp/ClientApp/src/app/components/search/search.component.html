@@ -1,20 +1,18 @@
 <form>
   <input
-    (keydown.enter)="searchStore()"
+    (keydown.enter)="searchMovies()"
     class="searchbox"
     type="search"
     placeholder="Search movies by name or genre"
     [formControl]="searchControl"
     [matAutocomplete]="auto"
     (search)="cancelSearch()"
-    />
-  <mat-autocomplete (optionSelected)="searchStore()" #auto="matAutocomplete">
-    @for (movie of filteredMovie$ | async; track movie) {
-      <mat-option
-        [value]="movie.title"
-        >
-        {{ movie.title }}
-      </mat-option>
+  />
+  <mat-autocomplete (optionSelected)="searchMovies()" #auto="matAutocomplete">
+    @for (movie of filterSuggetions$ | async; track movie) {
+    <mat-option [value]="movie.title">
+      {{ movie.title }}
+    </mat-option>
     }
   </mat-autocomplete>
 </form>

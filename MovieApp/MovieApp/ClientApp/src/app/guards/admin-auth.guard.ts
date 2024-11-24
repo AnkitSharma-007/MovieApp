@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { UserType } from '../models/userType';
 import { selectAuthenticatedUser } from '../state/selectors/auth.selectors';
 
 @Injectable({
@@ -29,7 +28,7 @@ export class AdminAuthGuard {
     | UrlTree {
     return this.store.select(selectAuthenticatedUser).pipe(
       map((user) => {
-        if (user?.userTypeName === UserType.Admin) {
+        if (user?.userTypeName == 'Admin') {
           return true;
         }
         this.router.navigate(['/login'], {
@@ -63,7 +62,7 @@ export class AdminAuthGuard {
 
     return this.store.select(selectAuthenticatedUser).pipe(
       map((user) => {
-        if (user?.userTypeName === UserType.Admin) {
+        if (user?.userTypeName == 'Admin') {
           return true;
         }
         this.router.navigate(['/login'], {

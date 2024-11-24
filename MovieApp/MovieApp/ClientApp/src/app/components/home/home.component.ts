@@ -5,8 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { getMovies } from 'src/app/state/actions/movie.actions';
+import {
+  getMovies,
+  setSearchItemValue,
+} from 'src/app/state/actions/movie.actions';
 import { selectMovies } from 'src/app/state/selectors/movie.selectors';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MovieFilterComponent } from '../movie-filter/movie-filter.component';
@@ -29,7 +31,6 @@ import { MovieSortComponent } from '../movie-sort/movie-sort.component';
 export class HomeComponent {
   private readonly store = inject(Store);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly subscriptionService = inject(SubscriptionService);
 
   // Added the following two variables for better readability
   private readonly queryParams$ = this.activatedRoute.queryParams;
@@ -44,7 +45,9 @@ export class HomeComponent {
       homeVm.selectedSort = params['sortBy'];
       homeVm.selectedFilter = params['item'];
 
-      this.subscriptionService.searchItemValue$.next(homeVm.selectedFilter);
+      this.store.dispatch(
+        setSearchItemValue({ searchItem: homeVm.selectedFilter })
+      );
 
       if (homeVm.selectedGenre) {
         const filteredMovieByGenre = movies.filter(

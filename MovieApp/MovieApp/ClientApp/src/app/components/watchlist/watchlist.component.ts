@@ -1,38 +1,41 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
-import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
-import { SnackbarService } from 'src/app/services/snackbar.service';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { WatchlistService } from 'src/app/services/watchlist.service';
-import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
-import { RouterLink } from '@angular/router';
-import { MatTooltip } from '@angular/material/tooltip';
-import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
-  MatCell,
-  MatHeaderRowDef,
-  MatHeaderRow,
-  MatRowDef,
-  MatRow,
-} from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
-import { AsyncPipe } from '@angular/common';
 import {
   MatCard,
+  MatCardContent,
   MatCardHeader,
   MatCardTitle,
-  MatCardContent,
 } from '@angular/material/card';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import {
+  clearWatchlist,
+  getWatchlist,
+} from 'src/app/state/actions/watchlist.actions';
 import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors';
+import { selectWatchlistItems } from 'src/app/state/selectors/watchlist.selectors';
+import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
 
 @Component({
   selector: 'app-watchlist',
@@ -62,11 +65,11 @@ import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors'
     AsyncPipe,
   ],
 })
-export class WatchlistComponent implements OnDestroy {
+export class WatchlistComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
-
+  protected readonly watchlistItems$ = this.store.select(selectWatchlistItems);
+  userId = 0;
   private destroyed$ = new ReplaySubject<void>(1);
-  watchlistItems$ = this.subscriptionService.watchlistItem$;
 
   displayedColumns: string[] = [
     'poster',
@@ -76,33 +79,20 @@ export class WatchlistComponent implements OnDestroy {
     'action',
   ];
 
-  constructor(
-    private readonly watchlistService: WatchlistService,
-    private readonly subscriptionService: SubscriptionService,
-    private readonly snackBarService: SnackbarService
-  ) {}
-
-  clearWatchlist() {
+  ngOnInit(): void {
+    this.store.dispatch(getWatchlist());
     this.store
       .select(selectAuthenticatedUser)
-      .pipe(
-        switchMap((user) => {
-          if (user) {
-            return this.watchlistService.clearWatchlist(user.userId);
-          } else {
-            return EMPTY;
-          }
-        }),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe({
-        next: () => {
-          this.snackBarService.showSnackBar('Watchlist cleared!!!');
-        },
-        error: (error) => {
-          console.error('Error ocurred while deleting the Watchlist : ', error);
-        },
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((user) => {
+        if (user) {
+          this.userId = user.userId;
+        }
       });
+  }
+
+  clearWatchlist() {
+    this.store.dispatch(clearWatchlist({ userId: this.userId }));
   }
 
   ngOnDestroy(): void {

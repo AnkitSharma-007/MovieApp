@@ -28,6 +28,11 @@ import {
   authReducer,
 } from './app/state/reducers/auth.reducers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import {
+  WATCHLIST_FEATURE_KEY,
+  watchlistReducer,
+} from './app/state/reducers/watchlist.reducers';
+import { WatchlistEffects } from './app/state/effects/watchlist.effects';
 
 if (environment.production) {
   enableProdMode();
@@ -45,10 +50,11 @@ bootstrapApplication(AppComponent, {
       })
     ),
     provideStore(),
-    provideEffects(GenreEffects, MovieEffects, AuthEffects),
+    provideEffects(GenreEffects, MovieEffects, AuthEffects, WatchlistEffects),
     provideState({ name: GENRE_FEATURE_KEY, reducer: genreReducer }),
     provideState({ name: MOVIE_FEATURE_KEY, reducer: movieReducer }),
     provideState({ name: AUTH_FEATURE_KEY, reducer: authReducer }),
+    provideState({ name: WATCHLIST_FEATURE_KEY, reducer: watchlistReducer }),
     provideRouterStore(),
     provideStore({ [ROUTER_FEATURE_KEY]: routerReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),

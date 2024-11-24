@@ -65,3 +65,8 @@ export const deleteMovieFailure = createAction(
 export const cancelMovieFormNavigation = createAction(
   '[Movie] Cancel Movie Form Navigation'
 );
+
+export const setSearchItemValue = createAction(
+  '[Movie] Set Search Item Value',
+  props<{ searchItem: string }>()
+);

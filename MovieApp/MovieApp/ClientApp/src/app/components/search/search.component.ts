@@ -16,13 +16,16 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   combineLatestWith,
+  distinctUntilChanged,
   map,
   ReplaySubject,
   startWith,
   takeUntil,
 } from 'rxjs';
-import { SubscriptionService } from 'src/app/services/subscription.service';
-import { selectMovies } from 'src/app/state/selectors/movie.selectors';
+import {
+  selectMovies,
+  selectSearchItemValue,
+} from 'src/app/state/selectors/movie.selectors';
 
 @Component({
   selector: 'app-search',
@@ -41,15 +44,15 @@ import { selectMovies } from 'src/app/state/selectors/movie.selectors';
 export class SearchComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
-  private readonly subscriptionService = inject(SubscriptionService);
 
-  searchControl = new FormControl<string>('', { nonNullable: true });
+  searchControl = new FormControl('', { nonNullable: true });
   private destroyed$ = new ReplaySubject<void>(1);
   private readonly movie$ = this.store.select(selectMovies);
 
-  filteredMovie$ = this.searchControl.valueChanges.pipe(
+  filterSuggetions$ = this.searchControl.valueChanges.pipe(
     startWith(''),
     combineLatestWith(this.movie$),
+    distinctUntilChanged(),
     map(([searchValue, movies]) => {
       const value = searchValue.toLowerCase();
       if (value.length > 0) {
@@ -68,26 +71,25 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.setSearchControlValue();
   }
 
-  searchStore() {
+  searchMovies() {
     const searchItem = this.searchControl.value;
-    if (searchItem !== '') {
+    if (searchItem) {
       this.router.navigate(['/search'], {
         queryParams: {
           item: searchItem.toLowerCase(),
         },
       });
+    } else {
+      this.cancelSearch();
     }
   }
 
   private setSearchControlValue() {
-    this.subscriptionService.searchItemValue$
+    this.store
+      .select(selectSearchItemValue)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((data) => {
-        if (data) {
-          this.searchControl.setValue(data);
-        } else {
-          this.searchControl.setValue('');
-        }
+        this.searchControl.setValue(data ?? '');
       });
   }
 

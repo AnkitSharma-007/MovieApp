@@ -17,7 +17,7 @@
         [routerLink]="['/watchlist']"
       >
         <mat-icon
-          matBadge="{{ watchlistItemcount$ | async }}"
+          matBadge="{{ userState.watchlistItemsCount }}"
           matBadgeColor="warn"
           >queue</mat-icon
         >
@@ -31,7 +31,7 @@
       >
         Login
       </a>
-      } @if (userState.user?.userTypeName == userType.Admin) {
+      } @if (userState.user?.userTypeName == 'Admin') {
       <a
         mat-flat-button
         color="primary"

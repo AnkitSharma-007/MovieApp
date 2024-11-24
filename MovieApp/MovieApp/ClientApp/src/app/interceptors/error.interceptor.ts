@@ -5,20 +5,21 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { catchError, throwError } from 'rxjs';
-import { AuthenticationService } from '../services/authentication.service';
+import { logout } from '../state/actions/auth.actions';
 
 export const ErrorInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) => {
-  const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
+  const store = inject(Store);
 
   return next(request).pipe(
     catchError((error) => {
       if (error.status == 401) {
-        authenticationService.logout();
+        store.dispatch(logout());
         if (!request.url.includes('login')) {
           location.reload();
         }

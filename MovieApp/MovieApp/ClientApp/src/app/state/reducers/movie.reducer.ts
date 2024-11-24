@@ -5,6 +5,7 @@ import {
   getMovies,
   getMoviesFailure,
   getMoviesSuccess,
+  setSearchItemValue,
 } from '../actions/movie.actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
@@ -12,6 +13,7 @@ export const MOVIE_FEATURE_KEY = 'movie';
 
 export interface MovieState {
   movies: EntityState<Movie>;
+  searchItem: string;
   movieCallState: CallState;
 }
 
@@ -24,6 +26,7 @@ export const movieAdapter: EntityAdapter<Movie> = createEntityAdapter<Movie>({
 
 const initialMovieState: MovieState = {
   movies: movieAdapter.getInitialState(),
+  searchItem: '',
   movieCallState: LoadingState.INIT,
 };
 
@@ -41,5 +44,9 @@ export const movieReducer = createReducer(
   on(getMoviesFailure, (state, { errorMessage }) => ({
     ...state,
     movieCallState: { errorMessage },
+  })),
+  on(setSearchItemValue, (state, { searchItem }) => ({
+    ...state,
+    searchItem,
   }))
 );

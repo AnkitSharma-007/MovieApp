@@ -31,6 +31,11 @@ export const selectCurrentMovieDetails = createSelector(
 );
 
 export const selectMoviesCallState = createSelector(
-  selectMovieState,
-  (state) => state.entities['callState']
+  selectMoviesFeatureState,
+  (state) => state.movieCallState
+);
+
+export const selectSearchItemValue = createSelector(
+  selectMoviesFeatureState,
+  (state) => state.searchItem
 );
