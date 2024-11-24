@@ -11,7 +11,10 @@ import {
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, map } from 'rxjs';
-import { SubscriptionService } from 'src/app/services/subscription.service';
+import {
+  selectAuthenticatedUser,
+  selectIsAuthenticated,
+} from 'src/app/state/selectors/auth.selectors';
 import { selectCurrentMovieDetails } from 'src/app/state/selectors/movie.selectors';
 import { ConvertMinToHourPipe } from '../../pipes/convert-min-to-hour.pipe';
 import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
@@ -43,19 +46,20 @@ import { SimilarMoviesComponent } from '../similar-movies/similar-movies.compone
 })
 export class MovieDetailsComponent {
   private readonly store = inject(Store);
-  private readonly subscriptionService = inject(SubscriptionService);
 
   movieDetails$ = combineLatest([
     this.store.select(selectCurrentMovieDetails),
-    this.subscriptionService.userData$.asObservable(),
+    this.store.select(selectAuthenticatedUser),
+    this.store.select(selectIsAuthenticated),
   ]).pipe(
-    map(([movie, userData]) => {
+    map(([movie, userData, isAuthenticated]) => {
       if (movie === undefined) {
         return null;
       } else {
         return {
           movie,
           userData,
+          isAuthenticated,
         };
       }
     })

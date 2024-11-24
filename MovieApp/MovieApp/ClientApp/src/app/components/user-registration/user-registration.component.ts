@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormGroup,
   NonNullableFormBuilder,
@@ -22,14 +22,13 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { Router, RouterLink } from '@angular/router';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { UserRegistration } from 'src/app/models/userRegistration';
 import { UserRegistrationForm } from 'src/app/models/userRegistrationForm';
 import { CustomFormValidatorService } from 'src/app/services/custom-form-validator.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
 import { UserNameValidationService } from 'src/app/services/user-name-validation.service';
-import { UserService } from 'src/app/services/user.service';
+import { register } from 'src/app/state/actions/auth.actions';
 
 @Component({
   selector: 'app-user-registration',
@@ -55,25 +54,19 @@ import { UserService } from 'src/app/services/user.service';
     MatCardActions,
   ],
 })
-export class UserRegistrationComponent implements OnDestroy {
-  protected userRegistrationForm!: FormGroup<UserRegistrationForm>;
-  private destroyed$ = new ReplaySubject<void>(1);
+export class UserRegistrationComponent {
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly userNameValidationService = inject(
+    UserNameValidationService
+  );
+  private readonly customFormValidator = inject(CustomFormValidatorService);
+  private readonly store = inject(Store);
+
   showPassword = false;
   showConfirmPassword = false;
 
-  constructor(
-    private readonly userService: UserService,
-    private readonly router: Router,
-    private readonly formBuilder: NonNullableFormBuilder,
-    private readonly userNameValidationService: UserNameValidationService,
-    private readonly customFormValidator: CustomFormValidatorService,
-    private readonly snackBarService: SnackbarService
-  ) {
-    this.initializeForm();
-  }
-
-  private initializeForm(): void {
-    this.userRegistrationForm = this.formBuilder.group(
+  protected userRegistrationForm: FormGroup<UserRegistrationForm> =
+    this.formBuilder.group(
       {
         firstName: this.formBuilder.control('', Validators.required),
         lastName: this.formBuilder.control('', Validators.required),
@@ -102,34 +95,18 @@ export class UserRegistrationComponent implements OnDestroy {
         ],
       }
     );
-  }
 
   registerUser(): void {
     if (this.userRegistrationForm.valid) {
-      this.userService
-        .registerUser(this.userRegistrationForm.value as UserRegistration)
-        .pipe(takeUntil(this.destroyed$))
-        .subscribe({
-          next: () => {
-            this.router.navigate(['/login']);
-          },
-          error: (error) => {
-            this.snackBarService.showSnackBar('Error occurred!! Try again');
-            console.error(
-              'error occurred while trying to register a new user : ',
-              error
-            );
-          },
-        });
+      this.store.dispatch(
+        register({
+          userdetails: this.userRegistrationForm.value as UserRegistration,
+        })
+      );
     }
   }
 
   protected get registrationFormControl() {
     return this.userRegistrationForm.controls;
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

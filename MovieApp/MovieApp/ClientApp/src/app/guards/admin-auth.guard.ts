@@ -1,17 +1,23 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  Route,
+  Router,
+  RouterStateSnapshot,
+  UrlSegment,
+  UrlTree,
+} from '@angular/router';
+import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { UserType } from '../models/userType';
-import { SubscriptionService } from '../services/subscription.service';
+import { selectAuthenticatedUser } from '../state/selectors/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AdminAuthGuard  {
-  constructor(
-    private router: Router,
-    private subscriptionService: SubscriptionService
-  ) {}
+export class AdminAuthGuard {
+  private readonly store = inject(Store);
+  private readonly router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -21,9 +27,9 @@ export class AdminAuthGuard  {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.subscriptionService.userData$.pipe(
+    return this.store.select(selectAuthenticatedUser).pipe(
       map((user) => {
-        if (user.userTypeName === UserType.Admin) {
+        if (user?.userTypeName === UserType.Admin) {
           return true;
         }
         this.router.navigate(['/login'], {
@@ -55,9 +61,9 @@ export class AdminAuthGuard  {
     | UrlTree {
     const url = `/${route.path}`;
 
-    return this.subscriptionService.userData$.pipe(
+    return this.store.select(selectAuthenticatedUser).pipe(
       map((user) => {
-        if (user.userTypeName === UserType.Admin) {
+        if (user?.userTypeName === UserType.Admin) {
           return true;
         }
         this.router.navigate(['/login'], {

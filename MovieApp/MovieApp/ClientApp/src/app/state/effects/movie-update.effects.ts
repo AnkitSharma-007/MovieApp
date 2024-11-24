@@ -2,13 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, map, tap } from 'rxjs/operators';
 import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import {
   addMovie,
   addMovieFailure,
   addMovieSuccess,
+  cancelMovieFormNavigation,
   deleteMovie,
   deleteMovieFailure,
   deleteMovieSuccess,
@@ -40,7 +41,7 @@ export class MovieUpdateEffects {
   updateMovie$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateMovie),
-      concatMap((action) =>
+      exhaustMap((action) =>
         this.movieService.updateMovieDetails(action.movie).pipe(
           map(() => updateMovieSuccess()),
           tap(() => this.navigateToAdminPanel()),
@@ -87,14 +88,14 @@ export class MovieUpdateEffects {
       this.actions$.pipe(
         ofType(addMovieFailure, updateMovieFailure),
         tap(({ errorMessage }) => {
-          this.snackBarService.showSnackBar(`Error ocurred: Please try again`);
+          this.snackBarService.showSnackBar(`Error occurred: Please try again`);
           console.error(
-            'Error ocurred while adding/updating movie data : ',
+            'Error occurred while adding/updating movie data : ',
             errorMessage
           );
         })
       ),
-    { dispatch: false }
+    { dispatch: false, useEffectsErrorHandler: false }
   );
 
   handleDeleteMovieSuccessMessage$ = createEffect(
@@ -113,12 +114,21 @@ export class MovieUpdateEffects {
       this.actions$.pipe(
         ofType(deleteMovieFailure),
         tap(({ errorMessage }) => {
-          this.snackBarService.showSnackBar(`Error ocurred: Please try again`);
+          this.snackBarService.showSnackBar(`Error occurred: Please try again`);
           console.error(
-            'Error ocurred while deleting movie data : ',
+            'Error occurred while deleting movie data : ',
             errorMessage
           );
         })
+      ),
+    { dispatch: false }
+  );
+
+  handleCancel$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cancelMovieFormNavigation),
+        tap(() => this.navigateToAdminPanel())
       ),
     { dispatch: false }
   );

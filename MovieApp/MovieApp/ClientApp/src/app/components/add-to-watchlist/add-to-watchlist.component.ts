@@ -1,12 +1,14 @@
-import { Component, input, Input, OnChanges, OnDestroy } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { WatchlistService } from 'src/app/services/watchlist.service';
-import { MatIcon } from '@angular/material/icon';
-import { NgClass } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors';
 
 @Component({
   selector: 'app-add-to-watchlist',
@@ -16,6 +18,8 @@ import { MatButton } from '@angular/material/button';
   imports: [MatButton, NgClass, MatIcon],
 })
 export class AddToWatchlistComponent implements OnChanges, OnDestroy {
+  private readonly store = inject(Store);
+
   @Input()
   movieId = 0;
 
@@ -43,14 +47,13 @@ export class AddToWatchlistComponent implements OnChanges, OnDestroy {
     this.toggle = !this.toggle;
     this.setButtonText();
 
-    this.subscriptionService.userData$
-      .asObservable()
+    this.store
+      .select(selectAuthenticatedUser)
       .pipe(
         switchMap((user) => {
-          const userId = user.userId;
-          if (userId > 0) {
+          if (user) {
             return this.watchlistService.toggleWatchlistItem(
-              userId,
+              user.userId,
               this.movieId
             );
           } else {

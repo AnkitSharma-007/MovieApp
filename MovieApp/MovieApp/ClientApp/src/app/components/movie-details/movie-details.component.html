@@ -13,7 +13,7 @@
       />
       @if (movieDetails.userData) {
       <div class="my-2 image-width">
-        @if (movieDetails.userData.isLoggedIn) {
+        @if (movieDetails.isAuthenticated) {
         <app-add-to-watchlist
           [movieId]="movieDetails.movie.movieId"
         ></app-add-to-watchlist>

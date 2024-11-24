@@ -4,7 +4,6 @@ export class User {
   lastName: string;
   username: string;
   userTypeName: string;
-  isLoggedIn: boolean;
 
   constructor() {
     this.userId = 0;
@@ -12,6 +11,5 @@ export class User {
     this.lastName = '';
     this.username = '';
     this.userTypeName = '';
-    this.isLoggedIn = false;
   }
 }

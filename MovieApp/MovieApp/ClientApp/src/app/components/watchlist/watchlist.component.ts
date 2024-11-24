@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+} from '@angular/core';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -6,18 +11,36 @@ import { WatchlistService } from 'src/app/services/watchlist.service';
 import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
 import { RouterLink } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardContent,
+} from '@angular/material/card';
+import { Store } from '@ngrx/store';
+import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors';
 
 @Component({
-    selector: 'app-watchlist',
-    templateUrl: './watchlist.component.html',
-    styleUrls: ['./watchlist.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
+  selector: 'app-watchlist',
+  templateUrl: './watchlist.component.html',
+  styleUrls: ['./watchlist.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -36,10 +59,12 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/m
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
 export class WatchlistComponent implements OnDestroy {
+  private readonly store = inject(Store);
+
   private destroyed$ = new ReplaySubject<void>(1);
   watchlistItems$ = this.subscriptionService.watchlistItem$;
 
@@ -58,13 +83,12 @@ export class WatchlistComponent implements OnDestroy {
   ) {}
 
   clearWatchlist() {
-    this.subscriptionService.userData$
-      .asObservable()
+    this.store
+      .select(selectAuthenticatedUser)
       .pipe(
         switchMap((user) => {
-          const userId = user.userId;
-          if (userId > 0) {
-            return this.watchlistService.clearWatchlist(userId);
+          if (user) {
+            return this.watchlistService.clearWatchlist(user.userId);
           } else {
             return EMPTY;
           }

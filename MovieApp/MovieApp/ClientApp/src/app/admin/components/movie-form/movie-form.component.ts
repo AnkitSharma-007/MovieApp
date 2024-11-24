@@ -25,7 +25,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
@@ -33,6 +33,7 @@ import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import {
   addMovie,
+  cancelMovieFormNavigation,
   getGenres,
   updateMovie,
 } from 'src/app/state/actions/movie.actions';
@@ -69,7 +70,6 @@ export class MovieFormComponent implements OnInit, OnDestroy {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly movieService = inject(MovieService);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackbarService);
 
   protected movieForm: FormGroup<MovieForm> = this.formBuilder.group({
@@ -183,7 +183,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
   }
 
   navigateToAdminPanel() {
-    this.router.navigate(['/admin/movies']);
+    this.store.dispatch(cancelMovieFormNavigation());
   }
 
   ngOnDestroy(): void {

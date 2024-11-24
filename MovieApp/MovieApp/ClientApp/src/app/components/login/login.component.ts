@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+} from '@angular/core';
 import {
   FormGroup,
   NonNullableFormBuilder,
@@ -13,11 +18,10 @@ import {
 } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ReplaySubject, switchMap, takeUntil } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { map, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { LoginForm } from 'src/app/models/loginForm';
 import { UserLogin } from 'src/app/models/userLogin';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 
 import { MatButton } from '@angular/material/button';
 import {
@@ -28,6 +32,9 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
+import { Store } from '@ngrx/store';
+import { login } from 'src/app/state/actions/auth.actions';
+import { selectLoginError } from 'src/app/state/selectors/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -54,25 +61,15 @@ import {
   ],
 })
 export class LoginComponent implements OnDestroy {
-  protected loginForm!: FormGroup<LoginForm>;
+  private readonly store = inject(Store);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  protected loginForm: FormGroup<LoginForm> = this.formBuilder.group({
+    username: this.formBuilder.control('', Validators.required),
+    password: this.formBuilder.control('', Validators.required),
+  });
   private destroyed$ = new ReplaySubject<void>(1);
   showPassword = false;
-
-  constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly formBuilder: NonNullableFormBuilder,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
-  ) {
-    this.initializeForm();
-  }
-
-  private initializeForm(): void {
-    this.loginForm = this.formBuilder.group({
-      username: this.formBuilder.control('', Validators.required),
-      password: this.formBuilder.control('', Validators.required),
-    });
-  }
 
   protected get loginFormControl() {
     return this.loginForm.controls;
@@ -80,31 +77,25 @@ export class LoginComponent implements OnDestroy {
 
   login() {
     if (this.loginForm.valid) {
-      this.authenticationService
-        .login(
-          // TODO: Can we remove as??
-          this.loginForm.value as UserLogin
-        )
-        .pipe(
-          switchMap(() => {
-            return this.activatedRoute.queryParams;
-          }),
-          takeUntil(this.destroyed$)
-        )
-        .subscribe({
-          next: (params) => {
-            const returnUrl = params['returnUrl'] || '/';
-            this.router.navigate([returnUrl]);
-          },
-          error: (error) => {
-            this.loginForm.reset();
-            this.loginForm.setErrors({
-              invalidLogin: true,
-            });
-            console.error('Error ocurred while login : ', error);
-          },
-        });
+      this.store.dispatch(
+        login({
+          loginCredentials: this.loginForm.value as UserLogin,
+        })
+      );
     }
+
+    this.store
+      .select(selectLoginError)
+      .pipe(
+        takeUntil(this.destroyed$),
+        map((error) => {
+          if (error) {
+            this.loginForm.setErrors({ loginError: error });
+            this.loginForm.reset();
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

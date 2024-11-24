@@ -30,7 +30,7 @@ export const selectCurrentMovieDetails = createSelector(
   }
 );
 
-export const selectProductsCallState = createSelector(
+export const selectMoviesCallState = createSelector(
   selectMovieState,
   (state) => state.entities['callState']
 );
