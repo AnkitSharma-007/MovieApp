@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, combineLatest, map, of, switchMap, take, tap } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import {
   login,
@@ -10,29 +12,32 @@ import {
   logout,
   setAuthState,
 } from '../actions/auth.actions';
-import { User } from 'src/app/models/user';
+import { selectQueryParams } from '../selectors/router.selectors';
 
 @Injectable()
 export class AuthEffects {
   private readonly actions$ = inject(Actions);
   private readonly authenticationService = inject(AuthenticationService);
   private readonly router = inject(Router);
+  private readonly store = inject(Store);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
       switchMap((action) =>
-        this.authenticationService.login(action.loginCredentials).pipe(
-          map((response) => {
+        combineLatest([
+          this.store.select(selectQueryParams),
+          this.authenticationService.login(action.loginCredentials),
+        ]).pipe(
+          take(1),
+          map(([queryParam, response]) => {
             localStorage.setItem('authToken', response?.token);
+            this.router.navigate([queryParam['returnUrl'] ?? '/']);
             return loginSuccess();
           }),
-          tap(() => {
-            this.router.navigate(['/']);
-          }),
-          catchError((error: unknown) => {
-            return of(loginFailure({ errorMessage: error as string }));
-          })
+          catchError((error: any) =>
+            of(loginFailure({ errorMessage: new Error(error).message }))
+          )
         )
       )
     )

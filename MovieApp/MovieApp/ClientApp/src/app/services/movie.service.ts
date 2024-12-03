@@ -28,11 +28,11 @@ export class MovieService {
   }
 
   addMovie(movie: FormData) {
-    return this.http.post(this.baseURL, movie);
+    return this.http.post<Movie>(this.baseURL, movie);
   }
 
   updateMovieDetails(movie: FormData) {
-    return this.http.put(this.baseURL, movie);
+    return this.http.put<Movie>(this.baseURL, movie);
   }
 
   deleteMovie(movieId: number) {

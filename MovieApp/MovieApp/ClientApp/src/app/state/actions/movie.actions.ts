@@ -31,7 +31,10 @@ export const addMovie = createAction(
   props<{ movie: FormData }>()
 );
 
-export const addMovieSuccess = createAction('[Movie] Add Movie Success');
+export const addMovieSuccess = createAction(
+  '[Movie] Add Movie Success',
+  props<{ movie: Movie }>()
+);
 
 export const addMovieFailure = createAction(
   '[Movie] Add Movie Failure',
@@ -43,7 +46,10 @@ export const updateMovie = createAction(
   props<{ movie: FormData }>()
 );
 
-export const updateMovieSuccess = createAction('[Movie] Update Movie Success');
+export const updateMovieSuccess = createAction(
+  '[Movie] Update Movie Success',
+  props<{ movie: Movie }>()
+);
 
 export const updateMovieFailure = createAction(
   '[Movie] Update Movie Failure',
@@ -55,7 +61,10 @@ export const deleteMovie = createAction(
   props<{ movieId: number }>()
 );
 
-export const deleteMovieSuccess = createAction('[Movie] Delete Movie Success');
+export const deleteMovieSuccess = createAction(
+  '[Movie] Delete Movie Success',
+  props<{ movieId: number }>()
+);
 
 export const deleteMovieFailure = createAction(
   '[Movie] Delete Movie Failure',

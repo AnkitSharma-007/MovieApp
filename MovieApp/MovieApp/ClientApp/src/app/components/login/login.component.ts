@@ -1,28 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnDestroy,
-} from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  MatError,
-  MatFormField,
-  MatLabel,
-  MatSuffix,
-} from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
-import { map, ReplaySubject, switchMap, takeUntil } from 'rxjs';
-import { LoginForm } from 'src/app/models/loginForm';
-import { UserLogin } from 'src/app/models/userLogin';
-
 import { MatButton } from '@angular/material/button';
 import {
   MatCard,
@@ -32,7 +15,19 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
+import { LoginForm } from 'src/app/models/loginForm';
+import { UserLogin } from 'src/app/models/userLogin';
 import { login } from 'src/app/state/actions/auth.actions';
 import { selectLoginError } from 'src/app/state/selectors/auth.selectors';
 
@@ -58,9 +53,10 @@ import { selectLoginError } from 'src/app/state/selectors/auth.selectors';
     MatIcon,
     MatSuffix,
     MatCardActions,
+    AsyncPipe,
   ],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   private readonly store = inject(Store);
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
@@ -68,8 +64,17 @@ export class LoginComponent implements OnDestroy {
     username: this.formBuilder.control('', Validators.required),
     password: this.formBuilder.control('', Validators.required),
   });
-  private destroyed$ = new ReplaySubject<void>(1);
   showPassword = false;
+
+  error$ = this.store.select(selectLoginError).pipe(
+    map((error) => {
+      if (error?.includes('Unauthorized')) {
+        this.loginForm.reset();
+        this.loginForm.setErrors({ invalidCredentials: true });
+      }
+      return error;
+    })
+  );
 
   protected get loginFormControl() {
     return this.loginForm.controls;
@@ -83,23 +88,5 @@ export class LoginComponent implements OnDestroy {
         })
       );
     }
-
-    this.store
-      .select(selectLoginError)
-      .pipe(
-        takeUntil(this.destroyed$),
-        map((error) => {
-          if (error) {
-            this.loginForm.setErrors({ loginError: error });
-            this.loginForm.reset();
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

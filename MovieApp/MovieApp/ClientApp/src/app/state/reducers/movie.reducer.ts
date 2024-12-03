@@ -1,18 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { Movie } from 'src/app/models/movie';
 import { CallState, LoadingState } from 'src/app/shared/call-state';
-import {
-  getMovies,
-  getMoviesFailure,
-  getMoviesSuccess,
-  setSearchItemValue,
-} from '../actions/movie.actions';
+import * as movieActions from '../actions/movie.actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export const MOVIE_FEATURE_KEY = 'movie';
 
-export interface MovieState {
-  movies: EntityState<Movie>;
+export interface MovieState extends EntityState<Movie> {
   searchItem: string;
   movieCallState: CallState;
 }
@@ -24,29 +18,74 @@ export const movieAdapter: EntityAdapter<Movie> = createEntityAdapter<Movie>({
   selectId: (movie) => movie.movieId,
 });
 
-const initialMovieState: MovieState = {
-  movies: movieAdapter.getInitialState(),
+const initialMovieState: MovieState = movieAdapter.getInitialState({
   searchItem: '',
   movieCallState: LoadingState.INIT,
-};
+});
 
 export const movieReducer = createReducer(
   initialMovieState,
-  on(getMovies, (state) => ({
+  on(movieActions.getMovies, (state) => ({
     ...state,
     movieCallState: LoadingState.LOADING,
   })),
-  on(getMoviesSuccess, (state, { movies }) => ({
-    ...state,
-    movies: movieAdapter.setAll(movies, state.movies),
-    movieCallState: LoadingState.LOADED,
-  })),
-  on(getMoviesFailure, (state, { errorMessage }) => ({
+  on(movieActions.getMoviesSuccess, (state, { movies }) =>
+    movieAdapter.setAll(movies, {
+      ...state,
+      movieCallState: LoadingState.LOADED,
+    })
+  ),
+  on(movieActions.getMoviesFailure, (state, { errorMessage }) => ({
     ...state,
     movieCallState: { errorMessage },
   })),
-  on(setSearchItemValue, (state, { searchItem }) => ({
+  on(movieActions.setSearchItemValue, (state, { searchItem }) => ({
     ...state,
     searchItem,
+  })),
+  on(movieActions.addMovie, (state) => ({
+    ...state,
+    movieCallState: LoadingState.LOADING,
+  })),
+  on(movieActions.addMovieSuccess, (state, { movie }) =>
+    movieAdapter.addOne(movie, {
+      ...state,
+      movieCallState: LoadingState.LOADED,
+    })
+  ),
+  on(movieActions.addMovieFailure, (state, { errorMessage }) => ({
+    ...state,
+    movieCallState: { errorMessage },
+  })),
+  on(movieActions.updateMovie, (state) => ({
+    ...state,
+    movieCallState: LoadingState.LOADING,
+  })),
+  on(movieActions.updateMovieSuccess, (state, { movie }) =>
+    movieAdapter.updateOne(
+      { id: movie.movieId, changes: movie },
+      {
+        ...state,
+        movieCallState: LoadingState.LOADED,
+      }
+    )
+  ),
+  on(movieActions.updateMovieFailure, (state, { errorMessage }) => ({
+    ...state,
+    movieCallState: { errorMessage },
+  })),
+  on(movieActions.deleteMovie, (state) => ({
+    ...state,
+    movieCallState: LoadingState.LOADING,
+  })),
+  on(movieActions.deleteMovieSuccess, (state, { movieId }) =>
+    movieAdapter.removeOne(movieId, {
+      ...state,
+      movieCallState: LoadingState.LOADED,
+    })
+  ),
+  on(movieActions.deleteMovieFailure, (state, { errorMessage }) => ({
+    ...state,
+    movieCallState: { errorMessage },
   }))
 );

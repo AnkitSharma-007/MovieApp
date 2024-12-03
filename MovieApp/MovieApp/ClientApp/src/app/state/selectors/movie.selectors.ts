@@ -9,15 +9,13 @@ import { selectRouterParam } from './router.selectors';
 const selectMoviesFeatureState =
   createFeatureSelector<MovieState>(MOVIE_FEATURE_KEY);
 
-const selectMovieState = createSelector(
-  selectMoviesFeatureState,
-  (state) => state.movies
-);
-
 const { selectAll, selectEntities } = movieAdapter.getSelectors();
 
-export const selectMovies = createSelector(selectMovieState, selectAll);
-const selectMovieEntities = createSelector(selectMovieState, selectEntities);
+export const selectMovies = createSelector(selectMoviesFeatureState, selectAll);
+const selectMovieEntities = createSelector(
+  selectMoviesFeatureState,
+  selectEntities
+);
 
 export const selectCurrentMovieId = selectRouterParam('movieId');
 

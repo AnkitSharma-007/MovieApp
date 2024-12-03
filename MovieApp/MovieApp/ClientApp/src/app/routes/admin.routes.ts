@@ -10,6 +10,7 @@ export const ADMIN_ROUTES: Routes = [
           import('../admin/components/movie-form/movie-form.component').then(
             (c) => c.MovieFormComponent
           ),
+        title: 'Admin | Add Movie',
       },
       {
         path: 'edit/:movieId',
@@ -17,6 +18,7 @@ export const ADMIN_ROUTES: Routes = [
           import('../admin/components/movie-form/movie-form.component').then(
             (c) => c.MovieFormComponent
           ),
+        title: 'Admin | Update Movie',
       },
       {
         path: '',

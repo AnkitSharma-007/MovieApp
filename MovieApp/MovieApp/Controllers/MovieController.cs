@@ -80,7 +80,7 @@ namespace MovieApp.Controllers
                 }
 
                 await _movieService.AddMovie(movie);
-                return Ok();
+                return Ok(movie);
             }
             else
             {
@@ -117,7 +117,7 @@ namespace MovieApp.Controllers
                     }
                 }
                 await _movieService.UpdateMovie(movie);
-                return Ok();
+                return Ok(movie);
             }
             else
             {

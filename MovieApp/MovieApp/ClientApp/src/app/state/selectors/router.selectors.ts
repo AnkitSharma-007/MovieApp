@@ -14,3 +14,6 @@ export const routerFeatureState =
 
 export const selectRouterParam =
   getRouterSelectors(routerFeatureState).selectRouteParam;
+
+export const selectQueryParams =
+  getRouterSelectors(routerFeatureState).selectQueryParams;

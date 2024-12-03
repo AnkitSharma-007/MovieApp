@@ -5,28 +5,34 @@ import { HomeComponent } from '../components/home/home.component';
 import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
 import { AdminAuthGuard } from '../guards/admin-auth.guard';
 import { AuthGuard } from '../guards/auth.guard';
-import { MovieUpdateEffects } from '../state/effects/movie-update.effects';
 import { RegisterEffects } from '../state/effects/register.effects';
-import {
-  MOVIE_UPDATE_FEATURE_KEY,
-  movieUpdateReducer,
-} from '../state/reducers/movie-update.reducer';
 import {
   REGISTER_FEATURE_KEY,
   registerReducer,
 } from '../state/reducers/register.reducer';
+import { SimilarMoviesEffects } from '../state/effects/similar-movies.effects';
+import {
+  SIMILAR_MOVIE_FEATURE_KEY,
+  similarMoviesReducer,
+} from '../state/reducers/similar-movies.reducers';
 
 export const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: '',
+    component: HomeComponent,
+    pathMatch: 'full',
+    title: 'Home',
+  },
   //TODO: Can we combine these routes to one?
-  { path: 'filter', component: HomeComponent },
-  { path: 'search', component: HomeComponent },
+  { path: 'filter', component: HomeComponent, title: 'Home | Filter Movies' },
+  { path: 'search', component: HomeComponent, title: 'Home | Search Movies' },
   {
     path: 'login',
     loadComponent: () =>
       import('../components/login/login.component').then(
         (c) => c.LoginComponent
       ),
+    title: 'Login',
   },
   {
     path: 'register',
@@ -38,13 +44,20 @@ export const APP_ROUTES: Routes = [
       import(
         '../components/user-registration/user-registration.component'
       ).then((c) => c.UserRegistrationComponent),
+    title: 'Register',
   },
   {
     path: 'movies/details/:movieId',
+    providers: [
+      provideEffects([SimilarMoviesEffects]),
+      provideState(SIMILAR_MOVIE_FEATURE_KEY, similarMoviesReducer),
+    ],
+
     loadComponent: () =>
       import('../components/movie-details/movie-details.component').then(
         (c) => c.MovieDetailsComponent
       ),
+    title: 'Movie Details',
   },
   {
     path: 'watchlist',
@@ -53,16 +66,14 @@ export const APP_ROUTES: Routes = [
         (c) => c.WatchlistComponent
       ),
     canActivate: [AuthGuard],
+    title: 'Watchlist',
   },
   {
     path: 'admin/movies',
-    providers: [
-      provideEffects([MovieUpdateEffects]),
-      provideState(MOVIE_UPDATE_FEATURE_KEY, movieUpdateReducer),
-    ],
     loadChildren: () => import('./admin.routes').then((m) => m.ADMIN_ROUTES),
     canLoad: [AdminAuthGuard],
     canActivate: [AdminAuthGuard],
+    title: 'Admin | Movies',
   },
-  { path: '**', component: PageNotFoundComponent },
+  { path: '**', component: PageNotFoundComponent, title: 'Not Found' },
 ];

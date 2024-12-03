@@ -1,41 +1,38 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { MovieService } from 'src/app/services/movie.service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { AsyncPipe } from '@angular/common';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,
+  MatCardTitle,
+} from '@angular/material/card';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
+import { selectSimilarMovies } from 'src/app/state/selectors/similar-movie.selectors';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { getsimilarMovies } from 'src/app/state/actions/similar-movies.action';
 
 @Component({
-    selector: 'app-similar-movies',
-    templateUrl: './similar-movies.component.html',
-    styleUrls: ['./similar-movies.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
+  selector: 'app-similar-movies',
+  templateUrl: './similar-movies.component.html',
+  styleUrls: ['./similar-movies.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
     MatCard,
     MatCardHeader,
     MatCardTitle,
     MatCardContent,
     MovieCardComponent,
     MatProgressSpinner,
-    AsyncPipe
-],
+    AsyncPipe,
+  ],
 })
 export class SimilarMoviesComponent {
-  // Added the following variable for better readability
-  private readonly queryParams$ = this.activatedRoute.paramMap;
+  private readonly store = inject(Store);
+  protected readonly similarMovies$ = this.store.select(selectSimilarMovies);
 
-  similarMovies$ = this.queryParams$.pipe(
-    switchMap((params) => {
-      const movieId = Number(params.get('movieId'));
-      return this.movieService.getsimilarMovies(movieId);
-    })
-  );
-
-  constructor(
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly movieService: MovieService
-  ) {}
+  constructor() {
+    this.store.dispatch(getsimilarMovies());
+  }
 }
