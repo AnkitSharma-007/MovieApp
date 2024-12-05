@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormGroup,
   NonNullableFormBuilder,
@@ -25,11 +25,9 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, ReplaySubject, switchMap, takeUntil } from 'rxjs';
+import { catchError, combineLatest, EMPTY, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
-import { MovieService } from 'src/app/services/movie.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import {
   addMovie,
@@ -38,6 +36,7 @@ import {
   updateMovie,
 } from 'src/app/state/actions/movie.actions';
 import { selectGenres } from 'src/app/state/selectors/genre.selectors';
+import { selectCurrentMovieDetails } from 'src/app/state/selectors/movie.selectors';
 import { MovieForm } from '../../models/movie-form';
 
 @Component({
@@ -45,6 +44,7 @@ import { MovieForm } from '../../models/movie-form';
   templateUrl: './movie-form.component.html',
   styleUrls: ['./movie-form.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardHeader,
@@ -65,11 +65,9 @@ import { MovieForm } from '../../models/movie-form';
     AsyncPipe,
   ],
 })
-export class MovieFormComponent implements OnInit, OnDestroy {
+export class MovieFormComponent {
   private readonly store = inject(Store);
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly movieService = inject(MovieService);
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly snackBarService = inject(SnackbarService);
 
   protected movieForm: FormGroup<MovieForm> = this.formBuilder.group({
@@ -91,50 +89,35 @@ export class MovieFormComponent implements OnInit, OnDestroy {
       Validators.max(10.0),
     ]),
   });
-  protected genereList$ = this.store.select(selectGenres);
-  protected formTitle = 'Add';
-  private destroyed$ = new ReplaySubject<void>(1);
 
   private formData = new FormData();
   posterImagePath!: string | ArrayBuffer | null;
-  movieId!: number;
   files = '';
+
+  movieFormData$ = combineLatest([
+    this.store.select(selectCurrentMovieDetails),
+    this.store.select(selectGenres),
+  ]).pipe(
+    map(([movie, genres]) => {
+      if (movie !== undefined) {
+        this.setMovieFormData(movie);
+      }
+      return {
+        formTitle: movie?.movieId ? 'Edit' : 'Add',
+        genres,
+      };
+    }),
+    catchError((error) => {
+      this.snackBarService.showSnackBar(
+        'Error ocurred while fetching movie data'
+      );
+      console.error('Error ocurred while fetching movie data : ', error);
+      return EMPTY;
+    })
+  );
 
   constructor() {
     this.store.dispatch(getGenres());
-  }
-
-  ngOnInit(): void {
-    this.fetchMovieDetails();
-  }
-
-  private fetchMovieDetails() {
-    this.activatedRoute.paramMap
-      .pipe(
-        switchMap((params) => {
-          this.movieId = Number(params.get('movieId'));
-          if (this.movieId > 0) {
-            this.formTitle = 'Edit';
-            return this.movieService.getMovieById(this.movieId);
-          } else {
-            return EMPTY;
-          }
-        }),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe({
-        next: (result: Movie | undefined) => {
-          if (result) {
-            this.setMovieFormData(result);
-          }
-        },
-        error: (error) => {
-          this.snackBarService.showSnackBar(
-            'Error ocurred while fetching movie data'
-          );
-          console.error('Error ocurred while fetching movie data : ', error);
-        },
-      });
   }
 
   protected get movieFormControl() {
@@ -152,7 +135,7 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
     this.formData.append('movieFormData', JSON.stringify(this.movieForm.value));
 
-    if (this.movieId) {
+    if (this.movieForm.controls.movieId.value > 0) {
       this.store.dispatch(updateMovie({ movie: this.formData }));
     } else {
       this.store.dispatch(addMovie({ movie: this.formData }));
@@ -184,10 +167,5 @@ export class MovieFormComponent implements OnInit, OnDestroy {
 
   navigateToAdminPanel() {
     this.store.dispatch(cancelMovieFormNavigation());
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

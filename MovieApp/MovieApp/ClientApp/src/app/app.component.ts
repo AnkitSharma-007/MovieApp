@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -10,6 +10,7 @@ import { loginSuccess } from './state/actions/auth.actions';
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [NavBarComponent, RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   private readonly store = inject(Store);

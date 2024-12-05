@@ -1,8 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import {
-  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -34,7 +34,7 @@ import {
 } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { getMovies } from 'src/app/state/actions/movie.actions';
 import { selectMovies } from 'src/app/state/selectors/movie.selectors';
@@ -45,6 +45,7 @@ import { DeleteMovieComponent } from '../delete-movie/delete-movie.component';
   templateUrl: './manage-movies.component.html',
   styleUrls: ['./manage-movies.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardHeader,
@@ -71,9 +72,10 @@ import { DeleteMovieComponent } from '../delete-movie/delete-movie.component';
     MatRow,
     MatNoDataRow,
     MatPaginator,
+    AsyncPipe,
   ],
 })
-export class ManageMoviesComponent implements AfterViewInit, OnDestroy {
+export class ManageMoviesComponent {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
@@ -82,7 +84,23 @@ export class ManageMoviesComponent implements AfterViewInit, OnDestroy {
 
   private readonly store = inject(Store);
   private readonly dialog = inject(MatDialog);
-  private destroyed$ = new ReplaySubject<void>(1);
+  private readonly searchValue$ = new BehaviorSubject<string>('');
+
+  movieTableData$ = combineLatest([
+    this.store.select(selectMovies),
+    this.searchValue$,
+  ]).pipe(
+    map(([movies, searchValue]) => {
+      let dataSource = new MatTableDataSource(movies);
+      dataSource.paginator = this.paginator;
+      dataSource.sort = this.sort;
+      if (searchValue.length > 0) {
+        dataSource.filter = searchValue.trim().toLowerCase();
+        dataSource.paginator.firstPage();
+      }
+      return dataSource;
+    })
+  );
 
   displayedColumns: string[] = [
     'title',
@@ -92,39 +110,19 @@ export class ManageMoviesComponent implements AfterViewInit, OnDestroy {
     'rating',
     'operation',
   ];
-  dataSource: MatTableDataSource<Movie> = new MatTableDataSource();
 
   constructor() {
     this.store.dispatch(getMovies());
-    this.store
-      .select(selectMovies)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((movies: Movie[]) => {
-        this.dataSource.data = movies;
-      });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.searchValue$.next(filterValue);
   }
 
   deleteConfirm(movieId: number): void {
     this.dialog.open(DeleteMovieComponent, {
       data: movieId,
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

@@ -15,7 +15,7 @@ export const getWatchlistFailure = createAction(
 
 export const toggleWatchlist = createAction(
   '[Watchlist] Toggle Watchlist',
-  props<{ userId: number; movieId: number; isAdd: boolean }>()
+  props<{ movieId: number; isAdd: boolean }>()
 );
 
 export const toggleWatchlistSuccess = createAction(
@@ -28,10 +28,7 @@ export const toggleWatchlistFailure = createAction(
   props<{ errorMessage: string }>()
 );
 
-export const clearWatchlist = createAction(
-  '[Watchlist] Clear Watchlist',
-  props<{ userId: number }>()
-);
+export const clearWatchlist = createAction('[Watchlist] Clear Watchlist');
 
 export const clearWatchlistSuccess = createAction(
   '[Watchlist] Clear Watchlist Success'

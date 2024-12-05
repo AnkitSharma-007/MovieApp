@@ -1,6 +1,9 @@
+@if(movieFormData$ | async; as movieFormData) {
 <mat-card class="my-4">
   <mat-card-header class="mat-elevation-z2 custom-card-header">
-    <mat-card-title class="mat-h1"> {{ formTitle }} Movie </mat-card-title>
+    <mat-card-title class="mat-h1">
+      {{ movieFormData.formTitle }} Movie
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content class="p-3">
     <div class="row">
@@ -28,7 +31,7 @@
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Genre</mat-label>
               <mat-select placeholder="Genre" formControlName="genre" required>
-                @for (genre of genereList$ | async; track genre) {
+                @for (genre of movieFormData.genres; track genre) {
                 <mat-option [value]="genre.genreName">
                   {{ genre.genreName }}
                 </mat-option>
@@ -161,3 +164,4 @@
     </div>
   </mat-card-content>
 </mat-card>
+}

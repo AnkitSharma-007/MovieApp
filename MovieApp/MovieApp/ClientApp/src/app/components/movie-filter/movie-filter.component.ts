@@ -1,13 +1,12 @@
+import { AsyncPipe, LowerCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   Input,
 } from '@angular/core';
-import { MovieService } from 'src/app/services/movie.service';
-import { AsyncPipe, LowerCasePipe } from '@angular/common';
+import { MatListItem, MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
-import { MatNavList, MatListItem } from '@angular/material/list';
 import { Store } from '@ngrx/store';
 import { getGenres } from 'src/app/state/actions/movie.actions';
 import { selectGenres } from 'src/app/state/selectors/genre.selectors';
@@ -25,10 +24,9 @@ export class MovieFilterComponent {
   selectedGenre = '';
 
   private readonly store = inject(Store);
+  genereList$ = this.store.select(selectGenres);
 
   constructor() {
     this.store.dispatch(getGenres());
   }
-
-  genereList$ = this.store.select(selectGenres);
 }

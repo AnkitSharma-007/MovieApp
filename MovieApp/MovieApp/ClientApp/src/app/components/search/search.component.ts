@@ -1,11 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocomplete,
@@ -14,14 +8,7 @@ import {
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  combineLatestWith,
-  distinctUntilChanged,
-  map,
-  ReplaySubject,
-  startWith,
-  takeUntil,
-} from 'rxjs';
+import { combineLatestWith, distinctUntilChanged, map, startWith } from 'rxjs';
 import {
   selectMovies,
   selectSearchItemValue,
@@ -41,17 +28,22 @@ import {
     AsyncPipe,
   ],
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
 
   searchControl = new FormControl('', { nonNullable: true });
-  private destroyed$ = new ReplaySubject<void>(1);
   private readonly movie$ = this.store.select(selectMovies);
+
+  searchItemValue$ = this.store.select(selectSearchItemValue).pipe(
+    map((data) => {
+      this.searchControl.setValue(data);
+    })
+  );
 
   filterSuggetions$ = this.searchControl.valueChanges.pipe(
     startWith(''),
-    combineLatestWith(this.movie$),
+    combineLatestWith(this.movie$, this.searchItemValue$),
     distinctUntilChanged(),
     map(([searchValue, movies]) => {
       const value = searchValue.toLowerCase();
@@ -67,10 +59,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
   );
 
-  ngOnInit(): void {
-    this.setSearchControlValue();
-  }
-
   searchMovies() {
     const searchItem = this.searchControl.value;
     if (searchItem) {
@@ -84,21 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setSearchControlValue() {
-    this.store
-      .select(selectSearchItemValue)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((data) => {
-        this.searchControl.setValue(data ?? '');
-      });
-  }
-
   cancelSearch() {
     this.router.navigate(['/']);
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

@@ -1,3 +1,4 @@
+@if(filterSuggetions$ | async; as filterSuggetions){
 <form>
   <input
     (keydown.enter)="searchMovies()"
@@ -9,10 +10,11 @@
     (search)="cancelSearch()"
   />
   <mat-autocomplete (optionSelected)="searchMovies()" #auto="matAutocomplete">
-    @for (movie of filterSuggetions$ | async; track movie) {
+    @for (movie of filterSuggetions; track movie) {
     <mat-option [value]="movie.title">
       {{ movie.title }}
     </mat-option>
     }
   </mat-autocomplete>
 </form>
+}

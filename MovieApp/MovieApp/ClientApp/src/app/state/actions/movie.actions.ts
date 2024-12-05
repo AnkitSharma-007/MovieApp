@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Genre } from 'src/app/models/genre';
 import { Movie } from 'src/app/models/movie';
 
-export const getGenres = createAction('[Genre API] Get Genre');
+export const getGenres = createAction('[Genre] Get Genre');
 
 export const getGenreSuccess = createAction(
   '[Genre] Get Genre Success',
@@ -14,7 +14,7 @@ export const getGenreFailure = createAction(
   props<{ errorMessage: string }>()
 );
 
-export const getMovies = createAction('[Movie API] Get Movie');
+export const getMovies = createAction('[Movie] Get Movie');
 
 export const getMoviesSuccess = createAction(
   '[Movie] Get Movies Success',

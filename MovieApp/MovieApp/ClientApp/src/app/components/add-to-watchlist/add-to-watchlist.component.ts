@@ -1,19 +1,11 @@
 import { NgClass } from '@angular/common';
-import {
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { toggleWatchlist } from 'src/app/state/actions/watchlist.actions';
-import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors';
 import { selectWatchlistItems } from 'src/app/state/selectors/watchlist.selectors';
 
 @Component({
@@ -23,10 +15,9 @@ import { selectWatchlistItems } from 'src/app/state/selectors/watchlist.selector
   standalone: true,
   imports: [MatButton, NgClass, MatIcon],
 })
-export class AddToWatchlistComponent implements OnInit, OnChanges, OnDestroy {
+export class AddToWatchlistComponent implements OnChanges, OnDestroy {
   private readonly store = inject(Store);
   movieId = 0;
-  userId = 0;
   @Input() set id(movieId: number) {
     this.movieId = movieId;
   }
@@ -35,17 +26,6 @@ export class AddToWatchlistComponent implements OnInit, OnChanges, OnDestroy {
   buttonText = '';
   fontIcon = 'add_circle';
   private destroyed$ = new ReplaySubject<void>(1);
-
-  ngOnInit() {
-    this.store
-      .select(selectAuthenticatedUser)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((user) => {
-        if (user) {
-          this.userId = user.userId;
-        }
-      });
-  }
 
   ngOnChanges() {
     this.store
@@ -62,7 +42,6 @@ export class AddToWatchlistComponent implements OnInit, OnChanges, OnDestroy {
     this.setButtonText();
     this.store.dispatch(
       toggleWatchlist({
-        userId: this.userId,
         movieId: this.movieId,
         isAdd: this.toggle,
       })

@@ -35,5 +35,5 @@ export const selectMoviesCallState = createSelector(
 
 export const selectSearchItemValue = createSelector(
   selectMoviesFeatureState,
-  (state) => state.searchItem
+  (state) => state.searchItem ?? ''
 );

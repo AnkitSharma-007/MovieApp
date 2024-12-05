@@ -1,5 +1,7 @@
+import { createReducer, on } from '@ngrx/store';
 import { Movie } from 'src/app/models/movie';
 import { CallState, LoadingState } from 'src/app/shared/call-state';
+import { logout } from '../actions/auth.actions';
 import {
   clearWatchlist,
   clearWatchlistFailure,
@@ -11,8 +13,6 @@ import {
   toggleWatchlistFailure,
   toggleWatchlistSuccess,
 } from '../actions/watchlist.actions';
-import { createReducer, on } from '@ngrx/store';
-import { logout } from '../actions/auth.actions';
 
 export const WATCHLIST_FEATURE_KEY = 'watchlist';
 

@@ -8,9 +8,9 @@ import {
 } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
+import { getsimilarMovies } from 'src/app/state/actions/similar-movies.action';
 import { selectSimilarMovies } from 'src/app/state/selectors/similar-movie.selectors';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { getsimilarMovies } from 'src/app/state/actions/similar-movies.action';
 
 @Component({
   selector: 'app-similar-movies',

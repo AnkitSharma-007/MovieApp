@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
@@ -28,12 +27,10 @@ import {
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ReplaySubject, takeUntil } from 'rxjs';
 import {
   clearWatchlist,
   getWatchlist,
 } from 'src/app/state/actions/watchlist.actions';
-import { selectAuthenticatedUser } from 'src/app/state/selectors/auth.selectors';
 import { selectWatchlistItems } from 'src/app/state/selectors/watchlist.selectors';
 import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.component';
 
@@ -65,11 +62,9 @@ import { AddToWatchlistComponent } from '../add-to-watchlist/add-to-watchlist.co
     AsyncPipe,
   ],
 })
-export class WatchlistComponent implements OnInit, OnDestroy {
+export class WatchlistComponent implements OnInit {
   private readonly store = inject(Store);
   protected readonly watchlistItems$ = this.store.select(selectWatchlistItems);
-  userId = 0;
-  private destroyed$ = new ReplaySubject<void>(1);
 
   displayedColumns: string[] = [
     'poster',
@@ -81,22 +76,9 @@ export class WatchlistComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(getWatchlist());
-    this.store
-      .select(selectAuthenticatedUser)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((user) => {
-        if (user) {
-          this.userId = user.userId;
-        }
-      });
   }
 
   clearWatchlist() {
-    this.store.dispatch(clearWatchlist({ userId: this.userId }));
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+    this.store.dispatch(clearWatchlist());
   }
 }
