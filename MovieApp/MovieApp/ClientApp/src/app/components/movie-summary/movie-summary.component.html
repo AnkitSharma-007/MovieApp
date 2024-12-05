@@ -6,24 +6,24 @@
         color="primary"
         mat-raised-button
         (click)="fetchSummaryFromGemini()"
-        >
+      >
         <span
           ><img
-          class="gemini-icon"
-          src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"
+            class="gemini-icon"
+            src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg"
         /></span>
         Generate movie plot summary using Google Gemini
       </button>
     </div>
 
     @if (showLoader) {
-      <div class="d-flex justify-content-center mt-4">
-        <mat-spinner diameter="50"></mat-spinner>
-      </div>
-    } @else {
-      @if (movieSummary.length > 0) {
-        <p class="mt-4">{{ movieSummary }}</p>
-      }
+    <div class="d-flex justify-content-center mt-4">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+    } @else if(movieSummary.length > 0) {
+    <p class="mt-4">{{ movieSummary }}</p>
+    } @else if(!showLoader && hasError){
+    <h3>Quota exceeded for quota metric.</h3>
     }
   </mat-card-content>
 </mat-card>
