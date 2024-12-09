@@ -11,8 +11,8 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { MovieService } from 'src/app/services/movie.service';
 import { deleteMovie } from 'src/app/state/actions/movie.actions';
+import { selectMovieById } from 'src/app/state/selectors/movie.selectors';
 
 @Component({
   selector: 'app-delete-movie',
@@ -31,12 +31,11 @@ import { deleteMovie } from 'src/app/state/actions/movie.actions';
   ],
 })
 export class DeleteMovieComponent {
-  private readonly movieService = inject(MovieService);
   private readonly dialogRef = inject(MatDialogRef<DeleteMovieComponent>);
   private readonly movieid = inject<number>(MAT_DIALOG_DATA);
   private readonly store = inject(Store);
 
-  movieData$ = this.movieService.getMovieById(this.movieid);
+  movieData$ = this.store.select(selectMovieById(this.movieid));
 
   onNoClick(): void {
     this.dialogRef.close();

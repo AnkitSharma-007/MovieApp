@@ -37,3 +37,9 @@ export const selectSearchItemValue = createSelector(
   selectMoviesFeatureState,
   (state) => state.searchItem ?? ''
 );
+
+export const selectMovieById = (movieId: number) =>
+  createSelector(selectMovieEntities, (movies) => {
+    if (movieId == null || !movies) return undefined;
+    return movies[movieId];
+  });

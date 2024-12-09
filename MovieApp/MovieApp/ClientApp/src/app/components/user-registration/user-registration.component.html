@@ -2,7 +2,7 @@
   <mat-card class="my-4 w-50">
     <mat-card-header
       class="mat-elevation-z2 custom-card-header justify-content-between"
-      >
+    >
       <mat-card-title class="mat-h1"> User Registration </mat-card-title>
       <div>
         <span class="mat-h4">Already Registered? </span>
@@ -10,17 +10,13 @@
           mat-raised-button
           class="mat-elevation-z4"
           [routerLink]="['/login']"
-          >
+        >
           Login
         </button>
       </div>
     </mat-card-header>
     <mat-card-content class="p-3">
-      <form
-        [formGroup]="userRegistrationForm"
-        (ngSubmit)="registerUser()"
-        novalidate
-        >
+      <form [formGroup]="userRegistrationForm" (ngSubmit)="registerUser()">
         <mat-form-field class="w-100 mt-1" appearance="outline">
           <mat-label>First name</mat-label>
           <input
@@ -28,145 +24,107 @@
             placeholder="First name"
             formControlName="firstName"
             required
-            />
-          @if (
-            registrationFormControl.firstName.touched &&
-            registrationFormControl.firstName.errors?.['required']
-            ) {
-            <mat-error
-              >First Name is required</mat-error
-              >
-            }
-          </mat-form-field>
+          />
+          @if ( registrationFormControl.firstName.touched &&
+          registrationFormControl.firstName.errors?.['required'] ) {
+          <mat-error>First Name is required</mat-error>
+          }
+        </mat-form-field>
 
-          <mat-form-field class="w-100 mt-1" appearance="outline">
-            <mat-label>Last name</mat-label>
-            <input
-              matInput
-              placeholder="Last Name"
-              formControlName="lastName"
-              required
-              />
-            @if (
-              registrationFormControl.lastName.touched &&
-              registrationFormControl.lastName.errors?.['required']
-              ) {
-              <mat-error
-                >Last Name is required</mat-error
-                >
-              }
-            </mat-form-field>
+        <mat-form-field class="w-100 mt-1" appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input
+            matInput
+            placeholder="Last Name"
+            formControlName="lastName"
+            required
+          />
+          @if ( registrationFormControl.lastName.touched &&
+          registrationFormControl.lastName.errors?.['required'] ) {
+          <mat-error>Last Name is required</mat-error>
+          }
+        </mat-form-field>
 
-            <mat-form-field class="w-100 mt-1" appearance="outline">
-              <mat-label>User name</mat-label>
-              <input
-                matInput
-                placeholder="User Name"
-                formControlName="userName"
-                required
-                />
-              @if (
-                registrationFormControl.userName.touched &&
-                registrationFormControl.userName.errors?.['required']
-                ) {
-                <mat-error
-                  >User Name is required
-                </mat-error>
-              }
-              @if (
-                registrationFormControl.userName.touched &&
-                registrationFormControl.userName.errors?.['userNameNotAvailable']
-                ) {
-                <mat-error
-                  >User Name is not available</mat-error
-                  >
-                }
-              </mat-form-field>
+        <mat-form-field class="w-100 mt-1" appearance="outline">
+          <mat-label>User name</mat-label>
+          <input
+            matInput
+            placeholder="User Name"
+            formControlName="userName"
+            required
+          />
+          @if ( registrationFormControl.userName.touched &&
+          registrationFormControl.userName.errors?.['required'] ) {
+          <mat-error>User Name is required </mat-error>
+          } @if ( registrationFormControl.userName.touched &&
+          registrationFormControl.userName.errors?.['userNameNotAvailable'] ) {
+          <mat-error>User Name is not available</mat-error>
+          }
+        </mat-form-field>
 
-              <mat-form-field class="w-100 mt-1" appearance="outline">
-                <mat-label>Password</mat-label>
-                <input
-                  matInput
-                  placeholder="Password"
-                  formControlName="password"
-                  [type]="showPassword ? 'text' : 'password'"
-                  required
-                  />
-                <mat-icon matSuffix (click)="showPassword = !showPassword">{{
-                  showPassword ? "visibility" : "visibility_off"
-                }}</mat-icon>
-                @if (
-                  registrationFormControl.password.touched &&
-                  registrationFormControl.password.errors?.['required']
-                  ) {
-                  <mat-error
-                    >Password is required
-                  </mat-error>
-                }
-                @if (
-                  registrationFormControl.password.touched &&
-                  registrationFormControl.password.errors?.['invalidPassword']
-                  ) {
-                  <mat-error
-                    >
-                    Password should have minimum 8 characters, at least 1 uppercase
-                    letter, 1 lowercase letter and 1 number
-                  </mat-error>
-                }
-              </mat-form-field>
+        <mat-form-field class="w-100 mt-1" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            placeholder="Password"
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            required
+          />
+          <mat-icon matSuffix (click)="showPassword = !showPassword">{{
+            showPassword ? "visibility" : "visibility_off"
+          }}</mat-icon>
+          @if ( registrationFormControl.password.touched &&
+          registrationFormControl.password.errors?.['required'] ) {
+          <mat-error>Password is required </mat-error>
+          } @if ( registrationFormControl.password.touched &&
+          registrationFormControl.password.errors?.['invalidPassword'] ) {
+          <mat-error>
+            Password should have minimum 8 characters, at least 1 uppercase
+            letter, 1 lowercase letter and 1 number
+          </mat-error>
+          }
+        </mat-form-field>
 
-              <mat-form-field class="w-100 mt-1" appearance="outline">
-                <mat-label>Confirm Password</mat-label>
-                <input
-                  matInput
-                  placeholder="Confirm Password"
-                  formControlName="confirmPassword"
-                  [type]="showConfirmPassword ? 'text' : 'password'"
-                  required
-                  />
-                <mat-icon
-                  matSuffix
-                  (click)="showConfirmPassword = !showConfirmPassword"
-                  >{{
-                  showConfirmPassword ? "visibility" : "visibility_off"
-                  }}</mat-icon
-                  >
-                  @if (
-                    registrationFormControl.confirmPassword.touched &&
-                    registrationFormControl.confirmPassword.errors?.['required']
-                    ) {
-                    <mat-error
-                      >Password is required
-                    </mat-error>
-                  }
-                  @if (
-                    registrationFormControl.confirmPassword.touched &&
-                    registrationFormControl.confirmPassword.errors?.['passwordMismatch']
-                    ) {
-                    <mat-error
-                      >
-                      Passwords do not match
-                    </mat-error>
-                  }
-                </mat-form-field>
+        <mat-form-field class="w-100 mt-1" appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            placeholder="Confirm Password"
+            formControlName="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            required
+          />
+          <mat-icon
+            matSuffix
+            (click)="showConfirmPassword = !showConfirmPassword"
+            >{{
+              showConfirmPassword ? "visibility" : "visibility_off"
+            }}</mat-icon
+          >
+          @if ( registrationFormControl.confirmPassword.touched &&
+          registrationFormControl.confirmPassword.errors?.['required'] ) {
+          <mat-error>Password is required </mat-error>
+          } @if ( registrationFormControl.confirmPassword.touched &&
+          registrationFormControl.confirmPassword.errors?.['passwordMismatch'] )
+          {
+          <mat-error> Passwords do not match </mat-error>
+          }
+        </mat-form-field>
 
-                <mat-label>Gender:</mat-label>
-                <mat-radio-group formControlName="gender">
-                  <mat-radio-button value="Male"> Male </mat-radio-button>
-                  <mat-radio-button value="Female"> Female </mat-radio-button>
-                </mat-radio-group>
-                @if (
-                  registrationFormControl.gender.touched &&
-                  registrationFormControl.gender.errors?.['required']
-                  ) {
-                  <mat-error
-                    >Gender is required</mat-error
-                    >
-                  }
-                  <mat-card-actions align="end">
-                    <button mat-raised-button color="primary">Register</button>
-                  </mat-card-actions>
-                </form>
-              </mat-card-content>
-            </mat-card>
-          </div>
+        <mat-label>Gender:</mat-label>
+        <mat-radio-group formControlName="gender">
+          <mat-radio-button value="Male"> Male </mat-radio-button>
+          <mat-radio-button value="Female"> Female </mat-radio-button>
+        </mat-radio-group>
+        @if ( registrationFormControl.gender.touched &&
+        registrationFormControl.gender.errors?.['required'] ) {
+        <mat-error>Gender is required</mat-error>
+        }
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary">Register</button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

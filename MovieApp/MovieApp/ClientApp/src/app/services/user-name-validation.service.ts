@@ -1,5 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidator,
+  ValidationErrors,
+} from '@angular/forms';
 import {
   catchError,
   debounceTime,
@@ -13,21 +17,14 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class UserNameValidationService {
+export class UserNameValidationService implements AsyncValidator {
   private readonly userService = inject(UserService);
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     return this.userService.validateUserName(control.value).pipe(
-      // TODO: Debounce is not working properly.
-      debounceTime(1000),
-      distinctUntilChanged(),
-      map((isUserNameAvailable) => {
-        if (isUserNameAvailable) {
-          return null;
-        } else {
-          return { userNameNotAvailable: true };
-        }
-      }),
+      map((isUserNameAvailable) =>
+        isUserNameAvailable ? null : { userNameNotAvailable: true }
+      ),
       catchError(() => of(null))
     );
   }
