@@ -13,20 +13,19 @@ import { selectSimilarMovies } from 'src/app/state/selectors/similar-movie.selec
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 
 @Component({
-  selector: 'app-similar-movies',
-  templateUrl: './similar-movies.component.html',
-  styleUrls: ['./similar-movies.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    MovieCardComponent,
-    MatProgressSpinner,
-    AsyncPipe,
-  ],
+    selector: 'app-similar-movies',
+    templateUrl: './similar-movies.component.html',
+    styleUrls: ['./similar-movies.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        MovieCardComponent,
+        MatProgressSpinner,
+        AsyncPipe,
+    ]
 })
 export class SimilarMoviesComponent {
   private readonly store = inject(Store);

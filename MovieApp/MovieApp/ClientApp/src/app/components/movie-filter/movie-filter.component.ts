@@ -12,12 +12,11 @@ import { getGenres } from 'src/app/state/actions/movie.actions';
 import { selectGenres } from 'src/app/state/selectors/genre.selectors';
 
 @Component({
-  selector: 'app-movie-filter',
-  templateUrl: './movie-filter.component.html',
-  styleUrls: ['./movie-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [MatNavList, MatListItem, RouterLink, AsyncPipe, LowerCasePipe],
+    selector: 'app-movie-filter',
+    templateUrl: './movie-filter.component.html',
+    styleUrls: ['./movie-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatNavList, MatListItem, RouterLink, AsyncPipe, LowerCasePipe]
 })
 export class MovieFilterComponent {
   @Input()

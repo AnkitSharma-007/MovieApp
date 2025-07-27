@@ -23,26 +23,25 @@ import { MovieSummaryComponent } from '../movie-summary/movie-summary.component'
 import { SimilarMoviesComponent } from '../similar-movies/similar-movies.component';
 
 @Component({
-  selector: 'app-movie-details',
-  templateUrl: './movie-details.component.html',
-  styleUrls: ['./movie-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    MatCardImage,
-    AddToWatchlistComponent,
-    MovieRatingComponent,
-    MovieSummaryComponent,
-    SimilarMoviesComponent,
-    MatButton,
-    RouterLink,
-    AsyncPipe,
-    ConvertMinToHourPipe,
-  ],
+    selector: 'app-movie-details',
+    templateUrl: './movie-details.component.html',
+    styleUrls: ['./movie-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        MatCardImage,
+        AddToWatchlistComponent,
+        MovieRatingComponent,
+        MovieSummaryComponent,
+        SimilarMoviesComponent,
+        MatButton,
+        RouterLink,
+        AsyncPipe,
+        ConvertMinToHourPipe,
+    ]
 })
 export class MovieDetailsComponent {
   private readonly store = inject(Store);

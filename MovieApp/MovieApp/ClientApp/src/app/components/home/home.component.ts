@@ -15,18 +15,17 @@ import { MovieFilterComponent } from '../movie-filter/movie-filter.component';
 import { MovieSortComponent } from '../movie-sort/movie-sort.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MovieFilterComponent,
-    MovieSortComponent,
-    MovieCardComponent,
-    MatProgressSpinner,
-    AsyncPipe,
-  ],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MovieFilterComponent,
+        MovieSortComponent,
+        MovieCardComponent,
+        MatProgressSpinner,
+        AsyncPipe,
+    ]
 })
 export class HomeComponent {
   private readonly store = inject(Store);

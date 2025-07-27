@@ -15,20 +15,19 @@ import { deleteMovie } from 'src/app/state/actions/movie.actions';
 import { selectMovieById } from 'src/app/state/selectors/movie.selectors';
 
 @Component({
-  selector: 'app-delete-movie',
-  templateUrl: './delete-movie.component.html',
-  styleUrls: ['./delete-movie.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    CdkScrollable,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton,
-    MatDialogClose,
-    AsyncPipe,
-  ],
+    selector: 'app-delete-movie',
+    templateUrl: './delete-movie.component.html',
+    styleUrls: ['./delete-movie.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+        AsyncPipe,
+    ]
 })
 export class DeleteMovieComponent {
   private readonly dialogRef = inject(MatDialogRef<DeleteMovieComponent>);

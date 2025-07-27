@@ -40,30 +40,29 @@ import { selectCurrentMovieDetails } from 'src/app/state/selectors/movie.selecto
 import { MovieForm } from '../../models/movie-form';
 
 @Component({
-  selector: 'app-movie-form',
-  templateUrl: './movie-form.component.html',
-  styleUrls: ['./movie-form.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatError,
-    MatSelect,
-    MatOption,
-    MatHint,
-    MatCardActions,
-    MatButton,
-    MatCardImage,
-    MatIcon,
-    AsyncPipe,
-  ],
+    selector: 'app-movie-form',
+    templateUrl: './movie-form.component.html',
+    styleUrls: ['./movie-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatSelect,
+        MatOption,
+        MatHint,
+        MatCardActions,
+        MatButton,
+        MatCardImage,
+        MatIcon,
+        AsyncPipe,
+    ]
 })
 export class MovieFormComponent {
   private readonly store = inject(Store);

@@ -15,12 +15,11 @@ import {
 } from '@google/generative-ai';
 
 @Component({
-  selector: 'app-movie-summary',
-  templateUrl: './movie-summary.component.html',
-  styleUrls: ['./movie-summary.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [MatCard, MatCardContent, MatButton, MatProgressSpinner],
+    selector: 'app-movie-summary',
+    templateUrl: './movie-summary.component.html',
+    styleUrls: ['./movie-summary.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatCard, MatCardContent, MatButton, MatProgressSpinner]
 })
 export class MovieSummaryComponent {
   private readonly cdr = inject(ChangeDetectorRef);

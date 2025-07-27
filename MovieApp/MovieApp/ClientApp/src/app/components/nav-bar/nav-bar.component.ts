@@ -18,26 +18,25 @@ import { selectWatchlistItemsCount } from 'src/app/state/selectors/watchlist.sel
 import { SearchComponent } from '../search/search.component';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatToolbar,
-    MatToolbarRow,
-    MatAnchor,
-    RouterLink,
-    MatIcon,
-    SearchComponent,
-    MatIconButton,
-    MatTooltip,
-    MatBadge,
-    MatMenuTrigger,
-    MatMenu,
-    MatMenuItem,
-    AsyncPipe,
-  ],
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatToolbar,
+        MatToolbarRow,
+        MatAnchor,
+        RouterLink,
+        MatIcon,
+        SearchComponent,
+        MatIconButton,
+        MatTooltip,
+        MatBadge,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        AsyncPipe,
+    ]
 })
 export class NavBarComponent {
   private readonly store = inject(Store);

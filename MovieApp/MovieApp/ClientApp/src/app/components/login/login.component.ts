@@ -32,29 +32,28 @@ import { login } from 'src/app/state/actions/auth.actions';
 import { selectLoginError } from 'src/app/state/selectors/auth.selectors';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatButton,
-    RouterLink,
-    MatCardSubtitle,
-    MatError,
-    MatCardContent,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatIcon,
-    MatSuffix,
-    MatCardActions,
-    AsyncPipe,
-  ],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatButton,
+        RouterLink,
+        MatCardSubtitle,
+        MatError,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIcon,
+        MatSuffix,
+        MatCardActions,
+        AsyncPipe,
+    ]
 })
 export class LoginComponent {
   private readonly store = inject(Store);

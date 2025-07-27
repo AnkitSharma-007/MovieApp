@@ -16,21 +16,20 @@ import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-movie-sort',
-  templateUrl: './movie-sort.component.html',
-  styleUrls: ['./movie-sort.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption,
-  ],
+    selector: 'app-movie-sort',
+    templateUrl: './movie-sort.component.html',
+    styleUrls: ['./movie-sort.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
+    ]
 })
 export class MovieSortComponent {
   @Input()

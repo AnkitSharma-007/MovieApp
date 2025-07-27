@@ -31,29 +31,28 @@ import { UserNameValidationService } from 'src/app/services/user-name-validation
 import { register } from 'src/app/state/actions/auth.actions';
 
 @Component({
-  selector: 'app-user-registration',
-  templateUrl: './user-registration.component.html',
-  styleUrls: ['./user-registration.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatButton,
-    RouterLink,
-    MatCardContent,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatError,
-    MatIcon,
-    MatSuffix,
-    MatRadioGroup,
-    MatRadioButton,
-    MatCardActions,
-  ],
+    selector: 'app-user-registration',
+    templateUrl: './user-registration.component.html',
+    styleUrls: ['./user-registration.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatButton,
+        RouterLink,
+        MatCardContent,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatIcon,
+        MatSuffix,
+        MatRadioGroup,
+        MatRadioButton,
+        MatCardActions,
+    ]
 })
 export class UserRegistrationComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);

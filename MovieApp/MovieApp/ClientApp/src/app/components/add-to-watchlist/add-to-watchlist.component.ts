@@ -9,11 +9,10 @@ import { toggleWatchlist } from 'src/app/state/actions/watchlist.actions';
 import { selectWatchlistItems } from 'src/app/state/selectors/watchlist.selectors';
 
 @Component({
-  selector: 'app-add-to-watchlist',
-  templateUrl: './add-to-watchlist.component.html',
-  styleUrls: ['./add-to-watchlist.component.scss'],
-  standalone: true,
-  imports: [MatButton, NgClass, MatIcon],
+    selector: 'app-add-to-watchlist',
+    templateUrl: './add-to-watchlist.component.html',
+    styleUrls: ['./add-to-watchlist.component.scss'],
+    imports: [MatButton, NgClass, MatIcon]
 })
 export class AddToWatchlistComponent implements OnChanges, OnDestroy {
   private readonly store = inject(Store);
