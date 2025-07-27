@@ -31,28 +31,28 @@ import { UserNameValidationService } from 'src/app/services/user-name-validation
 import { register } from 'src/app/state/actions/auth.actions';
 
 @Component({
-    selector: 'app-user-registration',
-    templateUrl: './user-registration.component.html',
-    styleUrls: ['./user-registration.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        MatCard,
-        MatCardHeader,
-        MatCardTitle,
-        MatButton,
-        RouterLink,
-        MatCardContent,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatError,
-        MatIcon,
-        MatSuffix,
-        MatRadioGroup,
-        MatRadioButton,
-        MatCardActions,
-    ]
+  selector: 'app-user-registration',
+  templateUrl: './user-registration.component.html',
+  styleUrls: ['./user-registration.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatButton,
+    RouterLink,
+    MatCardContent,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatIcon,
+    MatSuffix,
+    MatRadioGroup,
+    MatRadioButton,
+    MatCardActions,
+  ],
 })
 export class UserRegistrationComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
@@ -72,12 +72,9 @@ export class UserRegistrationComponent {
         lastName: this.formBuilder.control('', Validators.required),
         userName: this.formBuilder.control('', {
           asyncValidators: [
-            this.userNameValidationService.validate.bind(
-              this.userNameValidationService
-            ),
+            this.userNameValidationService.usernameAvailabilityValidator(),
           ],
           validators: [Validators.required],
-          updateOn: 'blur',
         }),
         password: this.formBuilder.control('', [
           Validators.required,
@@ -96,7 +93,7 @@ export class UserRegistrationComponent {
       }
     );
 
-  registerUser(): void {
+  protected registerUser(): void {
     if (this.userRegistrationForm.valid) {
       this.store.dispatch(
         register({
