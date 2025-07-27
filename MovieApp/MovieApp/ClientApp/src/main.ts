@@ -2,7 +2,12 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { enableProdMode, importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import {
+  PreloadAllModules,
+  provideRouter,
+  withInMemoryScrolling,
+  withPreloading,
+} from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideState, provideStore } from '@ngrx/store';
@@ -47,14 +52,15 @@ bootstrapApplication(AppComponent, {
       APP_ROUTES,
       withInMemoryScrolling({
         scrollPositionRestoration: 'top',
-      })
+      }),
+      withPreloading(PreloadAllModules)
     ),
     provideStore(),
     provideEffects(GenreEffects, MovieEffects, AuthEffects, WatchlistEffects),
-    provideState({ name: GENRE_FEATURE_KEY, reducer: genreReducer }),
-    provideState({ name: MOVIE_FEATURE_KEY, reducer: movieReducer }),
-    provideState({ name: AUTH_FEATURE_KEY, reducer: authReducer }),
-    provideState({ name: WATCHLIST_FEATURE_KEY, reducer: watchlistReducer }),
+    provideState(GENRE_FEATURE_KEY, genreReducer),
+    provideState(MOVIE_FEATURE_KEY, movieReducer),
+    provideState(AUTH_FEATURE_KEY, authReducer),
+    provideState(WATCHLIST_FEATURE_KEY, watchlistReducer),
     provideRouterStore(),
     provideStore({ [ROUTER_FEATURE_KEY]: routerReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
